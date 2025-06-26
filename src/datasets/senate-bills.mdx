@@ -1,0 +1,87 @@
+---
+title: Senate Bills
+source: https://www.cs.cornell.edu/~arb/data/senate-bills/
+citation: |
+  @article{chodrow2021hypergraph,
+    title={Hypergraph clustering: from blockmodels to modularity},
+    author={Chodrow, Philip S and Veldt, Nate and Benson, Austin R},
+    journal={Science Advances},
+    year={2021}
+  }
+  @article{Fowler-2006-connecting,
+    doi = {10.1093/pan/mpl002},
+    url = {https://doi.org/10.1093/pan/mpl002},
+    year  = {2006},
+    publisher = {Cambridge University Press ({CUP})},
+    volume = {14},
+    number = {04},
+    pages = {456--487},
+    author = {James H. Fowler},
+    title = {Connecting the Congress: A Study of Cosponsorship Networks},
+    journal = {Political Analysis}
+  }
+  @article{Fowler-2006-cosponsorship,
+    doi = {10.1016/j.socnet.2005.11.003},
+    url = {https://doi.org/10.1016/j.socnet.2005.11.003},
+    year  = {2006},
+    month = {oct},
+    publisher = {Elsevier {BV}},
+    volume = {28},
+    number = {4},
+    pages = {454--465},
+    author = {James H. Fowler},
+    title = {Legislative cosponsorship networks in the {US} House and Senate},
+    journal = {Social Networks}
+  }
+network-type: hypergraph
+tags:
+  - undirected
+  - labelled nodes
+related:
+  - congress-bills
+  - house-bills
+label-count:
+  Democrat: 150
+  Republican: 144
+shape:
+  nodes: 294
+  hyperedges: 29157
+attachments:
+  - file: senate-bills.txt
+    size: 864616
+---
+
+import NodeLabelsChart from "@/components/chart/node-labels";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+This is a hypergraph, where nodes are US Congresspersons and hyperedges are comprised of the sponsor and co-sponsors of bills put forth in the Senate.
+Some hyperedges are repeated.
+The dataset was derived from James Fowler's data.
+Each node is labeled with political party affiliation.
+
+## Usage
+
+The dataset can be loaded directly in TopoNetX using the following code:
+
+```python
+import toponetx as tnx
+
+nodes, hyperedges = tnx.datasets.load_benson_hyperedges("senate-bills")
+```
+
+## Dataset Statistics
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["shape"]["nodes"])} />
+  <Stat title="Node Type" value="US Congressperson" />
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["shape"]["hyperedges"])}
+  />
+  <Stat title="Hyperedge Type" value="Sponsors of Bill" />
+</dl>
+
+### Node Labels
+
+<NodeLabelsChart labels={frontmatter["label-count"]} />

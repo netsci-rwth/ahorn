@@ -1,0 +1,116 @@
+import Alert from "@/components/alert";
+
+export const metadata = {
+  title: "Dataset Format | AHORN - Aachen Higher-Order Repository of Networks",
+};
+
+# Dataset Format
+
+All datasets distributed in this project follow a standardized format to ensure consistency and ease of use.
+If you use [TopoNetX](https://github.com/pyt-team/TopoNetX), you can load all datasets in this repository directly using the provided functions.
+
+Design goals of the dataset format:
+
+- **Human-readable**: Plain text format with optional compression.
+- **Interoperable**: Easy to parse and use in different programming languages.
+- **Flexible**: Next to some standardized metadata, the format allows for custom dataset-specific attributes.
+
+The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
+
+<Alert type="warning">
+  TODOs: - Format currently focused on one network; some datasets are
+  multi-graph, e.g., for network-level tasks. - Handle directed edges. -
+  Trajectory data
+</Alert>
+
+## Example
+
+Before giving the formal specification, here is a minimal example of a dataset in the described format:
+
+```plain
+{"network-name": "example", "more-network-metadata": "value", "_format-version": "0.1"}
+1 {"name": "John Doe", "age": 28}
+1,2,5 {"time": "2023-01-01T07:42:45+00:00", "weight": 1.0, "other-data": "value"}
+4,2,1 {"time": "2023-01-02T19:13:09+00:00", "weight": 2.5}
+```
+
+**Explanation:**
+
+- The first line contains network-level metadata as a JSON object, including a name and format version.
+- The network has four nodes: `1`, `2`, `4`, and `5`:
+  - Node `1` has an attribute `name` with value `John Doe`, and an attribute `age` with value `28`.
+  - Nodes `2`, `4`, and `5` are defined implicitly by their appearance in the edges.
+- The third and fourth lines define two hyperedges:
+  - The first edge connects nodes `1`, `2`, and `5`, and has attributes `time`, `weight`, and a custom `other-data`.
+  - The second edge connects nodes `4`, `2`, and `1`, and has attributes `time` and `weight`.
+
+## Structure
+
+The dataset is a plain or gzipped text file with the following structure:
+
+- The first line MAY contain network-level metadata in JSON format.
+- Afterwards, there is a section for nodes, where each node is defined on a separate line.
+- Following the nodes, there are lines for edges (hyperedges or simplices), where each line contains a comma-separated list of node identifiers.
+
+## Nodes
+
+Nodes (vertices) MUST be integers (non-consecutive) or strings (e.g., names), but MUST NOT contain commas or other special characters.
+In general, nodes are defined implicitly by their appearance in edges, but can be explicitly defined if they have attributes or are unconnected.
+
+<Alert type="info">For some datasets, nodes are numbered but get assigned a unique name as attribute, e.g., `{"name": "John Doe"}`. This makes the edge definitions simpler and more compact.</Alert>
+
+## Edges
+
+<Alert type="info">
+  AHORN is a repository for higher-order networks. For brevity, we use the term
+  “edge” to refer to simplices, cells, or hyperedges depending on whether the
+  network is a simplicial complex, cell complex, or hypergraph. Different to a
+  graph, edges in our case can connect more than two nodes.
+</Alert>
+
+- Each line represents a (hyper-)edge or simplex; the nodes in the edge are separated by a comma
+- The edge line MAY contain attributes in JSON format at the end of the line.
+
+## Attributes
+
+Any element (including the network itself) in the dataset MAY be equipped with attributes that provide additional information.
+Attributes are stored as key-value pairs, where the key is a string and the value can be of arbitrary type.
+They are encoded as JSON objects in the dataset file and are placed at the end of the line for each node or edge.
+Some attributes have standardized meanings, while others can be custom-defined for specific datasets.
+
+Attribute names SHOULD be lowercase and use dashes to separate words, e.g., `time`, `party`, `class-subject`.
+Names SHOULD be descriptive and meaningful, avoiding abbreviations or acronyms unless they are widely recognized.
+Generic names like `label` or `data` do not convey specific information about the attribute.
+
+The following sections describe standardized attributes that are commonly used in higher-order networks.
+If an attribute has a standardized meaning, it MUST be used as described below.
+
+### Weights
+
+- The `weight` attribute is an integer or floating-point number that represents the weight of the edge.
+- If only some edges are weighted, the `weight` attribute for all other edges SHOULD be present and set to `1.0`.
+
+### Timestamps
+
+<Alert type="info">
+  In Python, it is recommended to read timestamps using
+  [`date.fromisoformat()`](https://docs.python.org/3/library/datetime.html#datetime.date.fromisoformat)
+  and
+  [`datetime.fromisoformat()`](https://docs.python.org/3/library/datetime.html#datetime.datetime.fromisoformat).
+</Alert>
+
+- For temporal datasets, each edge has a `time` attribute.
+- Time MUST be formatted as [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) string and MAY include a time, e.g., `2025-02-04` or `2023-01-01T04:45:00+00:00`.
+- The time zone MUST be specified and taken from the original dataset.
+
+## Note on Network Type
+
+AHORN collects various types of higher-order networks, including simplicial complexes, cell complexes, and hypergraphs.
+The format does not enforce a specific network type, and it is up to you in which way you want to interpret the data.
+We provide the datasets in a “minimal” form, that is, any nodes, simplices, or cells that can be inferred from existing data are not included, unless they have attributes.
+
+## Versioning
+
+- TODO: We should implement a versioning scheme for the dataset format.
+- The version number MUST be included in the dataset metadata.
+- The version number MUST follow semantic versioning.

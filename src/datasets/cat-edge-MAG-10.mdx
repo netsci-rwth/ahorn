@@ -1,0 +1,80 @@
+---
+title: cat-edge-MAG-10
+source: https://www.cs.cornell.edu/~arb/data/cat-edge-MAG-10/
+citation: |
+  @inproceedings{Amburg-2020-categorical,
+    title   = {Clustering in graphs and hypergraphs with categorical edge labels},
+    author  = {Amburg, Ilya and Veldt, Nate and Benson, Austin R.},
+    booktitle = {Proceedings of the Web Conference},
+    year    = {2020}
+  }
+  @inproceedings{Sinha-2015-MAG,
+    doi = {10.1145/2740908.2742839},
+    url = {https://doi.org/10.1145/2740908.2742839},
+    year  = {2015},
+    publisher = {{ACM} Press},
+    author = {Arnab Sinha and Zhihong Shen and Yang Song and Hao Ma and Darrin Eide and Bo-June (Paul) Hsu and Kuansan Wang},
+    title = {An Overview of Microsoft Academic Service ({MAS}) and Applications},
+    booktitle = {Proceedings of the 24th International Conference on World Wide Web}
+  }
+license: UNKNOWN
+network-type: hypergraph
+tags:
+  - edge labels
+shape:
+  nodes: 80198
+  hyperedges: 51889
+edge-label-count:
+  NeurIPS: 7060
+  SIGMOD: 4292
+  ICCV: 5366
+  WWW: 5468
+  CVPR: 11006
+  VLDB: 4448
+  ICML: 4803
+  KDD: 4675
+  FOCS: 2487
+  STOC: 2284
+attachments:
+  - file: cat-edge-MAG-10.txt
+    size: 2704773
+---
+
+import NodeLabelsChart from "@/components/chart/node-labels";
+import Alert from "@/components/alert";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+The MAG-10 network is a subset of the Microsoft Academic Graph where nodes are authors, hyperedges correspond to a publication from those authors, and the hyperedges are categorized by one of 10 computer science confereneces.
+If the same set of authors published at more than one conference, we used the most common venue as the category and any cases where there is a tie were discarded.
+Papers with more than 25 authors were omitted.
+
+<Alert type="warning">
+  Node 40706 has an erroneous label assignment in the source dataset. We
+  assigned it to the first category.
+</Alert>
+
+## Usage
+
+The dataset can be loaded directly in TopoNetX using the following code:
+
+```python
+import toponetx as tnx
+nodes, edges, metadata = tnx.datasets.load_ahorn("cat-edge-Cooking")
+```
+
+## Dataset Statistics
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["shape"]["nodes"])} />
+  <Stat title="Node Type" value="Paper Author" />
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["shape"]["hyperedges"])}
+  />
+  <Stat title="Hyperedge Type" value="Author Collaboration" />
+</dl>
+
+### Edge Labels
+
+<NodeLabelsChart labels={frontmatter["edge-label-count"]} />

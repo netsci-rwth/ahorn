@@ -1,0 +1,64 @@
+---
+title: House Committees
+source: https://www.cs.cornell.edu/~arb/data/house-committees/
+citation: |
+  @article{chodrow2021hypergraph,
+    title={Hypergraph clustering: from blockmodels to modularity},
+    author={Chodrow, Philip S and Veldt, Nate and Benson, Austin R},
+    journal={Science Advances},
+    year={2021}
+  }
+network-type: hypergraph
+tags:
+  - undirected
+  - labelled nodes
+label-count:
+  Democrat: 620
+  Republican: 670
+shape:
+  nodes: 1290
+  hyperedges: 341
+attachments:
+  - file: house-committees.txt
+    size: 82750
+---
+
+import NodeLabelsChart from "@/components/chart/node-labels";
+import Stat from "@/components/stat";
+import Alert from "@/components/alert";
+import { formatNumber } from "@/utils/format";
+
+This is a hypergraph, where nodes are members of the US House of Representatives and hyperedges correspond to committee memberships.
+The dataset is derived from Congressional data compiled by Charles Stewart and Jonathan Woon.
+Each node is labeled with political party affiliation.
+
+<Alert type="warning">
+  In the original dataset, some nodes are repeated within hyperedges. This
+  version of the dataset has removed these duplicates.
+</Alert>
+
+## Usage
+
+The dataset can be loaded directly in TopoNetX using the following code:
+
+```python
+import toponetx as tnx
+
+nodes, hyperedges = tnx.datasets.load_benson_hyperedges("house-committees")
+```
+
+## Dataset Statistics
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["shape"]["nodes"])} />
+  <Stat title="Node Type" value="Representative" />
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["shape"]["hyperedges"])}
+  />
+  <Stat title="Hyperedge Type" value="Committee Memberships" />
+</dl>
+
+### Node Labels
+
+<NodeLabelsChart labels={frontmatter["label-count"]} />

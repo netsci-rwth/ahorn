@@ -1,0 +1,84 @@
+---
+title: Amazon Reviews
+source: https://www.cs.cornell.edu/~arb/data/amazon-reviews/
+citation: |
+  @inproceedings{ni2019justifying,
+    title={Justifying Recommendations using Distantly-Labeled Reviews and Fine-Grained Aspects},
+    author={Ni, Jianmo and Li, Jiacheng and McAuley, Julian},
+    booktitle={Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)},
+    pages={188--197},
+    year={2019}
+  }
+network-type: hypergraph
+tags:
+  - undirected
+  - labelled nodes
+attachments:
+  - file: amazon-reviews.txt.gz
+    size: 265141533
+label-count:
+  Home_and_Kitchen: 189172
+  Books: 704093
+  Cell_Phones_and_Accessories: 48186
+  Toys_and_Games: 78772
+  Kindle_Store: 98824
+  Patio_Lawn_and_Garden: 32918
+  Tools_and_Home_Improvement: 73649
+  Automotive: 79437
+  Electronics: 160052
+  Clothing_Shoes_and_Jewelry: 376858
+  Grocery_and_Gourmet_Food: 41320
+  Movies_and_TV: 60175
+  Sports_and_Outdoors: 104687
+  CDs_and_Vinyl: 73713
+  Arts_Crafts_and_Sewing: 22931
+  Office_Products: 27965
+  Pet_Supplies: 42531
+  Digital_Music: 11797
+  Industrial_and_Scientific: 5334
+  Musical_Instruments: 10620
+  Video_Games: 17408
+  Prime_Pantry: 4970
+  Software: 802
+  Luxury_Beauty: 1581
+  Gift_Cards: 148
+  Appliances: 48
+  Magazine_Subscriptions: 157
+  All_Beauty: 85
+  Amazon_Fashion: 31
+shape:
+  nodes: 2268264
+  hyperedges: 4285363
+---
+
+import NodeLabelsChart from "@/components/chart/node-labels";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+The amazon-reviews network is a hypergraph where hyperedges are sets of products reviews on Amazon, as collected by Jianmo Ni, Jiacheng Li, and Julian McAuley (specifically, we use the collection of 5-core datasets).
+Nodes are labeled by their product categories.
+
+## Usage
+
+The dataset can be loaded directly in TopoNetX using the following code:
+
+```python
+import toponetx as tnx
+metadata, nodes, hyperedges = tnx.datasets.load_ahorn("amazon-reviews")
+```
+
+## Dataset Statistics
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["shape"]["nodes"])} />
+  <Stat title="Node Type" value="Product" />
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["shape"]["hyperedges"])}
+  />
+  <Stat title="Hyperedge Type" value="Co-purchased Products" />
+</dl>
+
+### Node Labels
+
+<NodeLabelsChart labels={frontmatter["label-count"]} />

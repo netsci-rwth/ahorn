@@ -1,0 +1,66 @@
+---
+title: Walmart Trips
+source: https://www.cs.cornell.edu/~arb/data/walmart-trips/
+citation: |
+  @inproceedings{Amburg-2020-categorical,
+    title   = {Clustering in graphs and hypergraphs with categorical edge labels},
+    author  = {Amburg, Ilya and Veldt, Nate and Benson, Austin R.},
+    booktitle = {Proceedings of the Web Conference},
+    year    = {2020}
+  }
+network-type: hypergraph
+tags:
+  - undirected
+  - labelled nodes
+label-count:
+  Food, Household & Pets: 26178
+  Other: 4209
+  Clothing, Shoes & Accessories: 22302
+  Pharmacy, Health & Beauty: 12441
+  Auto, Tires & Industrial: 3736
+  Electronics and Office: 3080
+  Baby: 4391
+  Home, Furniture & Appliances: 6381
+  Toys, Games, and Video Games: 2902
+  Sports, Fitness & Outdoors: 1590
+  Home Improvement & Patio: 1650
+shape:
+  nodes: 88860
+  hyperedges: 69906
+attachments:
+  - file: walmart-trips.txt.gz
+    size: 1391517
+---
+
+import NodeLabelsChart from "@/components/chart/node-labels";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+The walmart-trips network is a hypergraph where hyperedges are sets of co-purchased products at Walmart, as released as part of a Kaggle competition.
+Products are assigned to one of ten broad departments in which the product appears on walmart.com (e.g., "Clothing, Shoes, and Accessories").
+Products not assigned to any of these departments are grouped into an "Other" category.
+
+## Usage
+
+The dataset can be loaded directly in TopoNetX using the following code:
+
+```python
+import toponetx as tnx
+nodes, edges, metadata = tnx.datasets.load_ahorn("walmart-trips")
+```
+
+## Dataset Statistics
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["shape"]["nodes"])} />
+  <Stat title="Node Type" value="Product" />
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["shape"]["hyperedges"])}
+  />
+  <Stat title="Hyperedge Type" value="Co-purchased Products" />
+</dl>
+
+### Node Labels
+
+<NodeLabelsChart labels={frontmatter["label-count"]} />

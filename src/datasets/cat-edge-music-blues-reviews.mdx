@@ -1,0 +1,68 @@
+---
+title: cat-edge-music-blues-reviews
+source: https://www.cs.cornell.edu/~arb/data/cat-edge-music-blues-reviews/
+citation: |
+  @inproceedings{ni2019justifying,
+    title={Justifying Recommendations using Distantly-Labeled Reviews and Fine-Grained Aspects},
+    author={Ni, Jianmo and Li, Jiacheng and McAuley, Julian},
+    booktitle={Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)},
+    pages={188--197},
+    year={2019}
+  }
+license: UNKNOWN
+network-type: hypergraph
+tags:
+  - edge labels
+  - temporal
+shape:
+  nodes: 1106
+  hyperedges: 694
+edge-label-count:
+  New York Blues: 239
+  Chicago Blues: 223
+  Delta Blues: 146
+  St. Louis Blues: 16
+  Cajun & Zydeco: 40
+  Memphis Blues: 26
+  Detroit Blues: 4
+attachments:
+  - file: cat-edge-music-blues-reviews.txt
+    size: 62801
+---
+
+import NodeLabelsChart from "@/components/chart/node-labels";
+import Alert from "@/components/alert";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+Hypergraph where nodes are Amazon reviewers and hyperedges are reviewers who reviewed a certain product category (different types of blues music) within a month timeframe.
+The dataset was derived from the product reviews collected by Jianmo Ni, Jiacheng Li, and Julian McAuley.
+
+<Alert type="warning">
+  The original dataset is temporal, which this version does not capture, yet.
+</Alert>
+
+## Usage
+
+The dataset can be loaded directly in TopoNetX using the following code:
+
+```python
+import toponetx as tnx
+nodes, edges, metadata = tnx.datasets.load_ahorn("cat-edge-music-blues-reviews")
+```
+
+## Dataset Statistics
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["shape"]["nodes"])} />
+  <Stat title="Node Type" value="Review" />
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["shape"]["hyperedges"])}
+  />
+  <Stat title="Hyperedge Type" value="Co-reviewed" />
+</dl>
+
+### Edge Labels
+
+<NodeLabelsChart labels={frontmatter["edge-label-count"]} />

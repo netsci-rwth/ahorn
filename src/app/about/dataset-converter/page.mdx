@@ -1,0 +1,26 @@
+import Alert from "@/components/alert";
+
+export const metadata = {
+  title:
+    "Dataset Converter | AHORN - Aachen Higher-Order Repository of Networks",
+};
+
+# Dataset Converter
+
+Each dataset in this project is accompanied by a parser that takes the raw dataset and converts it into our [dataset format](/about/format).
+The parsers are implemented in Python.
+
+<Alert type="warning">
+  TODOs: - Give guidelines when to produce a `.txt` and when to produce a
+  `.txt.gz` file.
+</Alert>
+
+## Validation
+
+We provide a validation script that checks if the dataset conforms to the expected format.
+This script can be used to ensure that the dataset is correctly formatted and ready for use.
+Any new dataset MUST pass the validation script before it can be included in the repository.
+
+```bash
+uv run validate.py PATH_TO_DATASET
+```

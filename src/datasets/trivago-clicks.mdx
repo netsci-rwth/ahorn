@@ -1,0 +1,217 @@
+---
+title: Trivago Clicks
+source: https://www.cs.cornell.edu/~arb/data/trivago-clicks/
+citation: |
+  @inproceedings{Veldt-2020-local,
+    title   = {Minimizing Localized Ratio Cut Objectives in Hypergraphs},
+    author  = {Veldt, Nate and Benson, Austin R. and Kleinberg, Jon},
+    publisher = {{ACM} Press},
+    booktitle = {Proceedings of the 26th {ACM} {SIGKDD} International Conference on Knowledge Discovery and Data Mining},
+    year    = {2020}
+  }
+network-type: hypergraph
+tags:
+  - undirected
+  - labelled nodes
+label-count:
+  India: 9963
+  El Salvador: 51
+  France: 5380
+  Czech Republic: 1293
+  USA: 15519
+  Australia: 5618
+  Romania: 975
+  Spain: 8654
+  Greece: 1669
+  United Kingdom: 8430
+  Chile: 1083
+  Sweden: 776
+  Netherlands: 2025
+  Italy: 9699
+  Argentina: 3716
+  South Africa: 1588
+  Brazil: 14921
+  Taiwan: 2028
+  Thailand: 3741
+  China: 801
+  Singapore: 431
+  South Korea: 945
+  Germany: 8269
+  Portugal: 2503
+  Malaysia: 3258
+  Japan: 10065
+  Turkey: 6186
+  Mexico: 5749
+  Hungary: 961
+  Canada: 2798
+  Poland: 3403
+  Austria: 1926
+  Russia: 2783
+  Switzerland: 1029
+  Colombia: 2281
+  Andorra: 118
+  Ireland: 863
+  Uruguay: 494
+  Israel: 695
+  Peru: 772
+  Bulgaria: 889
+  Denmark: 293
+  Iceland: 202
+  Puerto Rico: 144
+  Indonesia: 1183
+  Crimea: 200
+  New Zealand: 1855
+  Philippines: 2110
+  Morocco: 729
+  Laos: 21
+  Panama: 153
+  Vietnam: 832
+  Cyprus: 295
+  Norway: 292
+  Georgia: 150
+  Costa Rica: 389
+  Hong Kong: 536
+  Egypt: 531
+  Malta: 157
+  Belgium: 984
+  Kenya: 110
+  Serbia: 340
+  Lebanon: 63
+  French Polynesia: 45
+  Maldives: 110
+  Guatemala: 199
+  Sri Lanka: 137
+  Ukraine: 264
+  Venezuela: 75
+  Myanmar: 22
+  Slovakia: 266
+  Estonia: 158
+  Saudi Arabia: 196
+  Senegal: 17
+  Tunisia: 193
+  Pakistan: 2
+  Ecuador: 487
+  Qatar: 55
+  Armenia: 40
+  United Arab Emirates: 756
+  Dominican Republic: 375
+  Jamaica: 134
+  Slovenia: 213
+  Azerbaijan: 51
+  Cuba: 348
+  Bosnia and Herzegovina: 38
+  Cambodia: 107
+  Montenegro: 10
+  Luxembourg: 66
+  Monaco: 23
+  Oman: 70
+  Finland: 416
+  Croatia: 566
+  Turks and Caicos Islands: 29
+  Seychelles: 8
+  Latvia: 112
+  Algeria: 44
+  Jordan: 100
+  "R\xE9union": 44
+  Tanzania: 10
+  Bahamas: 61
+  Honduras: 63
+  Albania: 22
+  Botswana: 2
+  Fiji: 74
+  Mauritius: 49
+  Ghana: 28
+  Aruba: 55
+  Cayman Islands: 2
+  Nepal: 34
+  Gibraltar: 19
+  Lithuania: 68
+  Kazakhstan: 17
+  Nigeria: 13
+  Republic of Macedonia: 31
+  New Caledonia: 20
+  Curacao: 27
+  Belarus: 72
+  Kyrgyzstan: 8
+  Guam: 12
+  Bolivia: 63
+  Cape Verde: 26
+  Vatican City: 23
+  Nicaragua: 30
+  Brunei: 9
+  Paraguay: 38
+  Namibia: 5
+  Saint Lucia: 3
+  Ethiopia: 21
+  Barbados: 11
+  Bermudas: 6
+  Iran: 23
+  Uganda: 6
+  San Marino: 10
+  Palestinian Territories: 14
+  Bahrain: 22
+  Bangladesh: 9
+  Madagascar: 1
+  Vanuatu: 5
+  Belize: 7
+  Zimbabwe: 1
+  Mongolia: 1
+  Liechtenstein: 1
+  French Antilles: 2
+  Democratic Republic of Congo: 2
+  Dominica: 2
+  Guyana: 2
+  Uzbekistan: 2
+  Iraq: 1
+  Trinidad and Tobago: 1
+  Swaziland: 1
+  Moldova: 1
+  Mozambique: 2
+  Kuwait: 1
+  Syria: 1
+  The Gambia: 1
+  Sint Maarten: 1
+  Cook Islands: 1
+  Papua New Guinea: 1
+  French Guiana: 1
+shape:
+  nodes: 172738
+  hyperedges: 233202
+attachments:
+  - file: trivago-clicks.txt.gz
+    size: 2862488
+---
+
+import NodeLabelsChart from "@/components/chart/node-labels";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+This is a hypergraph, where nodes are accommodations (mostly hotels), and hyperedges are sets of accommodations for which a user performed the "click-out" action during the same browsing session, which means the user was forwarded to a partner site.
+A few hyperedges are repeated.
+The dataset was derived from the ACM RecSys Challenge 2019. Each node is labeled with the country where the accommodation is located.
+
+## Usage
+
+The dataset can be loaded directly in TopoNetX using the following code:
+
+```python
+import toponetx as tnx
+
+nodes, hyperedges = tnx.datasets.load_benson_hyperedges("trivago-clicks")
+```
+
+## Dataset Statistics
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["shape"]["nodes"])} />
+  <Stat title="Node Type" value="Hotel" />
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["shape"]["hyperedges"])}
+  />
+  <Stat title="Hyperedge Type" value="Click-out Actions" />
+</dl>
+
+### Node Labels
+
+<NodeLabelsChart labels={frontmatter["label-count"]} />

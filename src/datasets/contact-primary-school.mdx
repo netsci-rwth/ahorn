@@ -1,0 +1,160 @@
+---
+title: Contact Primary School Dataset
+source: https://www.cs.cornell.edu/~arb/data/contact-primary-school/
+citation: |
+  @article{Benson-2018-simplicial,
+    author = {Benson, Austin R. and Abebe, Rediet and Schaub, Michael T. and Jadbabaie, Ali and Kleinberg, Jon},
+    title = {Simplicial closure and higher-order link prediction},
+    year = {2018},
+    doi = {10.1073/pnas.1800683115},
+    publisher = {National Academy of Sciences},
+    issn = {0027-8424},
+    journal = {Proceedings of the National Academy of Sciences}
+  }
+  @article{Stehl-2011-contact,
+    doi = {10.1371/journal.pone.0023176},
+    url = {https://doi.org/10.1371/journal.pone.0023176},
+    year  = {2011},
+    publisher = {Public Library of Science ({PLoS})},
+    volume = {6},
+    number = {8},
+    pages = {e23176},
+    author = {Juliette Stehl{\'{e}} and Nicolas Voirin and Alain Barrat and Ciro Cattuto and Lorenzo Isella and Jean-Fran{\c{c}}ois Pinton and Marco Quaggiotto and Wouter Van den Broeck and Corinne R{\'{e}}gis and Bruno Lina and Philippe Vanhems},
+    editor = {C{\'{e}}cile Viboud},
+    title = {High-Resolution Measurements of Face-to-Face Contact Patterns in a Primary School},
+    journal = {{PLoS} {ONE}}
+  }
+license: UNKNOWN
+network-type: temporal
+tags:
+  - social networks
+  - temporal
+related:
+  - contact-high-school
+shape:
+  "1970-01-01 08:00:00":
+    - 182
+    - 400
+    - 41
+  "1970-01-01 09:00:00":
+    - 227
+    - 1114
+    - 211
+    - 9
+  "1970-01-01 10:00:00":
+    - 232
+    - 2640
+    - 665
+    - 36
+    - 1
+  "1970-01-01 11:00:00":
+    - 233
+    - 1393
+    - 287
+    - 10
+  "1970-01-01 12:00:00":
+    - 123
+    - 1336
+    - 483
+    - 72
+    - 7
+  "1970-01-01 13:00:00":
+    - 121
+    - 1368
+    - 336
+    - 19
+  "1970-01-01 14:00:00":
+    - 220
+    - 1292
+    - 214
+    - 9
+  "1970-01-01 15:00:00":
+    - 229
+    - 1318
+    - 295
+    - 12
+  "1970-01-01 16:00:00":
+    - 233
+    - 1813
+    - 320
+    - 10
+  "1970-01-01 17:00:00":
+    - 211
+    - 319
+    - 20
+  "1970-01-02 08:00:00":
+    - 235
+    - 909
+    - 84
+  "1970-01-02 09:00:00":
+    - 235
+    - 1316
+    - 299
+    - 14
+  "1970-01-02 10:00:00":
+    - 236
+    - 2029
+    - 592
+    - 34
+  "1970-01-02 11:00:00":
+    - 236
+    - 1668
+    - 400
+    - 13
+  "1970-01-02 12:00:00":
+    - 130
+    - 1466
+    - 521
+    - 56
+  "1970-01-02 13:00:00":
+    - 124
+    - 1337
+    - 472
+    - 44
+    - 1
+  "1970-01-02 14:00:00":
+    - 211
+    - 1394
+    - 262
+    - 11
+  "1970-01-02 15:00:00":
+    - 174
+    - 1166
+    - 270
+    - 14
+  "1970-01-02 16:00:00":
+    - 186
+    - 1743
+    - 417
+    - 24
+  "1970-01-02 17:00:00":
+    - 160
+    - 330
+    - 33
+attachments:
+  - file: contact-primary-school.txt
+    size: 4860703
+---
+
+import TemporalShapeChart from "@/components/chart/temporal-shape";
+import Stat from "@/components/stat";
+
+This is a temporal higher-order network dataset, which here means a sequence of timestamped simplices where each simplex is a set of nodes. The dataset is constructed from interactions recorded by wearable sensors by people at a primary school. The sensors record interactions at a resolution of 20 seconds (recording all interactions from the previous 20 seconds).
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Node Type" value="Student" />
+  <Stat title="Edge Type" value="Group of Interacting Students" />
+</dl>
+
+## Usage
+
+The dataset can be loaded directly in TopoNetX using the following code:
+
+```python
+import toponetx as tnx
+SC = tnx.datasets.load_benson_simplicial_complex("contact-primary-school")
+```
+
+## Dataset Statistics
+
+<TemporalShapeChart shape={frontmatter.shape} minUnit="hour" maxUnit="week" />

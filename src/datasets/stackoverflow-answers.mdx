@@ -1,0 +1,49 @@
+---
+title: StackOverflow Answers
+source: https://www.cs.cornell.edu/~arb/data/stackoverflow-answers/
+citation: |
+  @inproceedings{Veldt-2020-local,
+    title   = {Minimizing Localized Ratio Cut Objectives in Hypergraphs},
+    author  = {Veldt, Nate and Benson, Austin R. and Kleinberg, Jon},
+    publisher = {{ACM} Press},
+    booktitle = {Proceedings of the 26th {ACM} {SIGKDD} International Conference on Knowledge Discovery and Data Mining},
+    year    = {2020}
+  }
+network-type: hypergraph
+tags:
+  - undirected
+  - labelled nodes
+shape:
+  nodes: 15211989
+  hyperedges: 1103243
+---
+
+import Alert from "@/components/alert";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+<Alert type="error">Dataset is not yet available.</Alert>
+
+The stackoverflow-answers network is a hypergraph where hyperedges are sets of questions answered by users on Stack Overflow.
+Nodes are labeled by the tags used in the questions, and nodes often have multiple labels.
+
+## Usage
+
+The dataset can be loaded directly in TopoNetX using the following code:
+
+```python
+import toponetx as tnx
+metadata, nodes, hyperedges = tnx.datasets.load_ahorn("stackoverflow-answers")
+```
+
+## Dataset Statistics
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["shape"]["nodes"])} />
+  <Stat title="Node Type" value="Question" />
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["shape"]["hyperedges"])}
+  />
+  <Stat title="Hyperedge Type" value="Co-answered Questions" />
+</dl>

@@ -1,0 +1,49 @@
+export const metadata = {
+  title:
+    "Contributing Guidelines | AHORN - Aachen Higher-Order Repository of Networks",
+};
+
+# Contributing Guidelines
+
+## Add a Dataset
+
+We welcome contributions of high-quality datasets to the AHORN repository.
+To add a dataset, please follow these steps:
+
+1. Write a [converter](/about/dataset-converter) that converts the dataset into [our format](/about/format).
+   You need to contribute the converter code to the project.
+2. Write a [datasheet](/about/datasheet) describing the dataset, including:
+   - Dataset origin and collection process.
+   - Licensing and usage restrictions, if applicable.
+   - Known issues or limitations.
+   - Recommended citation.
+3. Ensure your dataset and code comply with all relevant licenses and ethical guidelines.
+4. Open a pull request with:
+   - The converter code
+   - The datasheet
+   - The dataset (or a script to download/process it, if redistribution is not allowed)
+   - Any relevant documentation or usage examples
+5. Respond to code review and feedback from maintainers.
+
+## Code Style
+
+- Python: ruff, black (PEP8 compliant)
+- JavaScript/TypeScript, CSS, MDX: prettier
+- Use descriptive variable and function names
+- Add comments and docstrings where appropriate
+
+## General Guidelines
+
+- **Respect privacy and copyright:** Do not submit data you do not have the right to share.
+- **Test your code:** Ensure your converter runs without errors and produces valid output.
+- **Documentation:** Update or add documentation as needed for new datasets or features.
+- **Communication:** If in doubt, open an issue or discussion before submitting a large contribution.
+- **Attribution:** Credit original data sources and authors where required.
+
+## Review Process
+
+- All contributions are reviewed by maintainers.
+- We may request changes or clarifications before merging.
+- Datasets may be rejected if they do not meet quality, legal, or ethical standards.
+
+Thank you for helping to build a high-quality, open resource for the higher-order network community!

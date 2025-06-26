@@ -1,0 +1,66 @@
+---
+title: Congress Bills
+source: https://www.cs.cornell.edu/~arb/data/congress-bills/
+citation: |
+  @article{Benson-2018-simplicial,
+    author = {Benson, Austin R. and Abebe, Rediet and Schaub, Michael T. and Jadbabaie, Ali and Kleinberg, Jon},
+    title = {Simplicial closure and higher-order link prediction},
+    year = {2018},
+    doi = {10.1073/pnas.1800683115},
+    publisher = {National Academy of Sciences},
+    issn = {0027-8424},
+    journal = {Proceedings of the National Academy of Sciences}
+  }
+  @article{Fowler-2006-connecting,
+    doi = {10.1093/pan/mpl002},
+    url = {https://doi.org/10.1093/pan/mpl002},
+    year  = {2006},
+    publisher = {Cambridge University Press ({CUP})},
+    volume = {14},
+    number = {04},
+    pages = {456--487},
+    author = {James H. Fowler},
+    title = {Connecting the Congress: A Study of Cosponsorship Networks},
+    journal = {Political Analysis}
+  }
+  @article{Fowler-2006-cosponsorship,
+    doi = {10.1016/j.socnet.2005.11.003},
+    url = {https://doi.org/10.1016/j.socnet.2005.11.003},
+    year  = {2006},
+    month = {oct},
+    publisher = {Elsevier {BV}},
+    volume = {28},
+    number = {4},
+    pages = {454--465},
+    author = {James H. Fowler},
+    title = {Legislative cosponsorship networks in the {US} House and Senate},
+    journal = {Social Networks}
+  }
+license: UNKNOWN
+network-type: temporal
+tags:
+  - social networks
+related:
+  - house-bills
+  - senate-bills
+---
+
+import Alert from "@/components/alert";
+
+<Alert type="error">Dataset is not yet available.</Alert>
+
+This is a temporal higher-order network dataset, which here means a sequence of timestamped simplices where each simplex is a set of nodes.
+In this dataset, nodes are US Congresspersons and simplices are comprised of the sponsor and co-sponsors of legislative bills put forth in both the House of Representatives and the Senate.
+Timestamps are in days and represent when the bill was introduced.
+The dataset was derived from James Fowler's data.
+The projected graph is a weighted undirected graph representing how many times each pair of nodes co-appears in a simplex.
+We restricted to simplices that consist of at most 25 nodes.
+
+## Usage
+
+The dataset can be loaded directly in TopoNetX using the following code:
+
+```python
+import toponetx as tnx
+metadata, nodes, hyperedges = tnx.datasets.load_ahorn("congress-bills")
+```

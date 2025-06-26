@@ -1,0 +1,80 @@
+---
+title: cat-edge-Cooking
+source: https://www.cs.cornell.edu/~arb/data/cat-edge-Cooking/
+citation: |
+  @inproceedings{Amburg-2020-categorical,
+    title   = {Clustering in graphs and hypergraphs with categorical edge labels},
+    author  = {Amburg, Ilya and Veldt, Nate and Benson, Austin R.},
+    booktitle = {Proceedings of the Web Conference},
+    year    = {2020}
+  }
+license: UNKNOWN
+network-type: hypergraph
+tags:
+  - edge labels
+shape:
+  nodes: 6714
+  hyperedges: 39774
+edge-label-count:
+  greek: 1175
+  southern_us: 4320
+  filipino: 755
+  indian: 3003
+  jamaican: 526
+  spanish: 989
+  italian: 7838
+  mexican: 6438
+  chinese: 2673
+  british: 804
+  thai: 1539
+  vietnamese: 825
+  cajun_creole: 1546
+  brazilian: 467
+  french: 2646
+  japanese: 1423
+  irish: 667
+  korean: 830
+  moroccan: 821
+  russian: 489
+attachments:
+  - file: cat-edge-Cooking.txt
+    size: 3253354
+---
+
+import NodeLabelsChart from "@/components/chart/node-labels";
+import Alert from "@/components/alert";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+Hypergraph where nodes are food ingredients, hyperedges are recipes made from combining multiple ingredients and categories indicate cuisine.
+Raw data was obtained from the [“What's Cooking?” Kaggle competition](https://www.kaggle.com/c/whats-cooking).
+
+<Alert type="warning">
+  In the original dataset, some nodes are repeated within hyperedges. This
+  version of the dataset has removed these duplicates.
+</Alert>
+
+## Usage
+
+The dataset can be loaded directly in TopoNetX using the following code:
+
+```python
+import toponetx as tnx
+nodes, edges, metadata = tnx.datasets.load_ahorn("cat-edge-Cooking")
+```
+
+## Dataset Statistics
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["shape"]["nodes"])} />
+  <Stat title="Node Type" value="Ingredient" />
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["shape"]["hyperedges"])}
+  />
+  <Stat title="Hyperedge Type" value="Recipe" />
+</dl>
+
+### Edge Labels
+
+<NodeLabelsChart labels={frontmatter["edge-label-count"]} />

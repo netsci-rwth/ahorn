@@ -1,0 +1,96 @@
+export const metadata = {
+  title: "Datasheet Page | AHORN - Aachen Higher-Order Repository of Networks",
+};
+
+# Datasheet Page
+
+Each dataset is represented by a `.mdx` file in the `src/datasets` directory.
+This page should list all details about the dataset, including its description, usage, and statistics.
+Think of this page as a datasheet as outlined in the [Datasheets for Datasets](https://doi.org/10.1145/345872) article.
+
+## Computed Data
+
+In general, inferred data should be stored in the frontmatter of the document, where is can be easily written and read by different components of the project.
+Inside the text, the frontmatter is accessible via the `frontmatter` variable.
+
+## Frontmatter
+
+Required fields in the frontmatter:
+
+- `title`: The title of the dataset.
+- `source`: A link to the original source of the dataset. If possible, this should be a link to the dataset description page, not a deeplink to the dataset file.
+
+Optional fields that are automatically used when present:
+
+- `citation`: One or more BibTex entries that should be cited when using the dataset.
+- `tags`: A list of tags that describe the dataset. These are used for filtering datasets in the UI.
+
+## Attributes
+
+- All attributes appearing in the dataset must be listed on the dataset page.
+- Non-standardized attributes must be described in the text.
+
+## Statistics
+
+### Charts
+
+#### Label Distribution
+
+For datasets with labeled nodes, we provide a chart that shows the distribution of labels.
+
+```javascript
+import NodeLabelsChart from "@/components/chart/node-labels";
+<NodeLabelsChart labels={frontmatter["label-count"]} />;
+```
+
+import NodeLabelsChart from "@/components/chart/node-labels";
+
+<NodeLabelsChart
+  labels={{
+    "Label A": 10,
+    "Label B": 14,
+    "Label C": 6,
+    "Label D": 1,
+  }}
+/>
+
+#### Shape
+
+For time-evolving simplicial complexes, we provide a chart that shows the number of simplices over time.
+The chart is interactive and allows aggregating the shape by different time intervals.
+
+```javascript
+import TemporalShapeChart from "@/components/chart/temporal-shape";
+<TemporalShapeChart shape={frontmatter.shape} minUnit="hour" maxUnit="week" />;
+```
+
+import TemporalShapeChart from "@/components/chart/temporal-shape";
+
+<TemporalShapeChart
+  shape={{
+    "2023-01-01 04:45:00": [1, 2, 3],
+    "2023-01-01 06:23:00": [4, 12, 6],
+    "2023-01-01 08:00:00": [7, 8, 9],
+    "2023-01-01 09:30:00": [5, 3, 11],
+    "2023-01-01 10:45:00": [2, 6, 10],
+    "2023-01-01 12:00:00": [3, 4, 8],
+    "2023-01-01 13:15:00": [6, 7, 9],
+    "2023-01-02 10:15:00": [10, 8, 12],
+    "2023-01-02 11:00:00": [2, 4, 1],
+    "2023-01-02 12:45:00": [3, 5, 7],
+    "2023-01-02 14:00:00": [8, 9, 10],
+    "2023-01-02 15:30:00": [1, 2, 3],
+    "2023-01-03 11:30:00": [11, 15, 5],
+    "2023-01-03 12:45:00": [4, 6, 8],
+    "2023-01-03 14:00:00": [7, 9, 10],
+    "2023-01-03 15:30:00": [1, 2, 3],
+    "2023-01-03 16:45:00": [4, 5, 6],
+    "2023-01-04 09:00:00": [9, 13, 2],
+    "2023-01-04 10:15:00": [6, 8, 14],
+    "2023-01-04 11:45:00": [3, 7, 12],
+    "2023-01-04 13:00:00": [5, 10, 1],
+    "2023-01-04 14:30:00": [4, 2, 11],
+  }}
+  minUnit="hour"
+  maxUnit="week"
+/>

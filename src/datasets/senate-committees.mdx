@@ -1,0 +1,65 @@
+---
+title: Senate Committees
+source: https://www.cs.cornell.edu/~arb/data/amazon-reviews/
+citation: |
+  @inproceedings{ni2019justifying,
+    title={Justifying Recommendations using Distantly-Labeled Reviews and Fine-Grained Aspects},
+    author={Ni, Jianmo and Li, Jiacheng and McAuley, Julian},
+    booktitle={Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)},
+    pages={188--197},
+    year={2019}
+  }
+network-type: hypergraph
+tags:
+  - undirected
+  - labelled nodes
+label-count:
+  Democrat: 140
+  Republican: 142
+shape:
+  nodes: 282
+  hyperedges: 315
+attachments:
+  - file: senate-committees.txt
+    size: 26579
+---
+
+import NodeLabelsChart from "@/components/chart/node-labels";
+import Stat from "@/components/stat";
+import Alert from "@/components/alert";
+import { formatNumber } from "@/utils/format";
+
+This is a hypergraph, where nodes are members of the US Senate, and hyperedges correspond to commitee memberships.
+The dataset is derived from Congressional data compiled by Charles Stewart and Jonathan Woon.
+Each node is labeled with political party affiliation.
+
+<Alert type="warning">
+  In the original dataset, some nodes are repeated within hyperedges. This
+  version of the dataset has removed these duplicates.
+</Alert>
+
+## Usage
+
+The dataset can be loaded directly in TopoNetX using the following code:
+
+```python
+import toponetx as tnx
+
+nodes, hyperedges = tnx.datasets.load_benson_hyperedges("senate-committees")
+```
+
+## Dataset Statistics
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["shape"]["nodes"])} />
+  <Stat title="Node Type" value="Senator" />
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["shape"]["hyperedges"])}
+  />
+  <Stat title="Hyperedge Type" value="Committee Memberships" />
+</dl>
+
+### Node Labels
+
+<NodeLabelsChart labels={frontmatter["label-count"]} />
