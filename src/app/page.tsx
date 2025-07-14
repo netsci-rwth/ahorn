@@ -69,8 +69,23 @@ export default function Home() {
           />
         </div>
       </div>
-      <h2>Upcoming Features</h2>
-      <p>Stay tuned for more exciting features coming soon!</p>
+
+      <div className="prose max-w-none">
+        <h2>
+          What is AHORN?
+        </h2>
+        <p>
+          AHORN is a repository of higher-order network datasets, providing researchers with access to a wide range of resources for their studies.
+          It is designed to facilitate research and development in the field of higher-order networks by offering a variety of datasets that can be used for benchmarking, testing algorithms, and exploring new concepts in network science.
+        </p>
+
+        <h2>Work in Progress</h2>
+        <p>
+          AHORN will be introduced at the <a href="https://conf.netsci.rwth-aachen.de/">Higher Order Opportunities and Challenges</a> workshop, which takes place from the 11th to the 13th of August 2025 in Aachen, Germany.
+          The repository is currently under development, and we are actively working on expanding the dataset collection and improving the user experience.
+          We welcome contributions from the community, including dataset submissions, feedback, and suggestions for improvement.
+        </p>
+      </div>
     </>
   );
 }
