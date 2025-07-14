@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
   output: "export",
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   basePath: "/ahorn",
+  images: {
+    unoptimized: true,
+  }
 };
 
 const withMDX = createMDX({
