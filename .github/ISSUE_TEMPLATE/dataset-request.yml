@@ -1,0 +1,34 @@
+name: Dataset Request
+description: Request the addition of a new dataset to AHORN.
+title: "[Dataset Request]: "
+labels: ["type: dataset"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Dataset Name
+      description: The name of the dataset as used by the original authors.
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Dataset Description
+      description: A brief description of the dataset, including its purpose and key features. You may re-use the description from the dataset's original source.
+  - type: input
+    id: tags
+    attributes:
+      label: Dataset Tags
+      description: Comma-separated tags that describe the dataset (e.g., "undirected, temporal, social data").
+  - type: input
+    id: url
+    attributes:
+      label: Dataset URL
+      description: The URL where the dataset can be accessed or downloaded. This should point to a description page of the dataset, not directly to the data files.
+  - type: input
+    id: license
+    attributes:
+      label: Dataset License
+      description: The license under which the dataset is released (e.g., "CC BY 4.0", "MIT License"). If the dataset does not have a license, please specify "No License".
+    validations:
+      required: true
