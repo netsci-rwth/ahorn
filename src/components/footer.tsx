@@ -22,11 +22,15 @@ const Footer = () => {
               >
                 {link.name}
               </Link>
-              <span className="text-gray-400 mx-2">&bull;</span>
+              <span className="mx-2 text-gray-400">&bull;</span>
             </React.Fragment>
           ))}
-          <Link href="https://github.com/netsci-rwth/ahorn" target="_blank" className="text-gray-600 hover:text-gray-800">
-            <FontAwesomeIcon icon={faGithub} className="w-5 h-5 inline" />
+          <Link
+            href="https://github.com/netsci-rwth/ahorn"
+            target="_blank"
+            className="text-gray-600 hover:text-gray-800"
+          >
+            <FontAwesomeIcon icon={faGithub} className="inline h-5 w-5" />
           </Link>
         </div>
         <p className="mt-8 text-center text-sm text-gray-600 md:order-1 md:mt-0">

@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   basePath: "/ahorn",
   images: {
     unoptimized: true,
-  }
+  },
 };
 
 const withMDX = createMDX({

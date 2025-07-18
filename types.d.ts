@@ -1,4 +1,4 @@
-declare module '@citation-js/core' {
+declare module "@citation-js/core" {
   export class Cite {
     constructor(input: string | object);
     format(
@@ -7,7 +7,7 @@ declare module '@citation-js/core' {
         template?: string;
         lang?: string;
         asEntryArray?: boolean;
-      }
+      },
     ): [string, string][];
   }
 }

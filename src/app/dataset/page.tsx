@@ -19,7 +19,10 @@ export default async function DatasetList() {
         const { frontmatter } = await import(`@/datasets/${filename}`);
         return {
           slug: path.parse(filename).name,
-          title: typeof frontmatter.title === "string" ? frontmatter.title : path.parse(filename).name,
+          title:
+            typeof frontmatter.title === "string"
+              ? frontmatter.title
+              : path.parse(filename).name,
           tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],
         };
       }),

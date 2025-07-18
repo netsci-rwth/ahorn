@@ -17,8 +17,7 @@ const tools = [
   {
     name: "HyperNetX",
     logo: "images/tools/hypernetx.png",
-    description:
-      "A Python library for hypergraph analysis and visualization.",
+    description: "A Python library for hypergraph analysis and visualization.",
     link: "https://hypernetx.readthedocs.io/en/latest/",
   },
 ];
@@ -26,8 +25,8 @@ const tools = [
 export default function ToolsPage() {
   return (
     <>
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Tools</h1>
-      <ul className="grid grid-cols-1 md:grid-cols-2 gap-10">
+      <h1 className="mb-8 text-3xl font-bold text-gray-900">Tools</h1>
+      <ul className="grid grid-cols-1 gap-10 md:grid-cols-2">
         {tools.map((tool) => (
           <li key={tool.name} className="flex items-center gap-8">
             <a
@@ -41,7 +40,7 @@ export default function ToolsPage() {
                 alt={tool.name + " logo"}
                 width={96}
                 height={96}
-                className="rounded-lg shadow-lg bg-white object-contain"
+                className="rounded-lg bg-white object-contain shadow-lg"
               />
             </a>
             <div>
@@ -49,13 +48,11 @@ export default function ToolsPage() {
                 href={tool.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xl font-semibold text-primary hover:underline"
+                className="text-primary text-xl font-semibold hover:underline"
               >
                 {tool.name}
               </a>
-              <p className="mt-2 text-gray-600 max-w-md">
-                {tool.description}
-              </p>
+              <p className="mt-2 max-w-md text-gray-600">{tool.description}</p>
             </div>
           </li>
         ))}
