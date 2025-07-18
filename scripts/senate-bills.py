@@ -6,12 +6,14 @@ References
 https://www.cs.cornell.edu/~arb/data/senate-bills/
 """
 
+import json
 import re
 from collections import Counter
 from pathlib import Path
 
 import toponetx as tnx
 import yaml
+from more_itertools import first
 from rich.progress import track
 
 from .utils.yaml import patch_dumper
@@ -28,9 +30,10 @@ nodes, hyperedges = tnx.datasets.benson.load_benson_hyperedges(
 
 # write dataset file
 with dataset_file.open("w") as f:
+    f.write(json.dumps({"_format_version": "0.1"}) + "\n")
     for node in track(nodes, description="Writing nodes"):
         f.write(
-            ",".join(map(str, node.elements))
+            str(first(node))
             + ' {"party": "'
             + node["label"]
             + '", "name": "'

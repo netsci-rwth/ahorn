@@ -7,6 +7,7 @@ https://www.cs.cornell.edu/~arb/data/congress-bills/
 """
 
 import gzip
+import json
 import re
 from collections import defaultdict
 from datetime import UTC, datetime
@@ -31,6 +32,7 @@ simplices = tnx.datasets.load_benson_simplices(root_dir / "data" / "congress-bil
 
 # write dataset file
 with gzip.open(dataset_file, "wt") as f:
+    f.write(json.dumps({"_format_version": "0.1"}) + "\n")
     for simplex in simplices:
         f.write(
             ",".join(map(str, simplex.elements))

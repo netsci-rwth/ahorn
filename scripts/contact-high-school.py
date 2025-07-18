@@ -6,6 +6,7 @@ References
 https://www.cs.cornell.edu/~arb/data/contact-high-school/
 """
 
+import json
 import re
 from collections import defaultdict
 from datetime import UTC, datetime
@@ -29,6 +30,7 @@ simplices = tnx.datasets.load_benson_simplices(
 
 # write dataset file
 with dataset_file.open("w") as f:
+    f.write(json.dumps({"_format_version": "0.1"}) + "\n")
     for simplex in track(simplices, description="Writing simplices"):
         f.write(
             ",".join(map(str, simplex.elements))

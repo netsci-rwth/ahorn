@@ -6,12 +6,15 @@ References
 https://www.cs.cornell.edu/~arb/data/cat-edge-music-blues-reviews/
 """
 
+import json
 import re
 from collections import Counter
+from itertools import chain
 from pathlib import Path
 
 import toponetx as tnx
 import yaml
+from more_itertools import first
 from rich.progress import track
 
 from .utils.yaml import patch_dumper
@@ -27,9 +30,13 @@ nodes, hyperedges = tnx.datasets.benson.load_benson_hyperedges(
 )
 
 # write dataset file
+covered_nodes = set(chain.from_iterable(hyperedge.elements for hyperedge in hyperedges))
 with dataset_file.open("w") as f:
-    for node in track(nodes, description="Writing nodes"):
-        f.write(",".join(map(str, node.elements)) + "\n")
+    f.write(json.dumps({"_format_version": "0.1"}) + "\n")
+    for node in track(map(first, nodes), description="Writing nodes"):
+        if node in covered_nodes:
+            continue
+        f.write(f"{node}\n")
     for hyperedge in track(hyperedges, description="Writing hyperedges"):
         f.write(
             ",".join(map(str, hyperedge.elements))
