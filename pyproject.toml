@@ -1,8 +1,13 @@
 [project]
 name = "AHORN"
 version = "0.1.0"
-description = "Add your description here"
+description = "Comprehensive repository of research-quality simplicial complex, cell complex, and hypergraph datasets for higher-order network science."
 readme = "README.md"
+license = "AGPL-3.0-or-later"
+classifiers = [
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+    "Private :: Do Not Upload",
+]
 requires-python = ">=3.12"
 dependencies = [
     "pyyaml>=6.0.2",
