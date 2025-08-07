@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 
 import Tag from "@/components/tag";
-import Button from "@/components/button";
 import Card from "@/components/card";
 
 import { bibtexToApa } from "@/utils/citation";
@@ -170,10 +169,7 @@ export default async function DatasetPage({
           )}
 
         {frontmatter.citation && (
-          <Card
-            title="Citation"
-            button={<Button variant="secondary">BibTeX</Button>}
-          >
+          <Card title="Citation">
             <ul className="divide-y divide-gray-200">
               {bibtexToApa(frontmatter.citation || "").map((citation) => (
                 <li key={citation[0]} className="px-6 py-4">
