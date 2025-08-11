@@ -5,6 +5,7 @@ import classnames from "classnames";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faBox,
   faChartPie,
   faCircleInfo,
   faCode,
@@ -19,6 +20,7 @@ const links = {
   About: [
     { href: "/about", label: "About", icon: faCircleInfo },
     { href: "/about/format", label: "Dataset Format", icon: faFileCode },
+    { href: "/about/ahorn-loader", label: "ahorn-loader", icon: faBox },
   ],
   Contributing: [
     {
