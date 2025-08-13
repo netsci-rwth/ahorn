@@ -29,9 +29,7 @@ export async function GET() {
                     tags: Array.isArray(frontmatter.tags)
                         ? frontmatter.tags
                         : [],
-                    attachments: Array.isArray(frontmatter.attachments)
-                        ? frontmatter.attachments
-                        : [],
+                    attachments: frontmatter.attachments || {}
                 };
             })
     )).reduce((acc, data) => {

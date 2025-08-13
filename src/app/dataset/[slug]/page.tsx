@@ -72,6 +72,9 @@ export default async function DatasetPage({
     related_datasets = [];
   }
 
+  const attachments: Record<string, { url: string; size: number }> =
+    frontmatter.attachments || {};
+
   return (
     <div className="lg:flex lg:items-start lg:justify-between">
       <div className="min-w-0 flex-1">
@@ -108,7 +111,7 @@ export default async function DatasetPage({
                 {frontmatter.license}
               </dd>
             </div>
-            {frontmatter.attachments && (
+            {attachments && (
               <div className="px-4 py-6 sm:grid sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-gray-900">
                   Attachments
@@ -118,29 +121,32 @@ export default async function DatasetPage({
                     role="list"
                     className="border-1 divide-y divide-gray-100 rounded-md border-gray-200"
                   >
-                    {frontmatter.attachments.map(
-                      (attachment: { file: string; size: number }) => (
-                        <li key={attachment.file} className="flex text-sm">
-                          <a
-                            href={`/datasets/${attachment.file}`}
-                            download
-                            className="flex w-0 flex-1 items-center p-4 hover:bg-gray-50"
-                          >
-                            <FontAwesomeIcon
-                              icon={faPaperclip}
-                              className="size-5 shrink-0 text-gray-400"
-                            />
-                            <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                              <span className="truncate font-medium">
-                                {attachment.file}
-                              </span>
-                              <span className="shrink-0 text-gray-400">
-                                {formatFileSize(attachment.size)}
-                              </span>
-                            </div>
-                          </a>
-                        </li>
-                      ),
+                    {Object.entries(attachments).map(
+                      ([key, attachment]) => {
+                        const name = attachment.url.split("/").pop() || key;
+                        return (
+                          <li key={key} className="flex text-sm">
+                            <a
+                              href={attachment.url}
+                              download
+                              className="flex w-0 flex-1 items-center p-4 hover:bg-gray-50"
+                            >
+                              <FontAwesomeIcon
+                                icon={faPaperclip}
+                                className="size-5 shrink-0 text-gray-400"
+                              />
+                              <div className="ml-4 flex min-w-0 flex-1 gap-2">
+                                <span className="truncate font-medium">
+                                  {name}
+                                </span>
+                                <span className="shrink-0 text-gray-400">
+                                  {formatFileSize(attachment.size)}
+                                </span>
+                              </div>
+                            </a>
+                          </li>
+                        );
+                      },
                     )}
                   </ul>
                 </dd>
