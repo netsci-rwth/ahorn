@@ -2,6 +2,10 @@ import fs from "fs";
 import path from "path";
 import Link from "next/link";
 
+import { createLowlight } from "lowlight";
+import { Fragment, jsx, jsxs } from "react/jsx-runtime";
+import bash from "highlight.js/lib/languages/bash";
+import { toJsxRuntime } from "hast-util-to-jsx-runtime";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 
