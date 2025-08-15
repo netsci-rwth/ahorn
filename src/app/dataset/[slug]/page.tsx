@@ -11,6 +11,8 @@ import Card from "@/components/card";
 import { bibtexToApa } from "@/utils/citation";
 import { formatFileSize } from "@/utils/format";
 
+const lowlight = createLowlight({ bash });
+
 export async function generateMetadata({
   params,
 }: {
@@ -95,6 +97,15 @@ export default async function DatasetPage({
       </div>
 
       <aside className="lg:w-sm mt-8 flex w-full flex-shrink-0 flex-col gap-y-7 lg:ml-8 lg:mt-0">
+        <pre className="overflow-x-auto rounded bg-gray-900 p-4 text-sm text-gray-100">
+          <code>
+            {toJsxRuntime(
+              lowlight.highlight("bash", `uvx ahorn-loader download ${slug}`),
+              { Fragment, jsx, jsxs },
+            )}
+          </code>
+        </pre>
+
         <Card title="Source Information">
           <dl className="divide-y divide-gray-200">
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
