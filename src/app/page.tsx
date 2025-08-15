@@ -54,6 +54,12 @@ export default function Home() {
                 Explore Datasets
               </Link>
               <Link
+                href="/about/contributing"
+                className="bg-primary inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm"
+              >
+                Contribute or Suggest a Dataset
+              </Link>
+              <Link
                 href="/about"
                 className="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-gray-900"
               >
@@ -89,15 +95,14 @@ export default function Home() {
 
         <h2>Work in Progress</h2>
         <p>
-          AHORN will be introduced at the{" "}
+          AHORN was introduced at the{" "}
           <a href="https://conf.netsci.rwth-aachen.de/">
             Higher Order Opportunities and Challenges
           </a>{" "}
-          workshop, which takes place from the 11th to the 13th of August 2025
+          workshop, which took place from the 11th to the 13th of August 2025
           in Aachen, Germany. The repository is currently under development, and
           we are actively working on expanding the dataset collection and
-          improving the user experience. We welcome contributions from the
-          community, including dataset submissions, feedback, and suggestions
+          improving the user experience. <b>We welcome contributions from the community</b>, including dataset submissions, feedback, and suggestions
           for improvement.
         </p>
       </div>
