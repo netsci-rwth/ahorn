@@ -24,7 +24,8 @@ export default function Home() {
           />
         </div>
         <div className="mx-auto max-w-3xl py-32">
-          <div className="hidden sm:mb-8 sm:flex sm:justify-center">
+          {/* flare to advertise other projects */}
+          {/* <div className="hidden sm:mb-8 sm:flex sm:justify-center">
             <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
               Announcing our workshop on higher-order opportunities and
               challenges.{" "}
@@ -36,7 +37,8 @@ export default function Home() {
                 Read more <span aria-hidden="true">&rarr;</span>
               </a>
             </div>
-          </div>
+          </div> */}
+
           <div className="text-center">
             <h1 className="text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
               Aachen Higher-Order Repository of Networks
