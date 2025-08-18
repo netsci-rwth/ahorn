@@ -62,12 +62,12 @@ else:
     frontmatter = {}
     body = content
 
-frontmatter["attachments"] = [
-    {
-        "file": dataset_file.name,
+frontmatter["attachments"] = {
+    "dataset": {
+        "url": dataset_file.name,
         "size": dataset_file.stat().st_size,
     }
-]
+}
 
 frontmatter["shape"] = {
     "nodes": len(nodes),
