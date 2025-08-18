@@ -136,33 +136,32 @@ export default async function DatasetPage({
                     role="list"
                     className="border-1 divide-y divide-gray-100 rounded-md border-gray-200"
                   >
-                    {Object.entries(attachments).map(
-                      ([key, attachment]) => {
-                        const name = attachment.url.split("/").pop() || key;
-                        return (
-                          <li key={key} className="flex text-sm">
-                            <a
-                              href={attachment.url}
-                              download
-                              className="flex w-0 flex-1 items-center p-4 hover:bg-gray-50"
-                            >
-                              <FontAwesomeIcon
-                                icon={faPaperclip}
-                                className="size-5 shrink-0 text-gray-400"
-                              />
-                              <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                                <span className="truncate font-medium">
-                                  {name}
-                                </span>
-                                <span className="shrink-0 text-gray-400">
-                                  {formatFileSize(attachment.size)}
-                                </span>
-                              </div>
-                            </a>
-                          </li>
-                        );
-                      },
-                    )}
+                    {Object.entries(attachments).map(([key, attachment]) => {
+                      const url = new URL(attachment.url, "https://ahorn.rwth-aachen.de/");
+                      const name = url.pathname.split("/").pop() || key;
+                      return (
+                        <li key={key} className="flex text-sm">
+                          <a
+                            href={url.href}
+                            download
+                            className="flex w-0 flex-1 items-center p-4 hover:bg-gray-50"
+                          >
+                            <FontAwesomeIcon
+                              icon={faPaperclip}
+                              className="size-5 shrink-0 text-gray-400"
+                            />
+                            <div className="ml-4 flex min-w-0 flex-1 gap-2">
+                              <span className="truncate font-medium">
+                                {name}
+                              </span>
+                              <span className="shrink-0 text-gray-400">
+                                {formatFileSize(attachment.size)}
+                              </span>
+                            </div>
+                          </a>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </dd>
               </div>
