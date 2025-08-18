@@ -3,30 +3,34 @@ Script to process the music-blues-reviews dataset and update the corresponding d
 
 References
 ----------
-https://www.cs.cornell.edu/~arb/data/cat-edge-music-blues-reviews/
+https://www.cs.cornell.edu/~arb/data/cat-edge-madison-restaurant-reviews/
 """
 
 import json
 import re
+import sys
 from collections import Counter
 from itertools import chain
 from pathlib import Path
+
+sys.path.append("..")
 
 import toponetx as tnx
 import yaml
 from more_itertools import first
 from rich.progress import track
 
-from .utils.yaml import patch_dumper
+from benson import load_benson_hyperedges
+from utils.yaml import patch_dumper
 
 patch_dumper()
 
 root_dir = Path(__file__).parent.parent
-dataset_file = root_dir / "public" / "datasets" / "cat-edge-music-blues-reviews.txt"
-datasheet_file = root_dir / "src" / "datasets" / "cat-edge-music-blues-reviews.mdx"
+dataset_file = root_dir / "public" / "datasets" / "cat-edge-madison-restaurant-reviews.txt"
+datasheet_file = root_dir / "src" / "datasets" / "cat-edge-madison-restaurant-reviews.mdx"
 
-nodes, hyperedges = tnx.datasets.benson.load_benson_hyperedges(
-    root_dir / "data" / "cat-edge-music-blues-reviews"
+nodes, hyperedges = load_benson_hyperedges(
+    root_dir / "data" / "cat-edge-madison-restaurant-reviews"
 )
 
 # write dataset file

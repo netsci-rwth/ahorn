@@ -1,0 +1,55 @@
+---
+title: cat-edge-madison-restaurant-reviews
+source: https://www.cs.cornell.edu/~arb/data/cat-edge-madison-restaurant-reviews/
+citation: |
+  @article{amburg2020fair,
+    title={Fair Clustering for Diverse and Experienced Groups},
+    author={Amburg, Ilya and Veldt, Nate and Benson, Austin R},
+    journal={arXiv:2006.05645},
+    year={2020}
+  }
+license: UNKNOWN
+network-type: hypergraph
+tags:
+- edge labels
+shape:
+  nodes: 565
+  hyperedges: 601
+edge-label-count:
+  Mexican: 131
+  Chinese: 109
+  Italian: 106
+  Korean: 25
+  French: 36
+  Japanese: 41
+  Thai: 82
+  American (Traditional): 47
+  Indian: 24
+attachments:
+  dataset:
+    url: cat-edge-madison-restaurant-reviews.txt
+    size: 29926
+---
+
+import NodeLabelsChart from "@/components/chart/node-labels";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+Hypergraph where nodes are Yelp users and hyperedges are users who reviewed an establishment of a particular category (different types of restaurants in Madison, WI) within a month timeframe.
+The dataset was derived from the [Yelp Kaggle competition data](https://www.kaggle.com/datasets/yelp-dataset/yelp-dataset).
+
+## Dataset Statistics
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["shape"]["nodes"])} />
+  <Stat title="Node Type" value="Yelp User" />
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["shape"]["hyperedges"])}
+  />
+  <Stat title="Hyperedge Type" value="Co-reviewed" />
+</dl>
+
+### Edge Labels
+
+<NodeLabelsChart labels={frontmatter["edge-label-count"]} />

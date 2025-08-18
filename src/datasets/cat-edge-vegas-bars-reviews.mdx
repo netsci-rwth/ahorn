@@ -1,0 +1,61 @@
+---
+title: cat-edge-vegas-bars-reviews
+source: https://www.cs.cornell.edu/~arb/data/cat-edge-vegas-bars-reviews/
+citation: |
+  @article{amburg2020fair,
+    title={Fair Clustering for Diverse and Experienced Groups},
+    author={Amburg, Ilya and Veldt, Nate and Benson, Austin R},
+    journal={arXiv:2006.05645},
+    year={2020}
+  }
+license: UNKNOWN
+network-type: hypergraph
+tags:
+- edge labels
+shape:
+  nodes: 1234
+  hyperedges: 1194
+edge-label-count:
+  '11': 139
+  '5': 133
+  '15': 126
+  '4': 94
+  '6': 106
+  '12': 56
+  '16': 115
+  '7': 104
+  '1': 93
+  '14': 94
+  '8': 68
+  '10': 48
+  '13': 9
+  '3': 6
+  '9': 3
+attachments:
+  dataset:
+    url: cat-edge-vegas-bars-reviews.txt
+    size: 65649
+---
+
+import NodeLabelsChart from "@/components/chart/node-labels";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+Hypergraph where nodes are Yelp users and hyperedges are users who reviewed an establishment of a particular category (different types of bars in Las Vegas, NV) within a month timeframe.
+The dataset was derived from the [Yelp Kaggle competition data](https://www.kaggle.com/yelp-dataset/yelp-dataset).
+
+## Dataset Statistics
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["shape"]["nodes"])} />
+  <Stat title="Node Type" value="Yelp User" />
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["shape"]["hyperedges"])}
+  />
+  <Stat title="Hyperedge Type" value="Co-reviewed" />
+</dl>
+
+### Edge Labels
+
+<NodeLabelsChart labels={frontmatter["edge-label-count"]} />

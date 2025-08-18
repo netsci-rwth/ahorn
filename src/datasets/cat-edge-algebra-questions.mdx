@@ -1,0 +1,78 @@
+---
+title: cat-edge-algebra-questions
+source: https://www.cs.cornell.edu/~arb/data/cat-edge-algebra-questions/
+citation: |
+  @article{amburg2020fair,
+    title={Fair Clustering for Diverse and Experienced Groups},
+    author={Amburg, Ilya and Veldt, Nate and Benson, Austin R},
+    journal={arXiv:2006.05645},
+    year={2020}
+  }
+license: UNKNOWN
+network-type: hypergraph
+tags:
+- edge labels
+shape:
+  nodes: 423
+  hyperedges: 1268
+edge-label-count:
+  lie-algebras: 110
+  ac.commutative-algebra: 122
+  linear-algebra: 122
+  homological-algebra: 118
+  noncommutative-algebra: 72
+  a-infinity-algebras: 9
+  qa.quantum-algebra: 97
+  oa.operator-algebras: 90
+  steenrod-algebra: 12
+  ra.rings-and-algebras: 115
+  von-neumann-algebras: 35
+  computer-algebra: 58
+  hopf-algebras: 75
+  banach-algebras: 13
+  c-star-algebras: 49
+  universal-algebra: 21
+  weyl-algebra: 11
+  planar-algebras: 17
+  differential-graded-algebras: 22
+  exterior-algebra: 11
+  clifford-algebras: 18
+  hecke-algebras: 5
+  real-algebraic-geometry: 12
+  abstract-algebra: 33
+  boolean-algebras: 11
+  division-algebras: 2
+  group-algebras: 2
+  lie-algebra-cohomology: 2
+  symmetric-algebras: 1
+  super-linear-algebra: 1
+  central-simple-algebras: 1
+  jordan-algebras: 1
+attachments:
+  dataset:
+    url: cat-edge-algebra-questions.txt
+    size: 68524
+---
+
+import NodeLabelsChart from "@/components/chart/node-labels";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+Hypergraph where nodes are users on [MathOverflow](https://mathoverflow.net/) and hyperedges are sets of users who answered a certain question category (derived from different tags involving algebra).
+The dataset was derived from the [Stack Exchange data dump](https://archive.org/details/stackexchange).
+
+## Dataset Statistics
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["shape"]["nodes"])} />
+  <Stat title="Node Type" value="User" />
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["shape"]["hyperedges"])}
+  />
+  <Stat title="Hyperedge Type" value="Question Category" />
+</dl>
+
+### Edge Labels
+
+<NodeLabelsChart labels={frontmatter["edge-label-count"]} />

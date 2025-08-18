@@ -1,0 +1,71 @@
+---
+title: cat-edge-geometry-questions
+source: https://www.cs.cornell.edu/~arb/data/cat-edge-geometry-questions/
+citation: |
+  @article{amburg2020fair,
+    title={Fair Clustering for Diverse and Experienced Groups},
+    author={Amburg, Ilya and Veldt, Nate and Benson, Austin R},
+    journal={arXiv:2006.05645},
+    year={2020}
+  }
+license: UNKNOWN
+network-type: hypergraph
+tags:
+- edge labels
+shape:
+  nodes: 580
+  hyperedges: 1193
+edge-label-count:
+  ag.algebraic-geometry: 122
+  complex-geometry: 113
+  tropical-geometry: 2
+  dg.differential-geometry: 122
+  mg.metric-geometry: 121
+  riemannian-geometry: 90
+  log-geometry: 9
+  arithmetic-geometry: 103
+  discrete-geometry: 81
+  noncommutative-geometry: 88
+  euclidean-geometry: 28
+  projective-geometry: 37
+  sg.symplectic-geometry: 88
+  hyperbolic-geometry: 43
+  anabelian-geometry: 10
+  conformal-geometry: 9
+  real-algebraic-geometry: 16
+  computational-geometry: 13
+  convex-geometry: 22
+  spin-geometry: 11
+  alexandrov-geometry: 20
+  combinatorial-geometry: 16
+  plane-geometry: 13
+  birational-geometry: 11
+  spherical-geometry: 5
+attachments:
+  dataset:
+    url: cat-edge-geometry-questions.txt
+    size: 83454
+---
+
+import NodeLabelsChart from "@/components/chart/node-labels";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+Hypergraph where nodes are users on [MathOverflow](https://mathoverflow.net/) and hyperedges are sets of users who answered a certain question category (derived from different tags involving geometry).
+The dataset was derived from the [Stack Exchange data dump](https://archive.org/details/stackexchange).
+
+## Dataset Statistics
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["shape"]["nodes"])} />
+  <Stat title="Node Type" value="User" />
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["shape"]["hyperedges"])}
+  />
+  <Stat title="Hyperedge Type" value="Question Category" />
+</dl>
+
+### Edge Labels
+
+<NodeLabelsChart labels={frontmatter["edge-label-count"]} />
