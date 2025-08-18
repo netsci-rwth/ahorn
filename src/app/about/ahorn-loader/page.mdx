@@ -1,6 +1,5 @@
 export const metadata = {
-  title:
-    "ahorn-loader | AHORN - Aachen Higher-Order Repository of Networks",
+  title: "ahorn-loader | AHORN - Aachen Higher-Order Repository of Networks",
 };
 
 # `ahorn-loader`
@@ -8,10 +7,6 @@ export const metadata = {
 `ahorn-loader` is both a command-line tool and a Python package designed to interact with the AHORN dataset repository.
 It allows users to easily download datasets and loading them into Python for analysis and experimentation.
 It is also home of our [validation script](/about/dataset-converter) to check the correctness of a dataset before publishing it.
-
-import Alert from "@/components/alert";
-
-<Alert type="warning">The package is not available on PyPI, yet. Installation instructions will only work after the package is published.</Alert>
 
 ## Command-line Usage
 
@@ -22,6 +17,8 @@ uvx ahorn-loader [command] [args]
 ```
 
 Commands include:
+
+- `ls`: List available datasets in AHORN.
 - `download`: Download a dataset from AHORN.
 - `validate`: Validate a specific dataset file (e.g., before adding it to AHORN).
 
@@ -46,4 +43,3 @@ ahorn_loader.download('dataset_name', 'target_path')
 # validate a specific dataset (e.g., before adding it to AHORN)
 ahorn_loader.validate('path_to_dataset_file')
 ```
-
