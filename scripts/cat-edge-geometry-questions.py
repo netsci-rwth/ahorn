@@ -15,12 +15,11 @@ from pathlib import Path
 
 sys.path.append("..")
 
-import toponetx as tnx
 import yaml
+from benson import load_benson_hyperedges
 from more_itertools import first
 from rich.progress import track
 
-from benson import load_benson_hyperedges
 from utils.yaml import patch_dumper
 
 patch_dumper()
