@@ -24,7 +24,7 @@ const tools = [
 
 export default function ToolsPage() {
   return (
-    <>
+    <div data-pagefind-body>
       <h1 className="mb-8 text-3xl font-bold text-gray-900">Tools</h1>
       <ul className="grid grid-cols-1 gap-10 md:grid-cols-2">
         {tools.map((tool) => (
@@ -57,6 +57,6 @@ export default function ToolsPage() {
           </li>
         ))}
       </ul>
-    </>
+    </div>
   );
 }

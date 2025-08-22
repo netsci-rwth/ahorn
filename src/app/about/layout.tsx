@@ -92,7 +92,7 @@ export default function AboutLayout({
           </ul>
         </nav>
       </aside>
-      <main className="prose ml-10 max-w-none flex-1">{children}</main>
+      <main className="prose ml-10 max-w-none flex-1" data-pagefind-body>{children}</main>
     </div>
   );
   // return (

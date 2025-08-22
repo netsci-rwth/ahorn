@@ -82,11 +82,11 @@ export default async function DatasetPage({
     frontmatter.attachments || {};
 
   return (
-    <div className="lg:flex lg:items-start lg:justify-between">
+    <div className="lg:flex lg:items-start lg:justify-between" data-pagefind-body>
       <div className="min-w-0 flex-1">
-        <h2 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
-          Dataset: {slug}
-        </h2>
+        <h1 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+          {frontmatter.title}
+        </h1>
         {frontmatter.tags.length > 0 && (
           <div className="mt-1 flex flex-wrap gap-2">
             {frontmatter.tags.map((tag: string, index: number) => (
@@ -172,7 +172,7 @@ export default async function DatasetPage({
         {frontmatter.related &&
           Array.isArray(frontmatter.related) &&
           frontmatter.related.length > 0 && (
-            <Card title="Related Datasets">
+            <Card title="Related Datasets" data-pagefind-ignore>
               <ul className="divide-y divide-gray-200">
                 {related_datasets.map(({ slug, title }) => (
                   <li key={slug} className="px-6 py-3">
