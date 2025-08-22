@@ -1,2 +1,6 @@
 data
 public/datasets
+
+# ignore MDX files, as prettier still does not support MDX 2+:
+# https://github.com/prettier/prettier/issues/12209
+*.mdx
