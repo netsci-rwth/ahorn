@@ -57,9 +57,9 @@ export default function Home() {
               </Link>
               <Link
                 href="/about/contributing"
-                className="bg-primary inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm"
+                className="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-gray-900"
               >
-                Contribute or Suggest a Dataset
+                Contribute a Dataset
               </Link>
               <Link
                 href="/about"
