@@ -50,7 +50,7 @@ type SearchResult = {
   url: string;
 };
 
-const SearchBox = () => {
+const SearchBox = ({ onNavigate }: { onNavigate: () => void }) => {
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<React.ReactElement | string>("");
@@ -116,6 +116,7 @@ const SearchBox = () => {
     const { url } = result;
     router.push(url);
     setQuery("");
+    onNavigate();
   };
 
   return (
@@ -184,6 +185,7 @@ const SearchBox = () => {
 
 const Navbar: FC = () => {
   const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
   const isActive = (link: string) => {
     if (link === "/") {
       return pathname === "/";
@@ -191,6 +193,16 @@ const Navbar: FC = () => {
       return pathname.startsWith(link);
     }
   };
+
+  // prevent background scrolling while mobile menu is open
+  useEffect(() => {
+    if (!mobileOpen) return undefined;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous || "";
+    };
+  }, [mobileOpen]);
 
   return (
     <Disclosure
@@ -203,6 +215,7 @@ const Navbar: FC = () => {
             {/* Mobile menu button*/}
             <DisclosureButton
               type="button"
+              onClick={() => setMobileOpen((v) => !v)}
               className="focus:outline-hidden group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white"
               aria-controls="mobile-menu"
               aria-expanded="false"
@@ -253,7 +266,7 @@ const Navbar: FC = () => {
           </div>
           {/* Desktop search box */}
           <div className="hidden sm:block">
-            <SearchBox />
+            <SearchBox onNavigate={() => { close(); setMobileOpen(false); }} />
           </div>
         </div>
       </div>
@@ -261,9 +274,9 @@ const Navbar: FC = () => {
       {/* Mobile menu, show/hide based on menu state. */}
       <DisclosurePanel className="sm:hidden">
         {({ close }) => (
-          <div className="space-y-1 px-2 pb-3 pt-2">
+          <div className="space-y-1 px-2 pb-3 pt-2 h-[calc(100vh-4rem)]">
             <div className="px-1 pb-2">
-              <SearchBox />
+              <SearchBox onNavigate={() => { close(); setMobileOpen(false); }} />
             </div>
             {links.map((link) => {
               const active = isActive(link.link);
@@ -279,7 +292,10 @@ const Navbar: FC = () => {
                         !active,
                     },
                   )}
-                  onNavigate={() => close()}
+                  onNavigate={() => {
+                    close();
+                    setMobileOpen(false);
+                  }}
                 >
                   {link.name}
                 </Link>
