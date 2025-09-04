@@ -192,9 +192,7 @@ export default async function DatasetPage({
           <Card title="Citation">
             <ul className="divide-y divide-gray-200">
               {bibtexToApa(frontmatter.citation || "").map((citation) => (
-                <li key={citation[0]} className="px-6 py-4">
-                  {citation[1]}
-                </li>
+                <li key={citation[0]} className="px-6 py-4" dangerouslySetInnerHTML={{ __html: citation[1] }} />
               ))}
             </ul>
             <div className="rounded-b-md border-t border-gray-200 bg-gray-50 px-6 py-3 text-xs text-gray-500">

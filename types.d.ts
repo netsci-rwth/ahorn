@@ -6,6 +6,7 @@ declare module "@citation-js/core" {
       options?: {
         template?: string;
         lang?: string;
+        format?: string;
         asEntryArray?: boolean;
       },
     ): [string, string][];
