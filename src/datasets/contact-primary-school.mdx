@@ -134,8 +134,8 @@ shape:
     - 33
 attachments:
   dataset:
-    url: contact-primary-school.txt
-    size: 4860703
+    url: https://zenodo.org/records/17092521/files/contact-primary-school.txt?download=1
+    size: 4860730
 ---
 
 import TemporalShapeChart from "@/components/chart/temporal-shape";
@@ -147,15 +147,6 @@ This is a temporal higher-order network dataset, which here means a sequence of 
   <Stat title="Node Type" value="Student" />
   <Stat title="Edge Type" value="Group of Interacting Students" />
 </dl>
-
-## Usage
-
-The dataset can be loaded directly in TopoNetX using the following code:
-
-```python
-import toponetx as tnx
-SC = tnx.datasets.load_benson_simplicial_complex("contact-primary-school")
-```
 
 ## Dataset Statistics
 
