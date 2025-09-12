@@ -82,7 +82,10 @@ export default async function DatasetPage({
     frontmatter.attachments || {};
 
   return (
-    <div className="lg:flex lg:items-start lg:justify-between" data-pagefind-body>
+    <div
+      className="lg:flex lg:items-start lg:justify-between"
+      data-pagefind-body
+    >
       <div className="min-w-0 flex-1">
         <h1 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
           {frontmatter.title}
@@ -101,14 +104,19 @@ export default async function DatasetPage({
       </div>
 
       <aside className="lg:w-sm mt-8 flex w-full flex-shrink-0 flex-col gap-y-7 lg:ml-8 lg:mt-0">
-        <pre className="overflow-x-auto rounded bg-gray-900 p-4 text-sm text-gray-100">
-          <code>
-            {toJsxRuntime(
-              lowlight.highlight("bash", `uvx ahorn-loader download ${slug}`),
-              { Fragment, jsx, jsxs },
-            )}
-          </code>
-        </pre>
+        <section>
+          <h2 className="mb-4 text-2xl font-bold text-gray-900 sm:hidden">
+            Usage
+          </h2>
+          <pre className="overflow-x-auto rounded bg-gray-900 p-4 text-sm text-gray-100">
+            <code>
+              {toJsxRuntime(
+                lowlight.highlight("bash", `uvx ahorn-loader download ${slug}`),
+                { Fragment, jsx, jsxs },
+              )}
+            </code>
+          </pre>
+        </section>
 
         <Card title="Source Information">
           <dl className="divide-y divide-gray-200">
@@ -137,7 +145,10 @@ export default async function DatasetPage({
                     className="border-1 divide-y divide-gray-100 rounded-md border-gray-200"
                   >
                     {Object.entries(attachments).map(([key, attachment]) => {
-                      const url = new URL(attachment.url, "https://ahorn.rwth-aachen.de/");
+                      const url = new URL(
+                        attachment.url,
+                        "https://ahorn.rwth-aachen.de/",
+                      );
                       const name = url.pathname.split("/").pop() || key;
                       return (
                         <li key={key} className="flex text-sm">
@@ -192,7 +203,11 @@ export default async function DatasetPage({
           <Card title="Citation">
             <ul className="divide-y divide-gray-200">
               {bibtexToApa(frontmatter.citation || "").map((citation) => (
-                <li key={citation[0]} className="px-6 py-4" dangerouslySetInnerHTML={{ __html: citation[1] }} />
+                <li
+                  key={citation[0]}
+                  className="prose px-6 py-4"
+                  dangerouslySetInnerHTML={{ __html: citation[1] }}
+                />
               ))}
             </ul>
             <div className="rounded-b-md border-t border-gray-200 bg-gray-50 px-6 py-3 text-xs text-gray-500">
