@@ -1,9 +1,9 @@
 """
-Script to process the geometry-questions dataset and update the corresponding datasheet.
+Script to process the algebra-questions dataset and update the corresponding datasheet.
 
 References
 ----------
-https://www.cs.cornell.edu/~arb/data/cat-edge-geometry-questions/
+https://www.cs.cornell.edu/~arb/data/cat-edge-algebra-questions/
 """
 
 import json
@@ -25,11 +25,11 @@ from .utils.yaml import patch_dumper
 patch_dumper()
 
 root_dir = Path(__file__).parent.parent
-dataset_file = root_dir / "public" / "datasets" / "cat-edge-geometry-questions.txt"
-datasheet_file = root_dir / "src" / "datasets" / "cat-edge-geometry-questions.mdx"
+dataset_file = root_dir / "public" / "datasets" / "algebra-questions.txt"
+datasheet_file = root_dir / "src" / "datasets" / "algebra-questions.mdx"
 
 nodes, hyperedges = load_benson_hyperedges(
-    root_dir / "data" / "cat-edge-geometry-questions"
+    root_dir / "data" / "cat-edge-algebra-questions"
 )
 
 # write dataset file

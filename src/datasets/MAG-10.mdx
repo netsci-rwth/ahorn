@@ -1,5 +1,5 @@
 ---
-title: cat-edge-MAG-10
+title: MAG-10
 source: https://www.cs.cornell.edu/~arb/data/cat-edge-MAG-10/
 citation: |
   @inproceedings{Amburg-2020-categorical,
@@ -38,7 +38,7 @@ edge-label-count:
   STOC: 2284
 attachments:
   dataset:
-    url: cat-edge-MAG-10.txt
+    url: MAG-10.txt
     size: 2234662
 ---
 
@@ -51,19 +51,7 @@ The MAG-10 network is a subset of the Microsoft Academic Graph where nodes are a
 If the same set of authors published at more than one conference, we used the most common venue as the category and any cases where there is a tie were discarded.
 Papers with more than 25 authors were omitted.
 
-<Alert type="warning">
-  Node 40706 has an erroneous label assignment in the source dataset. We
-  assigned it to the first category.
-</Alert>
-
-## Usage
-
-The dataset can be loaded directly in TopoNetX using the following code:
-
-```python
-import toponetx as tnx
-nodes, edges, metadata = tnx.datasets.load_ahorn("cat-edge-Cooking")
-```
+<Alert type="warning">Node 40706 has an erroneous label assignment in the source dataset. We assigned it to the first category.</Alert>
 
 ## Dataset Statistics
 

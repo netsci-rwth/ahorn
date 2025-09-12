@@ -56,12 +56,3 @@ Timestamps are in days and represent when the bill was introduced.
 The dataset was derived from James Fowler's data.
 The projected graph is a weighted undirected graph representing how many times each pair of nodes co-appears in a simplex.
 We restricted to simplices that consist of at most 25 nodes.
-
-## Usage
-
-The dataset can be loaded directly in TopoNetX using the following code:
-
-```python
-import toponetx as tnx
-metadata, nodes, hyperedges = tnx.datasets.load_ahorn("congress-bills")
-```

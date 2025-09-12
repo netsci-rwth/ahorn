@@ -14,6 +14,8 @@ tags:
   - undirected
   - labelled nodes
   - "source: benson"
+related:
+  - stackoverflow-answers
 label-count:
   at.algebraic-topology: 4458
   homology: 163
@@ -1470,16 +1472,6 @@ import Stat from "@/components/stat";
 import { formatNumber } from "@/utils/format";
 
 The mathoverflow-answers network is a hypergraph where hyperedges are sets of questions answered by users on Math Overflow. Nodes are labeled by the tags used in the questions, and nodes often have multiple labels.
-
-## Usage
-
-The dataset can be loaded directly in TopoNetX using the following code:
-
-```python
-import toponetx as tnx
-
-nodes, hyperedges = tnx.datasets.load_benson_hyperedges("mathoverflow-answers")
-```
 
 ## Dataset Statistics
 

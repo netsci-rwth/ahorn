@@ -57,17 +57,8 @@ import NodeLabelsChart from "@/components/chart/node-labels";
 import Stat from "@/components/stat";
 import { formatNumber } from "@/utils/format";
 
-The amazon-reviews network is a hypergraph where hyperedges are sets of products reviews on Amazon, as collected by Jianmo Ni, Jiacheng Li, and Julian McAuley (specifically, we use the collection of 5-core datasets).
+The `amazon-reviews` network is a hypergraph where hyperedges are sets of products reviews on Amazon, as collected by Jianmo Ni, Jiacheng Li, and Julian McAuley (specifically, we use the collection of 5-core datasets).
 Nodes are labeled by their product categories.
-
-## Usage
-
-The dataset can be loaded directly in TopoNetX using the following code:
-
-```python
-import toponetx as tnx
-metadata, nodes, hyperedges = tnx.datasets.load_ahorn("amazon-reviews")
-```
 
 ## Dataset Statistics
 

@@ -1,9 +1,9 @@
 """
-Script to process the algebra-questions dataset and update the corresponding datasheet.
+Script to process the vegas-bars-reviews dataset and update the corresponding datasheet.
 
 References
 ----------
-https://www.cs.cornell.edu/~arb/data/cat-edge-algebra-questions/
+https://www.cs.cornell.edu/~arb/data/cat-edge-vegas-bars-reviews/
 """
 
 import json
@@ -25,11 +25,11 @@ from .utils.yaml import patch_dumper
 patch_dumper()
 
 root_dir = Path(__file__).parent.parent
-dataset_file = root_dir / "public" / "datasets" / "cat-edge-algebra-questions.txt"
-datasheet_file = root_dir / "src" / "datasets" / "cat-edge-algebra-questions.mdx"
+dataset_file = root_dir / "public" / "datasets" / "vegas-bars-reviews.txt"
+datasheet_file = root_dir / "src" / "datasets" / "vegas-bars-reviews.mdx"
 
 nodes, hyperedges = load_benson_hyperedges(
-    root_dir / "data" / "cat-edge-algebra-questions"
+    root_dir / "data" / "cat-edge-vegas-bars-reviews"
 )
 
 # write dataset file

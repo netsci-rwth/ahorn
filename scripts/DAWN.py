@@ -1,15 +1,14 @@
 """
-Script to process the MAG-10 dataset and update the corresponding datasheet.
+Script to process the DAWN dataset and update the corresponding datasheet.
 
 References
 ----------
-https://www.cs.cornell.edu/~arb/data/cat-edge-MAG-10/
+https://www.cs.cornell.edu/~arb/data/cat-edge-DAWN/
 """
 
 import json
 import re
 from collections import Counter
-from itertools import chain
 from pathlib import Path
 
 import toponetx as tnx
@@ -19,31 +18,20 @@ from rich.progress import track
 
 from .utils.yaml import patch_dumper
 
+# TODO: The dataset we downloaded from Benson's repository seems to be broken.
+# The hyperedge label file contains 2272 lines, but it should only contain 10
+# categories (none of which fit the names given there).
+raise RuntimeError
+
 patch_dumper()
 
 root_dir = Path(__file__).parent.parent
-dataset_file = root_dir / "public" / "datasets" / "cat-edge-MAG-10.txt"
-datasheet_file = root_dir / "src" / "datasets" / "cat-edge-MAG-10.mdx"
+dataset_file = root_dir / "public" / "datasets" / "DAWN.txt"
+datasheet_file = root_dir / "src" / "datasets" / "DAWN.mdx"
 
 nodes, hyperedges = tnx.datasets.benson.load_benson_hyperedges(
-    root_dir / "data" / "cat-edge-MAG-10"
+    root_dir / "data" / "cat-edge-DAWN"
 )
-
-# write dataset file
-covered_nodes = set(chain.from_iterable(hyperedge.elements for hyperedge in hyperedges))
-with dataset_file.open("w") as f:
-    f.write(json.dumps({"_format_version": "0.1"}) + "\n")
-    for node in track(map(first, nodes), description="Writing nodes"):
-        if node in covered_nodes:
-            continue
-        f.write(f"{node}\n")
-    for hyperedge in track(hyperedges, description="Writing hyperedges"):
-        f.write(
-            ",".join(map(str, hyperedge.elements))
-            + ' {"conference": "'
-            + hyperedge["label"]
-            + '"}\n'
-        )
 
 edge_label_counts = Counter(x["label"] for x in hyperedges)
 
@@ -62,13 +50,6 @@ else:
     frontmatter = {}
     body = content
 
-frontmatter["attachments"] = {
-    "dataset": {
-        "url": dataset_file.name,
-        "size": dataset_file.stat().st_size,
-    }
-}
-
 frontmatter["shape"] = {
     "nodes": len(nodes),
     "hyperedges": len(hyperedges),
@@ -80,3 +61,16 @@ with datasheet_file.open("w") as f:
     yaml.dump(frontmatter, f, sort_keys=False)
     f.write("---\n")
     f.write(body)
+
+# write dataset file
+with dataset_file.open("w") as f:
+    f.write(json.dumps({"_format_version": "0.1"}) + "\n")
+    for node in track(nodes, description="Writing nodes"):
+        f.write(str(first(node)) + ' {"party": "' + node["label"] + '"}\n')
+    for hyperedge in track(hyperedges, description="Writing hyperedges"):
+        f.write(
+            ",".join(map(str, hyperedge.elements))
+            + ' {"label": "'
+            + hyperedge["label"]
+            + '"}\n'
+        )

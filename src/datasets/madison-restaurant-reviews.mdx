@@ -1,6 +1,6 @@
 ---
-title: cat-edge-vegas-bars-reviews
-source: https://www.cs.cornell.edu/~arb/data/cat-edge-vegas-bars-reviews/
+title: Madison Restaurant Reviews
+source: https://www.cs.cornell.edu/~arb/data/cat-edge-madison-restaurant-reviews/
 citation: |
   @article{amburg2020fair,
     title={Fair Clustering for Diverse and Experienced Groups},
@@ -14,36 +14,30 @@ tags:
   - edge labels
   - "source: benson"
 shape:
-  nodes: 1234
-  hyperedges: 1194
+  nodes: 565
+  hyperedges: 601
 edge-label-count:
-  '11': 139
-  '5': 133
-  '15': 126
-  '4': 94
-  '6': 106
-  '12': 56
-  '16': 115
-  '7': 104
-  '1': 93
-  '14': 94
-  '8': 68
-  '10': 48
-  '13': 9
-  '3': 6
-  '9': 3
+  Mexican: 131
+  Chinese: 109
+  Italian: 106
+  Korean: 25
+  French: 36
+  Japanese: 41
+  Thai: 82
+  American (Traditional): 47
+  Indian: 24
 attachments:
   dataset:
-    url: cat-edge-vegas-bars-reviews.txt
-    size: 65649
+    url: madison-restaurant-reviews.txt
+    size: 29926
 ---
 
 import NodeLabelsChart from "@/components/chart/node-labels";
 import Stat from "@/components/stat";
 import { formatNumber } from "@/utils/format";
 
-Hypergraph where nodes are Yelp users and hyperedges are users who reviewed an establishment of a particular category (different types of bars in Las Vegas, NV) within a month timeframe.
-The dataset was derived from the [Yelp Kaggle competition data](https://www.kaggle.com/yelp-dataset/yelp-dataset).
+Hypergraph where nodes are Yelp users and hyperedges are users who reviewed an establishment of a particular category (different types of restaurants in Madison, WI) within a month timeframe.
+The dataset was derived from the [Yelp Kaggle competition data](https://www.kaggle.com/datasets/yelp-dataset/yelp-dataset).
 
 ## Dataset Statistics
 

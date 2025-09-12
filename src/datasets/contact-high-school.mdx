@@ -240,26 +240,13 @@ attachments:
 import TemporalShapeChart from "@/components/chart/temporal-shape";
 import Stat from "@/components/stat";
 
-This is a temporal higher-order network dataset, which here means a sequence of timestamped simplices where each simplex is a set of nodes.
-The dataset is constructed from interactions recorded by wearable sensors by people at a high school.
-The sensors record interactions at a resolution of 20 seconds (recording all interactions from the previous 20 seconds).
+Temporal higher-order network of high-school students and their interactions.
+The temporal interactions have been recorded by wearable sensors worn by students at a resolution of 20 seconds (recording all interactions from the previous 20 seconds).
 
 <dl className="not-prose grid gap-5 sm:grid-cols-2">
   <Stat title="Node Type" value="Student" />
   <Stat title="Edge Type" value="Group of Interacting Students" />
 </dl>
-
-## Usage
-
-The dataset can be loaded directly in TopoNetX using the following code:
-
-```python
-import toponetx as tnx
-
-# Load all simplices ordered by time. Useful when you want to perform your own temporal
-# aggregation.
-simplices = tnx.datasets.load_benson_simplices("contact-high-school")
-```
 
 ## Dataset Statistics
 

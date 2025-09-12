@@ -1,9 +1,9 @@
 """
-Script to process the music-blues-reviews dataset and update the corresponding datasheet.
+Script to process the MAG-10 dataset and update the corresponding datasheet.
 
 References
 ----------
-https://www.cs.cornell.edu/~arb/data/cat-edge-music-blues-reviews/
+https://www.cs.cornell.edu/~arb/data/cat-edge-MAG-10/
 """
 
 import json
@@ -22,11 +22,11 @@ from .utils.yaml import patch_dumper
 patch_dumper()
 
 root_dir = Path(__file__).parent.parent
-dataset_file = root_dir / "public" / "datasets" / "cat-edge-music-blues-reviews.txt"
-datasheet_file = root_dir / "src" / "datasets" / "cat-edge-music-blues-reviews.mdx"
+dataset_file = root_dir / "public" / "datasets" / "MAG-10.txt"
+datasheet_file = root_dir / "src" / "datasets" / "MAG-10.mdx"
 
 nodes, hyperedges = tnx.datasets.benson.load_benson_hyperedges(
-    root_dir / "data" / "cat-edge-music-blues-reviews"
+    root_dir / "data" / "cat-edge-MAG-10"
 )
 
 # write dataset file
@@ -40,7 +40,7 @@ with dataset_file.open("w") as f:
     for hyperedge in track(hyperedges, description="Writing hyperedges"):
         f.write(
             ",".join(map(str, hyperedge.elements))
-            + ' {"genre": "'
+            + ' {"conference": "'
             + hyperedge["label"]
             + '"}\n'
         )

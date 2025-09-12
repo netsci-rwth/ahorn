@@ -1,5 +1,5 @@
 ---
-title: cat-edge-Cooking
+title: Cooking
 source: https://www.cs.cornell.edu/~arb/data/cat-edge-Cooking/
 citation: |
   @inproceedings{Amburg-2020-categorical,
@@ -39,7 +39,7 @@ edge-label-count:
   russian: 489
 attachments:
   dataset:
-    url: cat-edge-Cooking.txt
+    url: cooking.txt
     size: 3253354
 ---
 
@@ -51,19 +51,7 @@ import { formatNumber } from "@/utils/format";
 Hypergraph where nodes are food ingredients, hyperedges are recipes made from combining multiple ingredients and categories indicate cuisine.
 Raw data was obtained from the [“What's Cooking?” Kaggle competition](https://www.kaggle.com/c/whats-cooking).
 
-<Alert type="warning">
-  In the original dataset, some nodes are repeated within hyperedges. This
-  version of the dataset has removed these duplicates.
-</Alert>
-
-## Usage
-
-The dataset can be loaded directly in TopoNetX using the following code:
-
-```python
-import toponetx as tnx
-nodes, edges, metadata = tnx.datasets.load_ahorn("cat-edge-Cooking")
-```
+<Alert type="warning">In the original dataset, some nodes are repeated within hyperedges. This version of the dataset has removed these duplicates.</Alert>
 
 ## Dataset Statistics
 

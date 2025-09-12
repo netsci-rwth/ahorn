@@ -1,9 +1,9 @@
 """
-Script to process the music-blues-reviews dataset and update the corresponding datasheet.
+Script to process the geometry-questions dataset and update the corresponding datasheet.
 
 References
 ----------
-https://www.cs.cornell.edu/~arb/data/cat-edge-madison-restaurant-reviews/
+https://www.cs.cornell.edu/~arb/data/cat-edge-geometry-questions/
 """
 
 import json
@@ -25,15 +25,11 @@ from .utils.yaml import patch_dumper
 patch_dumper()
 
 root_dir = Path(__file__).parent.parent
-dataset_file = (
-    root_dir / "public" / "datasets" / "cat-edge-madison-restaurant-reviews.txt"
-)
-datasheet_file = (
-    root_dir / "src" / "datasets" / "cat-edge-madison-restaurant-reviews.mdx"
-)
+dataset_file = root_dir / "public" / "datasets" / "geometry-questions.txt"
+datasheet_file = root_dir / "src" / "datasets" / "geometry-questions.mdx"
 
 nodes, hyperedges = load_benson_hyperedges(
-    root_dir / "data" / "cat-edge-madison-restaurant-reviews"
+    root_dir / "data" / "cat-edge-geometry-questions"
 )
 
 # write dataset file

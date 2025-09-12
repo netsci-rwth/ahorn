@@ -14,6 +14,8 @@ tags:
   - undirected
   - labelled nodes
   - "source: benson"
+related:
+  - mathoverflow-answers
 shape:
   nodes: 15211989
   hyperedges: 1103243
@@ -27,15 +29,6 @@ import { formatNumber } from "@/utils/format";
 
 The stackoverflow-answers network is a hypergraph where hyperedges are sets of questions answered by users on Stack Overflow.
 Nodes are labeled by the tags used in the questions, and nodes often have multiple labels.
-
-## Usage
-
-The dataset can be loaded directly in TopoNetX using the following code:
-
-```python
-import toponetx as tnx
-metadata, nodes, hyperedges = tnx.datasets.load_ahorn("stackoverflow-answers")
-```
 
 ## Dataset Statistics
 
