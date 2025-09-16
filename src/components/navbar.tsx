@@ -17,7 +17,12 @@ import {
 } from "@headlessui/react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faLeaf, faSpinner, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faLeaf,
+  faSpinner,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 
 const links = [
   { name: "Home", link: "/" },
@@ -108,12 +113,12 @@ const SearchBox = ({ onNavigate }: { onNavigate: () => void }) => {
     queryResults(query);
   }, [query]);
 
-  const handleSelect = (result: SearchResult | null) => {
+  const handleSelect = (result: unknown) => {
     if (!result) {
       return;
     }
 
-    const { url } = result;
+    const { url } = result as SearchResult;
     router.push(url);
     setQuery("");
     onNavigate();
@@ -143,7 +148,10 @@ const SearchBox = ({ onNavigate }: { onNavigate: () => void }) => {
       >
         {isLoading && (
           <li className="flex items-center gap-2 px-3 py-2 text-sm text-gray-500">
-            <FontAwesomeIcon icon={faSpinner} className="text-primary h-4 w-4 animate-spin" />
+            <FontAwesomeIcon
+              icon={faSpinner}
+              className="text-primary h-4 w-4 animate-spin"
+            />
             Searching…
           </li>
         )}
@@ -266,7 +274,12 @@ const Navbar: FC = () => {
           </div>
           {/* Desktop search box */}
           <div className="hidden sm:block">
-            <SearchBox onNavigate={() => { close(); setMobileOpen(false); }} />
+            <SearchBox
+              onNavigate={() => {
+                close();
+                setMobileOpen(false);
+              }}
+            />
           </div>
         </div>
       </div>
@@ -274,9 +287,14 @@ const Navbar: FC = () => {
       {/* Mobile menu, show/hide based on menu state. */}
       <DisclosurePanel className="sm:hidden">
         {({ close }) => (
-          <div className="space-y-1 px-2 pb-3 pt-2 h-[calc(100vh-4rem)]">
+          <div className="h-[calc(100vh-4rem)] space-y-1 px-2 pb-3 pt-2">
             <div className="px-1 pb-2">
-              <SearchBox onNavigate={() => { close(); setMobileOpen(false); }} />
+              <SearchBox
+                onNavigate={() => {
+                  close();
+                  setMobileOpen(false);
+                }}
+              />
             </div>
             {links.map((link) => {
               const active = isActive(link.link);

@@ -12,9 +12,7 @@ const nextConfig: NextConfig = {
 
 const withMDX = createMDX({
   options: {
-    // @ts-ignore wrong types
     remarkPlugins: [["remark-frontmatter"], ["remark-mdx-frontmatter"]],
-    // @ts-ignore wrong types
     rehypePlugins: [["rehype-highlight"]],
   },
 });
