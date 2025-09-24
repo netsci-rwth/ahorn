@@ -5,7 +5,6 @@ description = "Comprehensive repository of research-quality simplicial complex, 
 readme = "README.md"
 license = "AGPL-3.0-or-later"
 classifiers = [
-    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
     "Private :: Do Not Upload",
 ]
 requires-python = "==3.13.7"
