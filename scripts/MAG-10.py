@@ -6,32 +6,33 @@ References
 https://www.cs.cornell.edu/~arb/data/cat-edge-MAG-10/
 """
 
+import gzip
 import json
 import re
 from collections import Counter
 from itertools import chain
 from pathlib import Path
 
-import toponetx as tnx
 import yaml
 from more_itertools import first
 from rich.progress import track
 
+from .benson import load_benson_hyperedges
 from .utils.yaml import patch_dumper
 
 patch_dumper()
 
 root_dir = Path(__file__).parent.parent
-dataset_file = root_dir / "public" / "datasets" / "MAG-10.txt"
+dataset_file = root_dir / "public" / "datasets" / "MAG-10.txt.gz"
 datasheet_file = root_dir / "src" / "datasets" / "MAG-10.mdx"
 
-nodes, hyperedges = tnx.datasets.benson.load_benson_hyperedges(
+nodes, hyperedges = load_benson_hyperedges(
     root_dir / "data" / "cat-edge-MAG-10"
 )
 
 # write dataset file
 covered_nodes = set(chain.from_iterable(hyperedge.elements for hyperedge in hyperedges))
-with dataset_file.open("w") as f:
+with gzip.open(dataset_file, "wt") as f:
     f.write(json.dumps({"_format_version": "0.1"}) + "\n")
     for node in track(map(first, nodes), description="Writing nodes"):
         if node in covered_nodes:
