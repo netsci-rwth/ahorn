@@ -6,13 +6,14 @@ citation: |
     title={Hypergraph clustering: from blockmodels to modularity},
     author={Chodrow, Philip S and Veldt, Nate and Benson, Austin R},
     journal={Science Advances},
-    year={2021}
+    year={2021},
+    doi={10.1126/sciadv.abh1303}
   }
 network-type: hypergraph
 tags:
   - undirected
   - labelled nodes
-  - "source: benson"
+  - 'source: benson'
 related:
   - house-bills
   - senate-committees
@@ -24,8 +25,8 @@ shape:
   hyperedges: 341
 attachments:
   dataset:
-    url: house-committees.txt
-    size: 82750
+    url: https://zenodo.org/records/17202783/files/house-committees.txt?download=1
+    size: 82777
 ---
 
 import NodeLabelsChart from "@/components/chart/node-labels";
@@ -37,10 +38,7 @@ This is a hypergraph, where nodes are members of the US House of Representatives
 The dataset is derived from Congressional data compiled by Charles Stewart and Jonathan Woon.
 Each node is labeled with political party affiliation.
 
-<Alert type="warning">
-  In the original dataset, some nodes are repeated within hyperedges. This
-  version of the dataset has removed these duplicates.
-</Alert>
+<Alert type="warning">In the original dataset, some nodes are repeated within hyperedges. This version of the dataset has removed these duplicates.</Alert>
 
 ## Dataset Statistics
 
