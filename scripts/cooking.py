@@ -6,30 +6,31 @@ References
 https://www.cs.cornell.edu/~arb/data/cat-edge-Cooking/
 """
 
+import gzip
 import json
 import re
 from collections import Counter
 from pathlib import Path
 
-import toponetx as tnx
 import yaml
 from more_itertools import first
 from rich.progress import track
 
+from .benson import load_benson_hyperedges
 from .utils.yaml import patch_dumper
 
 patch_dumper()
 
 root_dir = Path(__file__).parent.parent
-dataset_file = root_dir / "public" / "datasets" / "cooking.txt"
+dataset_file = root_dir / "public" / "datasets" / "cooking.txt.gz"
 datasheet_file = root_dir / "src" / "datasets" / "cooking.mdx"
 
-nodes, hyperedges = tnx.datasets.benson.load_benson_hyperedges(
+nodes, hyperedges = load_benson_hyperedges(
     root_dir / "data" / "cat-edge-Cooking"
 )
 
 # write dataset file
-with dataset_file.open("w") as f:
+with gzip.open(dataset_file, "wt") as f:
     f.write(json.dumps({"_format_version": "0.1"}) + "\n")
     for node in track(nodes, description="Writing nodes"):
         f.write(str(first(node)) + ' {"ingredient": "' + node["name"] + '"}\n')
