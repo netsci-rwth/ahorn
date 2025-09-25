@@ -1,19 +1,23 @@
 ---
 title: Senate Committees
-source: https://www.cs.cornell.edu/~arb/data/amazon-reviews/
+source: https://www.cs.cornell.edu/~arb/data/senate-committees/
 citation: |
   @inproceedings{ni2019justifying,
     title={Justifying Recommendations using Distantly-Labeled Reviews and Fine-Grained Aspects},
     author={Ni, Jianmo and Li, Jiacheng and McAuley, Julian},
     booktitle={Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)},
     pages={188--197},
-    year={2019}
+    year={2019},
+    doi={10.18653/v1/D19-1018}
   }
 network-type: hypergraph
 tags:
   - undirected
   - labelled nodes
-  - "source: benson"
+  - 'source: benson'
+related:
+  - senate-bills
+  - house-committees
 label-count:
   Democrat: 140
   Republican: 142
@@ -22,8 +26,8 @@ shape:
   hyperedges: 315
 attachments:
   dataset:
-    url: senate-committees.txt
-    size: 26579
+    url: https://zenodo.org/records/17200512/files/senate-committees.txt?download=1
+    size: 26606
 ---
 
 import NodeLabelsChart from "@/components/chart/node-labels";
@@ -35,10 +39,7 @@ This is a hypergraph, where nodes are members of the US Senate, and hyperedges c
 The dataset is derived from Congressional data compiled by Charles Stewart and Jonathan Woon.
 Each node is labeled with political party affiliation.
 
-<Alert type="warning">
-  In the original dataset, some nodes are repeated within hyperedges. This
-  version of the dataset has removed these duplicates.
-</Alert>
+<Alert type="warning">In the original dataset, some nodes are repeated within hyperedges. This version of the dataset does not contain duplicates.</Alert>
 
 ## Dataset Statistics
 
