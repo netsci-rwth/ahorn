@@ -12,11 +12,11 @@ import re
 from collections import Counter
 from pathlib import Path
 
-import toponetx as tnx
 import yaml
 from more_itertools import first
 from rich.progress import track
 
+from .benson import load_benson_hyperedges
 from .utils.yaml import patch_dumper
 
 patch_dumper()
@@ -25,7 +25,7 @@ root_dir = Path(__file__).parent.parent
 dataset_file = root_dir / "public" / "datasets" / "trivago-clicks.txt.gz"
 datasheet_file = root_dir / "src" / "datasets" / "trivago-clicks.mdx"
 
-nodes, hyperedges = tnx.datasets.benson.load_benson_hyperedges(
+nodes, hyperedges = load_benson_hyperedges(
     root_dir / "data" / "trivago-clicks"
 )
 
