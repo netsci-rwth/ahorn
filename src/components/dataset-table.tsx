@@ -42,7 +42,7 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
   return (
     <div className="flex flex-col gap-8 md:flex-row">
       {/* Sidebar */}
-      <aside className="md:w-72 md:min-w-[18rem] md:pr-8 mb-8 md:mb-0">
+      <aside className="mb-8 md:mb-0 md:w-72 md:min-w-[18rem] md:pr-8">
         <div className="mb-6">
           <div className="mb-2 text-sm font-semibold text-gray-700">
             Filter by name:
@@ -108,7 +108,9 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
               filtered.map((dataset) => (
                 <tr key={dataset.slug}>
                   <td className="whitespace-nowrap py-4 pr-3 text-sm font-medium text-gray-900">
-                    <Link href={`/dataset/${dataset.slug}`}>{dataset.title}</Link>
+                    <Link href={`/dataset/${dataset.slug}`}>
+                      {dataset.title}
+                    </Link>
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     <div className="flex flex-wrap gap-2">

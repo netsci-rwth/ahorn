@@ -20,7 +20,7 @@ export function bibtexToApa(bibtex: string): [string, string][] {
   for (const citation of formattedCitations) {
     citation[1] = citation[1].replace(
       /(https?:\/\/doi\.org\/[^\s]+)/g,
-      '<a href="$1" target="_blank">$1</a>'
+      '<a href="$1" target="_blank">$1</a>',
     );
   }
 

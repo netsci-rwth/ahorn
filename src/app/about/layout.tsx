@@ -49,9 +49,9 @@ export default function AboutLayout({
   };
 
   return (
-    <div className="flex">
+    <div className="sm:flex">
       <aside>
-        <nav className="w-3xs flex flex-1 flex-col">
+        <nav className="sm:w-3xs flex flex-1 flex-col">
           <ul className="flex flex-1 flex-col gap-y-7">
             {Object.entries(links).map(([group_name, group]) => (
               <li key={group_name}>
@@ -92,36 +92,12 @@ export default function AboutLayout({
           </ul>
         </nav>
       </aside>
-      <main className="prose ml-10 max-w-none flex-1" data-pagefind-body>{children}</main>
+      <main
+        className="prose max-w-none flex-1 max-sm:mt-8 sm:ml-10"
+        data-pagefind-body
+      >
+        {children}
+      </main>
     </div>
   );
-  // return (
-  //   <div className="flex">
-  //     <aside className="w-48">
-  //       {Object.entries(links).map(([group_name, group]) => (
-  //         <Card key={group_name} className="w-48" title={group_name}>
-  //           <nav>
-  //             <ul className="space-y-4 text-base">
-  //               {group.map((link) => (
-  //                 <li key={link.href}>
-  //                   <Link
-  //                     href={link.href}
-  //                     className={classnames(
-  //                       "text-gray-800 hover:text-blue-600",
-  //                       {
-  //                         "font-medium": isActive(link.href),
-  //                       },
-  //                     )}
-  //                   >
-  //                     {link.label}
-  //                   </Link>
-  //                 </li>
-  //               ))}
-  //             </ul>
-  //           </nav>
-  //         </Card>
-  //       ))}
-  //     </aside>
-  //   </div>
-  // );
 }

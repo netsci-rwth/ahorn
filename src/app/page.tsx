@@ -48,22 +48,22 @@ export default function Home() {
               cell complex, and hypergraph datasets for higher-order network
               science.
             </p>
-            <div className="mt-10 flex items-center justify-center gap-x-6">
+            <div className="mt-10 flex items-center justify-center gap-x-4 sm:gap-x-6">
               <Link
                 href="/dataset"
-                className="bg-primary inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm"
+                className="bg-primary inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-white shadow-sm"
               >
                 Explore Datasets
               </Link>
               <Link
                 href="/about/contributing"
-                className="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-gray-900"
+                className="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-900"
               >
                 Contribute a Dataset
               </Link>
               <Link
                 href="/about"
-                className="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium text-gray-900"
+                className="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-900"
               >
                 Learn more <span aria-hidden="true">→</span>
               </Link>
@@ -101,11 +101,12 @@ export default function Home() {
           <a href="https://conf.netsci.rwth-aachen.de/">
             Higher Order Opportunities and Challenges
           </a>{" "}
-          workshop, which took place from the 11th to the 13th of August 2025
-          in Aachen, Germany. The repository is currently under development, and
-          we are actively working on expanding the dataset collection and
-          improving the user experience. <b>We welcome contributions from the community</b>, including dataset submissions, feedback, and suggestions
-          for improvement.
+          workshop, which took place from the 11th to the 13th of August 2025 in
+          Aachen, Germany. The repository is currently under development, and we
+          are actively working on expanding the dataset collection and improving
+          the user experience.{" "}
+          <b>We welcome contributions from the community</b>, including dataset
+          submissions, feedback, and suggestions for improvement.
         </p>
       </div>
     </>
