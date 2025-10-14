@@ -41,7 +41,7 @@
     "@types/mdx": "2.0.13",
     "@types/node": "22.18.10",
     "@types/react": "19.2.2",
-    "@types/react-dom": "19.2.1",
+    "@types/react-dom": "19.2.2",
     "eslint": "9.37.0",
     "eslint-config-next": "15.5.4",
     "eslint-config-prettier": "10.1.8",
