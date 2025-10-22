@@ -20,14 +20,16 @@ module:
 """
 
 import warnings
-from collections.abc import Callable, Iterable
 from itertools import chain
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from more_itertools import spy
-from toponetx.classes import Atom
+from toponetx.classes.complex import Atom  # noqa: TC002
 from toponetx.classes.simplex import Simplex
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Iterable
 
 __all__ = ["load_benson_hyperedges", "load_benson_simplices"]
 
