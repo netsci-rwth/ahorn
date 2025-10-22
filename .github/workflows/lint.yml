@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run ESLint
-        run: npx next lint
+        run: npm run lint
 
   ruff:
     runs-on: ubuntu-latest
