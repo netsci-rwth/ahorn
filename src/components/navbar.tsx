@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useEffect, useState, useCallback } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { addBasePath } from "next/dist/client/add-base-path";
@@ -60,12 +60,11 @@ const SearchBox = ({ onNavigate }: { onNavigate: () => void }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<React.ReactElement | string>("");
   const [results, setResults] = useState<SearchResult[]>([]);
-  const [isFocused, setIsFocused] = useState(false);
 
   const router = useRouter();
 
-  const performSearch = useCallback(
-    async (value: string) => {
+  useEffect(() => {
+    const queryResults = async (value: string) => {
       if (!value) {
         setResults([]);
         setError("");
@@ -109,13 +108,10 @@ const SearchBox = ({ onNavigate }: { onNavigate: () => void }) => {
         setError(String(e));
         setResults([]);
       }
-    },
-    [], // no external deps
-  );
+    };
 
-  useEffect(() => {
-    performSearch(query);
-  }, [query, performSearch]);
+    queryResults(query);
+  }, [query]);
 
   const handleSelect = (result: unknown) => {
     if (!result) {
@@ -133,6 +129,7 @@ const SearchBox = ({ onNavigate }: { onNavigate: () => void }) => {
       as="div"
       className="relative w-full sm:w-48 md:w-64"
       onChange={handleSelect}
+      immediate
     >
       <ComboboxInput
         aria-label="Search"
@@ -143,23 +140,12 @@ const SearchBox = ({ onNavigate }: { onNavigate: () => void }) => {
         placeholder="Search..."
         value={query}
         onChange={(event) => setQuery(event.currentTarget.value)}
-        onFocus={() => {
-          setIsFocused(true);
-          if (query) {
-            // ensure results are present/shown when focusing a non-empty field
-            performSearch(query);
-          }
-        }}
-        onBlur={() => {
-          setIsFocused(false);
-        }}
       />
       <ComboboxOptions
         as="ul"
         className="max-w-3xs z-50 rounded-md border border-gray-200 bg-white shadow-lg [--anchor-gap:6px]"
         aria-busy={isLoading}
         anchor="bottom"
-        static={isFocused && query.length > 0}
       >
         {isLoading && (
           <li className="flex items-center gap-2 px-3 py-2 text-sm text-gray-500">
