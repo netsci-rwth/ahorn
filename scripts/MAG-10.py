@@ -26,9 +26,7 @@ root_dir = Path(__file__).parent.parent
 dataset_file = root_dir / "public" / "datasets" / "MAG-10.txt.gz"
 datasheet_file = root_dir / "src" / "datasets" / "MAG-10.mdx"
 
-nodes, hyperedges = load_benson_hyperedges(
-    root_dir / "data" / "cat-edge-MAG-10"
-)
+nodes, hyperedges = load_benson_hyperedges(root_dir / "data" / "cat-edge-MAG-10")
 
 # write dataset file
 covered_nodes = set(chain.from_iterable(hyperedge.elements for hyperedge in hyperedges))

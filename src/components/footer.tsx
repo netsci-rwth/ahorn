@@ -30,6 +30,7 @@ const Footer = () => {
             target="_blank"
             className="text-gray-600 hover:text-gray-800"
           >
+            <span className="sr-only">GitHub</span>
             <FontAwesomeIcon icon={faGithub} className="inline h-5 w-5" />
           </a>
         </div>

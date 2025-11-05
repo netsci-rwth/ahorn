@@ -26,9 +26,7 @@ root_dir = Path(__file__).parent.parent
 dataset_file = root_dir / "public" / "datasets" / "mathoverflow-answers.txt.gz"
 datasheet_file = root_dir / "src" / "datasets" / "mathoverflow-answers.mdx"
 
-nodes, hyperedges = load_benson_hyperedges(
-    root_dir / "data" / "mathoverflow-answers"
-)
+nodes, hyperedges = load_benson_hyperedges(root_dir / "data" / "mathoverflow-answers")
 
 # write dataset file
 with gzip.open(dataset_file, "wt") as f:

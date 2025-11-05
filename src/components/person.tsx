@@ -13,9 +13,11 @@ export default function Person({ avatar, name, role, className }: PersonProps) {
   if (avatar) {
     avatar_element = (
       <Image
-        alt=""
         src={avatar}
-        className="size-16 rounded-full"
+        width={64}
+        height={64}
+        alt=""
+        className="rounded-full"
         role="presentation"
       />
     );

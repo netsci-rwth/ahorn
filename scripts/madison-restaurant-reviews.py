@@ -25,12 +25,8 @@ from .utils.yaml import patch_dumper
 patch_dumper()
 
 root_dir = Path(__file__).parent.parent
-dataset_file = (
-    root_dir / "public" / "datasets" / "madison-restaurant-reviews.txt"
-)
-datasheet_file = (
-    root_dir / "src" / "datasets" / "madison-restaurant-reviews.mdx"
-)
+dataset_file = root_dir / "public" / "datasets" / "madison-restaurant-reviews.txt"
+datasheet_file = root_dir / "src" / "datasets" / "madison-restaurant-reviews.mdx"
 
 nodes, hyperedges = load_benson_hyperedges(
     root_dir / "data" / "cat-edge-madison-restaurant-reviews"

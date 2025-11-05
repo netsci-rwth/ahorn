@@ -103,7 +103,7 @@ export default async function DatasetPage({
         </div>
       </div>
 
-      <aside className="lg:w-sm mt-8 flex w-full flex-shrink-0 flex-col gap-y-7 lg:ml-8 lg:mt-0">
+      <aside className="lg:w-sm mt-8 flex w-full shrink-0 flex-col gap-y-7 lg:ml-8 lg:mt-0">
         <section>
           <h2 className="mb-4 text-2xl font-bold text-gray-900 sm:hidden">
             Usage
@@ -142,7 +142,7 @@ export default async function DatasetPage({
                 <dd className="mt-2 text-sm text-gray-900 sm:mt-0">
                   <ul
                     role="list"
-                    className="border-1 divide-y divide-gray-100 rounded-md border-gray-200"
+                    className="border divide-y divide-gray-100 rounded-md border-gray-200"
                   >
                     {Object.entries(attachments).map(([key, attachment]) => {
                       const url = new URL(
@@ -200,7 +200,7 @@ export default async function DatasetPage({
           )}
 
         {frontmatter.citation && (
-          <Card title="Citation">
+          <Card title="Cite this Dataset">
             <ul className="divide-y divide-gray-200">
               {(await toApa(frontmatter.citation || "")).map((citation) => (
                 <li

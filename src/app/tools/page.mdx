@@ -1,0 +1,64 @@
+import Image from "next/image";
+import Link from "next/link";
+
+export const metadata = {
+  title: "Tools | AHORN - Aachen Higher-Order Repository of Networks",
+  description: "A collection of tools for analyzing and visualizing networks.",
+};
+
+export const tools = [
+  {
+    name: "TopoNetX",
+    logo: "images/tools/toponetx.webp",
+    description:
+      "A Python library for higher-order network analysis, supporting simplicial and cell complexes.",
+    link: "https://github.com/pyt-team/TopoNetX",
+  },
+  {
+    name: "HyperNetX",
+    logo: "images/tools/hypernetx.png",
+    description: "A Python library for hypergraph analysis and visualization.",
+    link: "https://hypernetx.readthedocs.io/en/latest/",
+  },
+];
+
+<div className="prose max-w-full dark:prose-invert"data-pagefind-body>
+
+# Tools
+
+## Interacting with AHORN
+
+If you want to programmatically interact with AHORN, we provide a JSON file that contains machine-readable data about all datasets in the repository. You can find it at <a href="https://ahorn.rwth-aachen.de/api/datasets.json" target="_blank" rel="noopener noreferrer">https://ahorn.rwth-aachen.de/api/datasets.json</a>.
+
+For a more convenient experience, we also provide the Python package [`ahorn-loader`](/about/ahorn-loader) for easy access to the AHORN API.
+
+## External Libraries
+
+<ul className="grid grid-cols-1 gap-10 pl-0 md:grid-cols-2">
+  {tools.map((tool) => (
+    <li key={tool.name} className="flex items-center gap-8 mt-0 mb-0 pl-0">
+      <a
+        href={tool.link}
+        target="_blank"
+        className="block"
+      >
+        <Image
+          src={tool.logo}
+          alt={tool.name + " logo"}
+          width={96}
+          height={96}
+          className="mt-0 mb-0 rounded-lg bg-white object-contain shadow-lg"
+          role="presentation"
+        />
+      </a>
+      <div className="prose">
+        <h3>
+          <a href={tool.link} target="_blank">{tool.name}</a>
+        </h3>
+        <p className="max-w-md">{tool.description}</p>
+      </div>
+    </li>
+  ))}
+</ul>
+
+</div>

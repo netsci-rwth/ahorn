@@ -143,7 +143,7 @@ const SearchBox = ({ onNavigate }: { onNavigate: () => void }) => {
       />
       <ComboboxOptions
         as="ul"
-        className="max-w-3xs z-50 rounded-md border border-gray-200 bg-white shadow-lg [--anchor-gap:6px]"
+        className="w-2xs z-50 rounded-md border border-gray-200 bg-white shadow-lg [--anchor-gap:6px]"
         aria-busy={isLoading}
         anchor="bottom"
       >

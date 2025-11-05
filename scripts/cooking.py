@@ -25,9 +25,7 @@ root_dir = Path(__file__).parent.parent
 dataset_file = root_dir / "public" / "datasets" / "cooking.txt.gz"
 datasheet_file = root_dir / "src" / "datasets" / "cooking.mdx"
 
-nodes, hyperedges = load_benson_hyperedges(
-    root_dir / "data" / "cat-edge-Cooking"
-)
+nodes, hyperedges = load_benson_hyperedges(root_dir / "data" / "cat-edge-Cooking")
 
 # write dataset file
 with gzip.open(dataset_file, "wt") as f:

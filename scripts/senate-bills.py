@@ -24,9 +24,7 @@ root_dir = Path(__file__).parent.parent
 dataset_file = root_dir / "public" / "datasets" / "senate-bills.txt"
 datasheet_file = root_dir / "src" / "datasets" / "senate-bills.mdx"
 
-nodes, hyperedges = load_benson_hyperedges(
-    root_dir / "data" / "senate-bills"
-)
+nodes, hyperedges = load_benson_hyperedges(root_dir / "data" / "senate-bills")
 
 # write dataset file
 with dataset_file.open("w") as f:

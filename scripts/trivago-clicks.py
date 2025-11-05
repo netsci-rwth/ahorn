@@ -25,9 +25,7 @@ root_dir = Path(__file__).parent.parent
 dataset_file = root_dir / "public" / "datasets" / "trivago-clicks.txt.gz"
 datasheet_file = root_dir / "src" / "datasets" / "trivago-clicks.mdx"
 
-nodes, hyperedges = load_benson_hyperedges(
-    root_dir / "data" / "trivago-clicks"
-)
+nodes, hyperedges = load_benson_hyperedges(root_dir / "data" / "trivago-clicks")
 
 # write dataset file
 with gzip.open(dataset_file, "wt") as f:
