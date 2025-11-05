@@ -5,7 +5,7 @@ import { Metadata } from "next";
 import DatasetTable from "@/components/dataset-table";
 
 export const metadata: Metadata = {
-  title: "Dataset List",
+  title: "Datasets | AHORN - Aachen Higher-Order Repository of Networks",
   description: "A list of all datasets available in the repository.",
 };
 
@@ -30,7 +30,7 @@ export default async function DatasetList() {
 
   return (
     <>
-      <h1 className="mb-6 text-3xl font-bold text-gray-900">Dataset List</h1>
+      <h1 className="mb-6 text-3xl font-bold text-gray-900">Datasets</h1>
       <DatasetTable datasets={datasets} />
     </>
   );
