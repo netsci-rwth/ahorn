@@ -1,6 +1,9 @@
 declare module "@citation-js/core" {
   export class Cite {
     constructor(input: string | object);
+
+    static async async(input: string | object): Promise<Cite>;
+
     format(
       type: string,
       options?: {

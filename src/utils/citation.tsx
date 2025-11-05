@@ -1,9 +1,10 @@
 import { Cite } from "@citation-js/core";
 import "@citation-js/plugin-bibtex";
 import "@citation-js/plugin-csl";
+import "@citation-js/plugin-doi";
 
-export function bibtexToApa(bibtex: string): [string, string][] {
-  const citations = new Cite(bibtex);
+export async function toApa(bibtex: string): Promise<[string, string][]> {
+  const citations = await Cite.async(bibtex);
   const formattedCitations = citations.format("bibliography", {
     template: "apa",
     lang: "en-US",

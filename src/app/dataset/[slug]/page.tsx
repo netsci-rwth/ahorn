@@ -12,7 +12,7 @@ import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 import Tag from "@/components/tag";
 import Card from "@/components/card";
 
-import { bibtexToApa } from "@/utils/citation";
+import { toApa } from "@/utils/citation";
 import { formatFileSize } from "@/utils/format";
 
 const lowlight = createLowlight({ bash });
@@ -202,7 +202,7 @@ export default async function DatasetPage({
         {frontmatter.citation && (
           <Card title="Citation">
             <ul className="divide-y divide-gray-200">
-              {bibtexToApa(frontmatter.citation || "").map((citation) => (
+              {(await toApa(frontmatter.citation || "")).map((citation) => (
                 <li
                   key={citation[0]}
                   className="prose px-6 py-4"
