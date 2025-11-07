@@ -12,7 +12,8 @@ export const metadata: Metadata = {
 export default async function DatasetList() {
   const datasetsDir = path.join(process.cwd(), "src", "datasets");
   const filenames = await fs.promises.readdir(datasetsDir);
-  const datasets = await Promise.all(
+
+  let datasets = await Promise.all(
     filenames
       .filter((f) => f.endsWith(".mdx"))
       .map(async (filename) => {
@@ -26,6 +27,11 @@ export default async function DatasetList() {
           tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],
         };
       }),
+  );
+
+  // sort datasets by case-insensitive title
+  datasets = datasets.sort((a, b) =>
+    a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
   );
 
   return (
