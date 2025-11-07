@@ -3,6 +3,7 @@ import "./globals.css";
 
 import Footer from "../components/footer";
 import Navbar from "../components/navbar";
+import React from "react";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,9 +19,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="flex flex-col min-h-screen">
         <Navbar />
-        <main className="mx-auto max-w-7xl px-6 py-12">{children}</main>
+        <main className="mx-auto max-w-7xl grow px-6 py-12">{children}</main>
         <Footer />
       </body>
     </html>
