@@ -71,6 +71,3 @@ ignore = [
 
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
-
-[tool.uv.sources]
-toponetx = { git = "https://github.com/pyt-team/TopoNetX", branch = "main" }
