@@ -1,0 +1,132 @@
+---
+title: coauth-DBLP
+source: https://www.cs.cornell.edu/~arb/data/coauth-DBLP/
+citation:
+  - 10.1073/pnas.1800683115
+tags:
+- undirected
+- weighted
+- temporal
+- 'source: benson'
+related:
+- coauth-MAG-Geology
+- coauth-MAG-History
+statistics:
+  num-nodes: 1930378
+  num-edges: 3700681
+attachments:
+  dataset:
+    url: https://zenodo.org/records/17600531/files/coauth-DBLP.txt.gz?download=1
+    size: 56430542
+shape:
+  '1936': 12
+  '1937': 15
+  '1938': 10
+  '1939': 18
+  '1940': 10
+  '1941': 13
+  '1942': 13
+  '1943': 8
+  '1944': 5
+  '1945': 9
+  '1946': 31
+  '1947': 10
+  '1948': 15
+  '1949': 23
+  '1950': 24
+  '1951': 19
+  '1952': 34
+  '1953': 110
+  '1954': 158
+  '1955': 149
+  '1956': 206
+  '1957': 241
+  '1958': 267
+  '1959': 453
+  '1960': 422
+  '1961': 625
+  '1962': 934
+  '1963': 794
+  '1964': 792
+  '1965': 950
+  '1966': 1114
+  '1967': 1432
+  '1968': 1853
+  '1969': 1728
+  '1970': 1770
+  '1971': 2354
+  '1972': 2805
+  '1973': 3274
+  '1974': 3806
+  '1975': 3956
+  '1976': 4526
+  '1977': 4983
+  '1978': 5211
+  '1979': 5674
+  '1980': 6542
+  '1981': 6919
+  '1982': 7823
+  '1983': 8872
+  '1984': 10450
+  '1985': 11115
+  '1986': 13310
+  '1987': 14193
+  '1988': 16851
+  '1989': 19441
+  '1990': 22042
+  '1991': 25495
+  '1992': 28536
+  '1993': 34199
+  '1994': 38832
+  '1995': 40595
+  '1996': 44632
+  '1997': 48995
+  '1998': 54647
+  '1999': 61149
+  '2000': 69770
+  '2001': 74829
+  '2002': 83979
+  '2003': 99950
+  '2004': 120798
+  '2005': 140719
+  '2006': 154734
+  '2007': 171399
+  '2008': 182456
+  '2009': 197999
+  '2010': 206216
+  '2011': 223560
+  '2012': 234714
+  '2013': 244861
+  '2014': 253433
+  '2015': 262361
+  '2016': 267067
+  '2017': 146176
+  '2018': 166
+---
+
+import Alert from "@/components/alert";
+import Stat from "@/components/stat";
+import LineChart from "@/components/chart/line-chart";
+import { formatNumber } from "@/utils/format";
+
+This is a temporal higher-order network dataset, which here means a sequence of timestamped simplices where each simplex is a set of nodes.
+In this dataset, nodes are authors and a simplex is a publication recorded on DBLP.
+Timestamps are the year of publication.
+
+<Alert type="warning">In the original dataset, some nodes are repeated within hyperedges. This version of the dataset has removed these duplicates.</Alert>
+
+## Dataset Statistics
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
+  <Stat title="Node Type" value="Author" />
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+  />
+  <Stat title="Hyperedge Type" value="Co-authored" />
+</dl>
+
+## Hyperedges
+
+<LineChart data={frontmatter.shape} minUnit="year" />

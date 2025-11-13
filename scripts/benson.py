@@ -152,7 +152,11 @@ def _infer_hyperedge_filenames(
 
 
 def _attach_labels(
-    file: Iterable[str], atoms: Iterable[Atom], label_list: list[str] | None
+    file: Iterable[str],
+    atoms: Iterable[Atom],
+    label_list: list[str] | None,
+    *,
+    label_name: str = "label",
 ) -> None:
     """Attach labels to atoms from a file.
 
@@ -164,20 +168,26 @@ def _attach_labels(
         A dictionary mapping node IDs to `Atom` instances.
     label_list : list[str] | None
         A list of label names, if available. If `None`, labels are not mapped.
+    label_name : str, default="label
+        The name of the label attribute to attach to the atoms.
     """
-    label_fn: Callable[[str], Any] = (
-        (lambda x: label_list[int(x) - 1]) if label_list is not None else lambda x: x
-    )
+
+    def label_fn(x: int | str) -> Any:
+        if label_list is not None:
+            return label_list[int(x) - 1]
+        if isinstance(x, str):
+            return x.strip()
+        return x
 
     first_lines, file_iter = spy(file, 10)
-    is_multilabel = any("," in line for line in first_lines)
+    is_multilabel = any(isinstance(line, str) and "," in line for line in first_lines)
 
     if is_multilabel:
         for atom, line in zip(atoms, file_iter, strict=True):
-            atom["label"] = [label_fn(label) for label in line.strip().split(",")]
+            atom[label_name] = [label_fn(label) for label in line.strip().split(",")]
     else:
         for atom, line in zip(atoms, file_iter, strict=True):
-            atom["label"] = label_fn(line.strip())
+            atom[label_name] = label_fn(line)
 
 
 def load_benson_hyperedges(folder: Path | str) -> tuple[list[Simplex], list[Simplex]]:
@@ -328,16 +338,71 @@ def load_benson_simplices(folder: Path | str) -> list[Simplex]:
         (folder / f"{name}-nverts.txt").open() as num_vertices_file,
         (folder / f"{name}-simplices.txt").open() as simplices_file,
     ):
-        simplices = [
-            Simplex([int(simplices_file.readline()) for _ in range(simplex_size)])
-            for simplex_size in map(int, num_vertices_file)
-        ]
+        simplices = []
+        for simplex_size in map(int, num_vertices_file):
+            elements = [
+                int(simplices_file.readline().strip()) for _ in range(simplex_size)
+            ]
+
+            seen = set()
+            duplicates = {x for x in elements if x in seen or seen.add(x)}
+            if duplicates:
+                warnings.warn(
+                    f"Hyperedge contains duplicate nodes: {duplicates}. TopoNetX ignores them.",
+                    UserWarning,
+                    stacklevel=2,
+                )
+
+            simplices.append(Simplex(seen))
+
+    if (folder / f"{name}-simplex-labels.txt").exists():
+        with (folder / f"{name}-simplex-labels.txt").open() as labels_file:
+            simplex_labels = labels_file.readlines()
+        _attach_labels(simplex_labels, simplices, None)
 
     if (folder / f"{name}-times.txt").exists():
         with (folder / f"{name}-times.txt").open() as times_file:
             simplex_times = [int(line) for line in times_file]
-        for time, simplex in zip(simplex_times, simplices, strict=True):
-            simplex["time"] = time
+        _attach_labels(simplex_times, simplices, None, label_name="time")
         simplices = sorted(simplices, key=lambda simplex: simplex["time"])
 
     return simplices
+
+
+def load_benson_sc_nodes(folder: Path | str) -> list[Simplex]:
+    """Load nodes of a simplicial complex from the Benson dataset format.
+
+    Parameters
+    ----------
+    folder : Path | str
+        Path to the folder containing the dataset.
+
+    Returns
+    -------
+    list[Simplex]
+        List of nodes in the dataset, each represented as a `Simplex` with a single
+        vertex and associated name and label.
+
+    Raises
+    ------
+    ValueError
+        If the folder does not exist or is not in the expected format.
+    """
+    if not isinstance(folder, Path):
+        folder = Path(folder)
+
+    node_labels_file = folder / f"{folder.name}-node-labels.txt"
+
+    with (folder / node_labels_file).open() as file:
+        node_labels = file.readlines()
+
+        # sometimes the lines start with the node id, which is redundant
+        for i, node_label in enumerate(node_labels):
+            parts = node_label.strip().split(maxsplit=1)
+            if len(parts) == 2 and parts[0].isdigit() and parts[0] == str(i + 1):
+                node_labels[i] = parts[1]
+
+        nodes = [Simplex([i]) for i in range(1, len(node_labels) + 1)]
+        _attach_labels(node_labels, nodes, None)
+
+    return nodes
