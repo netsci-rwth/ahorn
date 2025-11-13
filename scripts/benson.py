@@ -29,7 +29,7 @@ from toponetx.classes.complex import Atom  # noqa: TC002
 from toponetx.classes.simplex import Simplex
 
 if TYPE_CHECKING:
-    from collections.abc import Callable, Iterable
+    from collections.abc import Iterable
 
 __all__ = ["load_benson_hyperedges", "load_benson_simplices"]
 
