@@ -79,7 +79,6 @@ const TemporalShapeChart = ({
   maxUnit: maxUnit = "year",
 }: TemporalShapeChartProps) => {
   const [timeUnit, setTimeUnit] = useState<TimeUnit>(minUnit);
-  const [aggregatedData, setAggregatedData] = useState<AggregatedData>({});
 
   const maxRanks = Math.max(...Object.values(shape).map((arr) => arr.length));
 
@@ -88,61 +87,52 @@ const TemporalShapeChart = ({
   const maxIdx = allowedTimeUnits.indexOf(maxUnit);
   const selectableUnits = allowedTimeUnits.slice(minIdx, maxIdx + 1);
 
-  // Function to aggregate data based on timeUnit
-  useEffect(() => {
-    const aggregateData = () => {
-      const groupedData: { [key: string]: number[] } = {};
+  // aggregate data based on timeUnit
+  const aggregatedData: { [key: string]: number[] } = {};
+  Object.entries(shape).forEach(([dateStr, values]) => {
+    const date = parse(dateStr, "yyyy-MM-dd HH:mm:ss", new Date());
 
-      Object.entries(shape).forEach(([dateStr, values]) => {
-        const date = parse(dateStr, "yyyy-MM-dd HH:mm:ss", new Date());
+    // Get the start of the period based on selected time unit
+    let periodStart;
+    switch (timeUnit) {
+      case "hour":
+        periodStart = startOfHour(date);
+        break;
+      case "day":
+        periodStart = startOfDay(date);
+        break;
+      case "week":
+        periodStart = startOfWeek(date);
+        break;
+      case "month":
+        periodStart = startOfMonth(date);
+        break;
+      case "quarter":
+        periodStart = startOfQuarter(date);
+        break;
+      case "year":
+        periodStart = startOfYear(date);
+        break;
+      default:
+        periodStart = startOfMonth(date);
+    }
 
-        // Get the start of the period based on selected time unit
-        let periodStart;
-        switch (timeUnit) {
-          case "hour":
-            periodStart = startOfHour(date);
-            break;
-          case "day":
-            periodStart = startOfDay(date);
-            break;
-          case "week":
-            periodStart = startOfWeek(date);
-            break;
-          case "month":
-            periodStart = startOfMonth(date);
-            break;
-          case "quarter":
-            periodStart = startOfQuarter(date);
-            break;
-          case "year":
-            periodStart = startOfYear(date);
-            break;
-          default:
-            periodStart = startOfMonth(date);
-        }
+    // Format key based on time unit
+    let periodKey;
+    if (timeUnit === "hour") {
+      periodKey = format(periodStart, "yyyy-MM-dd HH:00");
+    } else {
+      periodKey = format(periodStart, "yyyy-MM-dd");
+    }
 
-        // Format key based on time unit
-        let periodKey;
-        if (timeUnit === "hour") {
-          periodKey = format(periodStart, "yyyy-MM-dd HH:00");
-        } else {
-          periodKey = format(periodStart, "yyyy-MM-dd");
-        }
+    if (!aggregatedData[periodKey]) {
+      aggregatedData[periodKey] = Array(maxRanks).fill(0);
+    }
 
-        if (!groupedData[periodKey]) {
-          groupedData[periodKey] = Array(maxRanks).fill(0);
-        }
-
-        for (let i = 0; i < maxRanks; i++) {
-          groupedData[periodKey][i] += values[i] || 0;
-        }
-      });
-
-      setAggregatedData(groupedData);
-    };
-
-    aggregateData();
-  }, [shape, timeUnit, maxRanks]);
+    for (let i = 0; i < maxRanks; i++) {
+      aggregatedData[periodKey][i] += values[i] || 0;
+    }
+  });
 
   const chart_options = {
     responsive: true,

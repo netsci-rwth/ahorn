@@ -82,71 +82,66 @@ export default function LineChart({
   maxUnit = "year",
 }: LineChartProps) {
   const [timeUnit, setTimeUnit] = useState<TimeUnit>(minUnit);
-  const [aggregatedData, setAggregatedData] = useState<AggregatedData>({});
 
   // Compute allowed units based on min_unit and max_unit
   const minIdx = allowedTimeUnits.indexOf(minUnit);
   const maxIdx = allowedTimeUnits.indexOf(maxUnit);
   const selectableUnits = allowedTimeUnits.slice(minIdx, maxIdx + 1);
 
-  // Function to aggregate data based on timeUnit
-  useEffect(() => {
-    let groupedData: { [key: string]: number } = {};
+  // aggregate data based on timeUnit
+  let aggregatedData: { [key: string]: number } = {};
 
-    if (selectableUnits.length > 1) {
-      Object.entries(data).forEach(([dateStr, values]) => {
-        let date;
-        if (dateStr.length == 4) {
-          date = parse(dateStr, "yyyy", new Date());
-        } else {
-          date = parse(dateStr, "yyyy-MM-dd", new Date());
-        }
+  if (selectableUnits.length > 1) {
+    Object.entries(data).forEach(([dateStr, values]) => {
+      let date;
+      if (dateStr.length == 4) {
+        date = parse(dateStr, "yyyy", new Date());
+      } else {
+        date = parse(dateStr, "yyyy-MM-dd", new Date());
+      }
 
-        // Get the start of the period based on selected time unit
-        let periodStart;
-        switch (timeUnit) {
-          case "hour":
-            periodStart = startOfHour(date);
-            break;
-          case "day":
-            periodStart = startOfDay(date);
-            break;
-          case "week":
-            periodStart = startOfWeek(date);
-            break;
-          case "month":
-            periodStart = startOfMonth(date);
-            break;
-          case "quarter":
-            periodStart = startOfQuarter(date);
-            break;
-          case "year":
-            periodStart = startOfYear(date);
-            break;
-          default:
-            periodStart = startOfMonth(date);
-        }
+      // Get the start of the period based on selected time unit
+      let periodStart;
+      switch (timeUnit) {
+        case "hour":
+          periodStart = startOfHour(date);
+          break;
+        case "day":
+          periodStart = startOfDay(date);
+          break;
+        case "week":
+          periodStart = startOfWeek(date);
+          break;
+        case "month":
+          periodStart = startOfMonth(date);
+          break;
+        case "quarter":
+          periodStart = startOfQuarter(date);
+          break;
+        case "year":
+          periodStart = startOfYear(date);
+          break;
+        default:
+          periodStart = startOfMonth(date);
+      }
 
-        // Format key based on time unit
-        let periodKey;
-        if (timeUnit === "hour") {
-          periodKey = format(periodStart, "yyyy-MM-dd HH:00");
-        } else {
-          periodKey = format(periodStart, "yyyy-MM-dd");
-        }
+      // Format key based on time unit
+      let periodKey;
+      if (timeUnit === "hour") {
+        periodKey = format(periodStart, "yyyy-MM-dd HH:00");
+      } else {
+        periodKey = format(periodStart, "yyyy-MM-dd");
+      }
 
-        if (!groupedData[periodKey]) {
-          groupedData[periodKey] = 0;
-        }
+      if (!aggregatedData[periodKey]) {
+        aggregatedData[periodKey] = 0;
+      }
 
-        groupedData[periodKey] += values;
-      });
-    } else {
-      groupedData = data;
-    }
-
-    setAggregatedData(groupedData);
-  }, [data, timeUnit]);
+      aggregatedData[periodKey] += values;
+    });
+  } else {
+    aggregatedData = data;
+  }
 
   const chart_options = {
     responsive: true,
