@@ -24,10 +24,17 @@ export default async function DatasetList() {
             typeof frontmatter.title === "string"
               ? frontmatter.title
               : path.parse(filename).name,
+          disable: frontmatter.disable === true,
           tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],
+          statistics: {
+            numNodes: frontmatter.statistics?.["num-nodes"] ?? 0,
+          }
         };
       }),
   );
+
+  // filter out disabled datasets
+  datasets = datasets.filter((d) => !d.disable);
 
   // sort datasets by case-insensitive title
   datasets = datasets.sort((a, b) =>

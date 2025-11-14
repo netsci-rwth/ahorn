@@ -8,6 +8,9 @@ type Dataset = {
   slug: string;
   title: string;
   tags: string[];
+  statistics: {
+    numNodes: number;
+  };
 };
 
 export type DatasetTableProps = {
@@ -89,6 +92,9 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
               <th className="px-3 py-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
                 Name
               </th>
+              <th className="text-right px-3 py-3 text-sm font-semibold text-gray-900">
+                |V|
+              </th>
               <th className="px-3 py-3 text-left text-sm font-semibold text-gray-900">
                 Tags
               </th>
@@ -111,6 +117,9 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
                     <Link href={`/dataset/${dataset.slug}`}>
                       {dataset.title}
                     </Link>
+                  </td>
+                  <td className="text-right whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    {dataset.statistics.numNodes.toLocaleString()}
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     <div className="flex flex-wrap gap-2">

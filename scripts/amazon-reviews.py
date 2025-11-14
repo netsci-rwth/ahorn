@@ -59,10 +59,11 @@ frontmatter["attachments"] = {
     }
 }
 
-frontmatter["shape"] = {
-    "nodes": len(nodes),
-    "hyperedges": len(hyperedges),
+frontmatter["statistics"] = {
+    "num-nodes": len(nodes),
+    "num-edges": len(hyperedges),
 }
+
 frontmatter["label-count"] = dict(label_counts)
 
 with datasheet_file.open("w") as f:

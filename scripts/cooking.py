@@ -64,6 +64,10 @@ frontmatter["attachments"] = {
     }
 }
 
+frontmatter["statistics"] = {
+    "num-nodes": len(nodes),
+}
+
 frontmatter["shape"] = {
     "nodes": len(nodes),
     "hyperedges": len(hyperedges),

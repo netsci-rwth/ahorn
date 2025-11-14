@@ -16,6 +16,9 @@ tags:
   - labelled nodes
   - reviews
   - 'source: benson'
+statistics:
+  num-nodes: 2268264
+  num-edges: 4285363
 attachments:
   dataset:
     url: https://zenodo.org/records/17202002/files/amazon-reviews.txt.gz?download=1
@@ -50,9 +53,6 @@ label-count:
   Magazine_Subscriptions: 157
   All_Beauty: 85
   Amazon_Fashion: 31
-shape:
-  nodes: 2268264
-  hyperedges: 4285363
 ---
 
 import NodeLabelsChart from "@/components/chart/node-labels";
@@ -65,11 +65,11 @@ Nodes are labeled by their product categories.
 ## Dataset Statistics
 
 <dl className="not-prose grid gap-5 sm:grid-cols-2">
-  <Stat title="Nodes" value={formatNumber(frontmatter["shape"]["nodes"])} />
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
   <Stat title="Node Type" value="Product" />
   <Stat
     title="Hyperedges"
-    value={formatNumber(frontmatter["shape"]["hyperedges"])}
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
   />
   <Stat title="Hyperedge Type" value="Co-purchased Products" />
 </dl>

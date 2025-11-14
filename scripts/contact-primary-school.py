@@ -10,12 +10,14 @@ import json
 import re
 from collections import defaultdict
 from datetime import UTC, datetime
+from itertools import chain
 from pathlib import Path
 
 import toponetx as tnx
 import yaml
 from rich.progress import track
 
+from .benson import load_benson_simplices
 from .utils.yaml import patch_dumper
 
 patch_dumper()
@@ -24,9 +26,8 @@ root_dir = Path(__file__).parent.parent
 dataset_file = root_dir / "public" / "datasets" / "contact-primary-school.txt"
 datasheet_file = root_dir / "src" / "datasets" / "contact-primary-school.mdx"
 
-simplices = tnx.datasets.load_benson_simplices(
-    root_dir / "data" / "contact-primary-school"
-)
+simplices = load_benson_simplices(root_dir / "data" / "contact-primary-school")
+nodes = set(chain.from_iterable(simplex.elements for simplex in simplices))
 
 # write dataset file
 with dataset_file.open("w") as f:
@@ -71,6 +72,8 @@ if frontmatter_match:
 else:
     frontmatter = {}
     body = content
+
+frontmatter["statistics"] = {"num-nodes": len(nodes)}
 
 frontmatter["attachments"] = {
     "dataset": {
