@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import {
   Chart as ChartJS,
@@ -9,7 +9,6 @@ import {
   LinearScale,
   CategoryScale,
   Colors,
-  BarElement,
   Title,
   Tooltip,
   Legend,
@@ -51,10 +50,6 @@ const allowedTimeUnits = [
   "year",
 ] as const;
 type TimeUnit = (typeof allowedTimeUnits)[number];
-
-interface AggregatedData {
-  [key: string]: number;
-}
 
 /**
  * Props for the TemporalShapeChart component.
