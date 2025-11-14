@@ -40,10 +40,10 @@ export default function Home() {
           </div> */}
 
           <div className="text-center">
-            <h1 className="text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl">
+            <h1 className="text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl dark:text-white">
               Aachen Higher-Order Repository of Networks
             </h1>
-            <p className="mt-8 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8">
+            <p className="mt-8 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8 dark:text-gray-300">
               Comprehensive repository of research-quality simplicial complex,
               cell complex, and hypergraph datasets for higher-order network
               science.
@@ -51,19 +51,19 @@ export default function Home() {
             <div className="mt-10 flex items-center justify-center gap-x-4 sm:gap-x-6">
               <Link
                 href="/dataset"
-                className="inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-medium text-white shadow-sm"
+                className="inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-medium text-white shadow-sm dark:text-white"
               >
                 Explore Datasets
               </Link>
               <Link
                 href="/about/contributing"
-                className="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-900"
+                className="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-900 dark:text-gray-100"
               >
                 Contribute a Dataset
               </Link>
               <Link
                 href="/about"
-                className="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-900"
+                className="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-900 dark:text-gray-100"
               >
                 Learn more <span aria-hidden="true">→</span>
               </Link>
@@ -84,7 +84,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="prose max-w-none">
+      <div className="prose max-w-none dark:prose-invert">
         <h2>What is AHORN?</h2>
         <p>
           AHORN is a repository of higher-order network datasets, providing
@@ -98,7 +98,10 @@ export default function Home() {
         <h2>Work in Progress</h2>
         <p>
           AHORN was introduced at the{" "}
-          <a href="https://conf.netsci.rwth-aachen.de/">
+          <a
+            href="https://conf.netsci.rwth-aachen.de/"
+            className="text-primary dark:text-primary-light"
+          >
             Higher Order Opportunities and Challenges
           </a>{" "}
           workshop, which took place from the 11th to the 13th of August 2025 in

@@ -87,7 +87,7 @@ export default async function DatasetPage({
       data-pagefind-body
     >
       <div className="min-w-0 flex-1">
-        <h1 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+        <h1 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight dark:text-gray-100">
           {frontmatter.title}
         </h1>
         {frontmatter.tags.length > 0 && (
@@ -98,14 +98,14 @@ export default async function DatasetPage({
           </div>
         )}
 
-        <div className="prose mt-6 max-w-none">
+        <div className="prose mt-6 max-w-none dark:prose-invert">
           <Dataset />
         </div>
       </div>
 
       <aside className="mt-8 flex w-full shrink-0 flex-col gap-y-7 lg:mt-0 lg:ml-8 lg:w-sm">
         <section>
-          <h2 className="mb-4 text-2xl font-bold text-gray-900 sm:hidden">
+          <h2 className="mb-4 text-2xl font-bold text-gray-900 sm:hidden dark:text-gray-100">
             Usage
           </h2>
           <pre className="overflow-x-auto rounded bg-gray-900 p-4 text-sm text-gray-100">
@@ -119,10 +119,12 @@ export default async function DatasetPage({
         </section>
 
         <Card title="Source Information">
-          <dl className="divide-y divide-gray-200">
+          <dl className="divide-y divide-gray-200 dark:divide-gray-700">
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-900">Source</dt>
-              <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
+              <dt className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                Source
+              </dt>
+              <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-300">
                 <a href={frontmatter.source} target="_blank">
                   {frontmatter.source}
                 </a>
@@ -130,21 +132,23 @@ export default async function DatasetPage({
             </div>
             {frontmatter.license && (
               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-900">License</dt>
-                <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
+                <dt className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                  License
+                </dt>
+                <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-300">
                   {frontmatter.license}
                 </dd>
               </div>
             )}
             {attachments && (
               <div className="px-4 py-6 sm:grid sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-900">
+                <dt className="text-sm font-medium text-gray-900 dark:text-gray-100">
                   Attachments
                 </dt>
-                <dd className="mt-2 text-sm text-gray-900 sm:mt-0">
+                <dd className="mt-2 text-sm text-gray-900 sm:mt-0 dark:text-gray-100">
                   <ul
                     role="list"
-                    className="divide-y divide-gray-100 rounded-md border border-gray-200"
+                    className="divide-y divide-gray-100 rounded-md border border-gray-200 dark:divide-gray-700 dark:border-gray-700"
                   >
                     {Object.entries(attachments).map(([key, attachment]) => {
                       const url = new URL(
@@ -157,17 +161,17 @@ export default async function DatasetPage({
                           <a
                             href={url.href}
                             download
-                            className="flex w-0 flex-1 items-center p-4 hover:bg-gray-50"
+                            className="flex w-0 flex-1 items-center p-4 hover:bg-gray-50 dark:hover:bg-gray-800"
                           >
                             <FontAwesomeIcon
                               icon={faPaperclip}
-                              className="size-5 shrink-0 text-gray-400"
+                              className="size-5 shrink-0 text-gray-400 dark:text-gray-500"
                             />
                             <div className="ml-4 flex min-w-0 flex-1 gap-2">
                               <span className="truncate font-medium">
                                 {name}
                               </span>
-                              <span className="shrink-0 text-gray-400">
+                              <span className="shrink-0 text-gray-400 dark:text-gray-500">
                                 {formatFileSize(attachment.size)}
                               </span>
                             </div>
@@ -186,7 +190,7 @@ export default async function DatasetPage({
           Array.isArray(frontmatter.related) &&
           frontmatter.related.length > 0 && (
             <Card title="Related Datasets" data-pagefind-ignore>
-              <ul className="divide-y divide-gray-200">
+              <ul className="divide-y divide-gray-200 dark:divide-gray-700">
                 {related_datasets.map(({ slug, title }) => (
                   <li key={slug} className="px-6 py-3">
                     <Link
@@ -203,16 +207,16 @@ export default async function DatasetPage({
 
         {frontmatter.citation && (
           <Card title="Cite this Dataset">
-            <ul className="divide-y divide-gray-200">
+            <ul className="divide-y divide-gray-200 dark:divide-gray-700">
               {(await toApa(frontmatter.citation || "")).map((citation) => (
                 <li
                   key={citation[0]}
-                  className="prose px-6 py-4"
+                  className="prose px-6 py-4 dark:prose-invert"
                   dangerouslySetInnerHTML={{ __html: citation[1] }}
                 />
               ))}
             </ul>
-            <div className="rounded-b-md border-t border-gray-200 bg-gray-50 px-6 py-3 text-xs text-gray-500">
+            <div className="rounded-b-md border-t border-gray-200 bg-gray-50 px-6 py-3 text-xs text-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400">
               If you use this dataset, please ensure you cite it appropriately
               in your work.
             </div>

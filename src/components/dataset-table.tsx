@@ -73,7 +73,7 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
       {/* Sidebar */}
       <aside className="mb-8 flex flex-col gap-y-8 md:mb-0 md:w-72 md:min-w-[18rem] md:pr-8">
         <div>
-          <div className="mb-2 text-sm font-semibold text-gray-700">
+          <div className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
             Filter by name:
           </div>
           <input
@@ -81,11 +81,11 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search datasets..."
-            className="block w-full rounded-md border border-gray-300 bg-white py-1.5 pr-3 pl-3 text-sm placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+            className="block w-full rounded-md border border-gray-300 bg-white py-1.5 pr-3 pl-3 text-sm text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
           />
         </div>
         <div>
-          <div className="mb-2 text-sm font-semibold text-gray-700">
+          <div className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
             Filter by node size (|V|):
           </div>
           <MultiRangeSlider
@@ -98,7 +98,7 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
           />
         </div>
         <div>
-          <div className="mb-2 text-sm font-semibold text-gray-700">
+          <div className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
             Filter by tag:
           </div>
           <ul className="flex flex-wrap gap-3">
@@ -109,7 +109,7 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
                   type="checkbox"
                   checked={selectedTags.includes(tag)}
                   onChange={() => handleTagChange(tag)}
-                  className="rounded border-gray-300 text-primary focus:ring-primary"
+                  className="rounded border-gray-300 bg-white text-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:focus:ring-primary"
                 />
                 <label
                   htmlFor={`tag-${tag}`}
@@ -124,27 +124,27 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
       </aside>
 
       {/* Table */}
-      <div className="flex-1 w-full overflow-x-auto">
-        <table className="w-full divide-y divide-gray-300">
+      <div className="w-full flex-1 overflow-x-auto">
+        <table className="w-full divide-y divide-gray-300 dark:divide-gray-700">
           <thead>
             <tr>
-              <th className="px-3 py-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+              <th className="px-3 py-3 text-left text-sm font-semibold text-gray-900 sm:pl-0 dark:text-gray-100">
                 Name
               </th>
-              <th className="px-3 py-3 text-right text-sm font-semibold text-gray-900">
+              <th className="px-3 py-3 text-right text-sm font-semibold text-gray-900 dark:text-gray-100">
                 |V|
               </th>
-              <th className="px-3 py-3 text-left text-sm font-semibold text-gray-900">
+              <th className="px-3 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
                 Tags
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
             {filtered.length === 0 ? (
               <tr>
                 <td
                   colSpan={3}
-                  className="py-12 text-center text-sm text-gray-400"
+                  className="py-12 text-center text-sm text-gray-400 dark:text-gray-500"
                 >
                   No datasets found matching your search and filter.
                 </td>
@@ -152,15 +152,15 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
             ) : (
               filtered.map((dataset) => (
                 <tr key={dataset.slug}>
-                  <td className="py-4 pr-3 text-sm font-medium whitespace-nowrap text-gray-900">
+                  <td className="py-4 pr-3 text-sm font-medium whitespace-nowrap text-gray-900 dark:text-gray-100">
                     <Link href={`/dataset/${dataset.slug}`}>
                       {dataset.title}
                     </Link>
                   </td>
-                  <td className="px-3 py-4 text-right text-sm whitespace-nowrap text-gray-500">
+                  <td className="px-3 py-4 text-right text-sm whitespace-nowrap text-gray-500 dark:text-gray-300">
                     {dataset.statistics.numNodes.toLocaleString()}
                   </td>
-                  <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+                  <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-300">
                     <div className="flex flex-wrap gap-2">
                       {dataset.tags.map((tag: string) => (
                         <Tag key={tag} name={tag} />

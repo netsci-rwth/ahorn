@@ -136,19 +136,19 @@ const SearchBox = ({ onNavigate }: { onNavigate: () => void }) => {
         spellCheck={false}
         autoComplete="off"
         type="search"
-        className="block w-full rounded-md border border-gray-300 bg-white px-2 py-1 text-sm placeholder-gray-400 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+        className="block w-full rounded-md border border-gray-300 bg-white px-2 py-1 text-sm text-gray-900 placeholder-gray-400 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
         placeholder="Search..."
         value={query}
         onChange={(event) => setQuery(event.currentTarget.value)}
       />
       <ComboboxOptions
         as="ul"
-        className="z-50 w-2xs rounded-md border border-gray-200 bg-white shadow-lg [--anchor-gap:6px]"
+        className="z-50 w-2xs rounded-md border border-gray-200 bg-white shadow-lg [--anchor-gap:6px] dark:border-gray-700 dark:bg-gray-800"
         aria-busy={isLoading}
         anchor="bottom"
       >
         {isLoading && (
-          <li className="flex items-center gap-2 px-3 py-2 text-sm text-gray-500">
+          <li className="flex items-center gap-2 px-3 py-2 text-sm text-gray-500 dark:text-gray-300">
             <FontAwesomeIcon
               icon={faSpinner}
               className="h-4 w-4 animate-spin text-primary"
@@ -158,11 +158,15 @@ const SearchBox = ({ onNavigate }: { onNavigate: () => void }) => {
         )}
 
         {!isLoading && error && (
-          <li className="px-3 py-2 text-sm text-red-600">{error}</li>
+          <li className="px-3 py-2 text-sm text-red-600 dark:text-red-500">
+            {error}
+          </li>
         )}
 
         {!isLoading && !error && results.length === 0 && query && (
-          <li className="px-3 py-2 text-sm text-gray-500">No results</li>
+          <li className="px-3 py-2 text-sm text-gray-500 dark:text-gray-300">
+            No results
+          </li>
         )}
 
         {!isLoading &&
@@ -173,14 +177,14 @@ const SearchBox = ({ onNavigate }: { onNavigate: () => void }) => {
                 as={Link}
                 href={r.url}
                 value={r}
-                className="block px-3 py-2 text-sm data-focus:bg-gray-100"
+                className="block px-3 py-2 text-sm data-focus:bg-gray-100 dark:data-focus:bg-gray-700"
               >
-                <div className="line-clamp-1 font-medium text-gray-800">
+                <div className="line-clamp-1 font-medium text-gray-800 dark:text-gray-100">
                   {r.meta?.title || r.url}
                 </div>
                 {r.excerpt && (
                   <div
-                    className="mt-0.5 line-clamp-2 text-xs text-gray-500"
+                    className="mt-0.5 line-clamp-2 text-xs text-gray-500 dark:text-gray-300"
                     dangerouslySetInnerHTML={{ __html: r.excerpt }}
                   />
                 )}
@@ -216,7 +220,7 @@ const Navbar: FC = () => {
   return (
     <Disclosure
       as="nav"
-      className="relative top-0 z-50 bg-white shadow-sm sm:sticky"
+      className="relative top-0 z-50 bg-white shadow-sm sm:sticky dark:bg-gray-900 dark:shadow-gray-800"
     >
       <div className="mx-auto max-w-7xl px-2 sm:px-8">
         <div className="relative flex h-16 items-center justify-between gap-4">
@@ -225,7 +229,7 @@ const Navbar: FC = () => {
             <DisclosureButton
               type="button"
               onClick={() => setMobileOpen((v) => !v)}
-              className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-hidden"
+              className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-hidden dark:text-gray-300 dark:hover:text-white"
               aria-controls="mobile-menu"
               aria-expanded="false"
             >
@@ -261,8 +265,8 @@ const Navbar: FC = () => {
                     className={classnames(
                       "inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium",
                       {
-                        "border-primary text-gray-900": active,
-                        "border-white text-gray-500 hover:border-gray-300 hover:text-gray-700":
+                        "border-primary text-gray-900 dark:text-white": active,
+                        "border-white text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:border-gray-900 dark:text-gray-300 dark:hover:border-gray-700 dark:hover:text-gray-100":
                           !active,
                       },
                     )}
@@ -288,7 +292,7 @@ const Navbar: FC = () => {
       {/* Mobile menu, show/hide based on menu state. */}
       <DisclosurePanel className="sm:hidden">
         {({ close }) => (
-          <div className="h-[calc(100vh-4rem)] space-y-1 px-2 pt-2 pb-3">
+          <div className="h-[calc(100vh-4rem)] space-y-1 bg-white px-2 pt-2 pb-3 dark:bg-gray-900">
             <div className="px-1 pb-2">
               <SearchBox
                 onNavigate={() => {
@@ -306,15 +310,12 @@ const Navbar: FC = () => {
                   className={classnames(
                     "block rounded-md px-3 py-2 text-base font-medium",
                     {
-                      "bg-gray-900 text-white": active,
-                      "text-gray-300 hover:bg-gray-700 hover:text-white":
+                      "bg-gray-900 text-white dark:bg-gray-800 dark:text-white":
+                        active,
+                      "text-gray-300 hover:bg-gray-700 hover:text-white dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white":
                         !active,
                     },
                   )}
-                  onNavigate={() => {
-                    close();
-                    setMobileOpen(false);
-                  }}
                 >
                   {link.name}
                 </Link>

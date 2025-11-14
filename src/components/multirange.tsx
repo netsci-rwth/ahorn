@@ -64,14 +64,14 @@ export default function MultiRangeSlider({
         />
 
         {/* custom track */}
-        <div className="relative top-2 h-2 w-full rounded-md bg-gray-200">
+        <div className="relative top-2 h-2 w-full rounded-md bg-gray-200 dark:bg-gray-700">
           <div
             className="absolute h-2 rounded-md bg-primary"
             style={{ left: rangeSize[0], right: rangeSize[1] }}
           ></div>
         </div>
       </div>
-      <div className="mt-3 flex justify-between text-gray-600">
+      <div className="mt-3 flex justify-between text-gray-600 dark:text-gray-400">
         <span>Min: {formatNumber(minVal)}</span>
         <span>Max: {formatNumber(maxVal)}</span>
       </div>

@@ -26,19 +26,23 @@ const Card: React.FC<CardProps> = ({
 }) => (
   <div
     className={classNames(
-      "overflow-hidden bg-white shadow-sm sm:rounded-lg",
+      "overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-900 dark:shadow-sm",
       className,
     )}
   >
     {title && (
       <div className="flex items-center justify-between gap-4 px-4 py-6 sm:px-6">
-        <h3 className="text-base/relaxed font-semibold text-gray-900">
+        <h3 className="text-base/relaxed font-semibold text-gray-900 dark:text-gray-100">
           {title}
         </h3>
-        {button && <div className="flex-shrink-0">{button}</div>}
+        {button && <div className="shrink-0">{button}</div>}
       </div>
     )}
-    <div className={classNames({ "border-t border-gray-100": title })}>
+    <div
+      className={classNames({
+        "border-t border-gray-100 dark:border-gray-700": title,
+      })}
+    >
       {children}
     </div>
   </div>

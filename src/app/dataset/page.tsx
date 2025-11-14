@@ -43,7 +43,9 @@ export default async function DatasetList() {
 
   return (
     <>
-      <h1 className="mb-6 text-3xl font-bold text-gray-900">Datasets</h1>
+      <h1 className="mb-6 text-3xl font-bold text-gray-900 dark:text-gray-100">
+        Datasets
+      </h1>
       <DatasetTable datasets={datasets} />
     </>
   );

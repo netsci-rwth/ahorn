@@ -55,7 +55,7 @@ export default function AboutLayout({
           <ul className="flex flex-1 flex-col gap-y-7">
             {Object.entries(links).map(([group_name, group]) => (
               <li key={group_name}>
-                <div className="text-xs font-semibold text-gray-400">
+                <div className="text-xs font-semibold text-gray-400 dark:text-gray-500">
                   {group_name}
                 </div>
                 <ul className="-mx-2 mt-2 space-y-1">
@@ -68,8 +68,9 @@ export default function AboutLayout({
                           className={classnames(
                             "flex gap-x-3 rounded-md p-2 text-sm font-semibold",
                             {
-                              "bg-gray-50 text-primary": active,
-                              "group text-gray-700 hover:bg-gray-50 hover:text-primary":
+                              "bg-gray-50 text-primary dark:bg-gray-800 dark:text-primary":
+                                active,
+                              "group text-gray-700 hover:bg-gray-50 hover:text-primary dark:text-gray-300 dark:hover:bg-gray-800":
                                 !active,
                             },
                           )}
@@ -78,7 +79,8 @@ export default function AboutLayout({
                             icon={link.icon}
                             className={classnames("shrink-0 text-xl", {
                               "text-primary": active,
-                              "text-gray-400 group-hover:text-primary": !active,
+                              "text-gray-400 group-hover:text-primary dark:text-gray-500":
+                                !active,
                             })}
                           />
                           {link.label}
@@ -93,7 +95,7 @@ export default function AboutLayout({
         </nav>
       </aside>
       <main
-        className="prose max-w-none flex-1 max-sm:mt-8 sm:ml-10"
+        className="prose max-w-none flex-1 max-sm:mt-8 sm:ml-10 dark:prose-invert"
         data-pagefind-body
       >
         {children}

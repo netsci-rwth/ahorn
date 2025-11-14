@@ -3,5 +3,5 @@ export default function AboutLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div className="prose max-w-none">{children}</div>;
+  return <div className="prose max-w-none dark:prose-invert">{children}</div>;
 }
