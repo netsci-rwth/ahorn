@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import Tag from "@/components/tag";
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
+
+import MultiRangeSlider from "@/components/multirange";
 
 type Dataset = {
   slug: string;
@@ -28,6 +30,27 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const allTags = getAllTags(datasets);
 
+  // Compute global min/max node counts and keep local state in sync
+  const nodeExtremes = useMemo(() => {
+    if (datasets.length === 0) return { min: 0, max: 0 };
+    let min = Infinity;
+    let max = -Infinity;
+    for (const dataset of datasets) {
+      const n = dataset.statistics.numNodes;
+      if (n < min) min = n;
+      if (n > max) max = n;
+    }
+    return { min, max };
+  }, [datasets]);
+
+  const [nodeRangeMin, setNodeRangeMin] = useState<number>(nodeExtremes.min);
+  const [nodeRangeMax, setNodeRangeMax] = useState<number>(nodeExtremes.max);
+
+  useEffect(() => {
+    setNodeRangeMin(nodeExtremes.min);
+    setNodeRangeMax(nodeExtremes.max);
+  }, [nodeExtremes.min, nodeExtremes.max]);
+
   const handleTagChange = (tag: string) => {
     setSelectedTags((prev) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
@@ -39,7 +62,10 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
     const matchesTags =
       selectedTags.length === 0 ||
       selectedTags.every((tag) => d.tags.includes(tag));
-    return matchesSearch && matchesTags;
+    const matchesRange =
+      d.statistics.numNodes >= nodeRangeMin &&
+      d.statistics.numNodes <= nodeRangeMax;
+    return matchesSearch && matchesTags && matchesRange;
   });
 
   return (
@@ -56,6 +82,19 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search datasets..."
             className="block w-full rounded-md border border-gray-300 bg-white py-1.5 pr-3 pl-3 text-sm placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+          />
+        </div>
+        <div>
+          <div className="mb-2 text-sm font-semibold text-gray-700">
+            Filter by node size (|V|):
+          </div>
+          <MultiRangeSlider
+            min={nodeExtremes.min}
+            max={nodeExtremes.max}
+            onChange={({ min, max }) => {
+              setNodeRangeMin(min);
+              setNodeRangeMax(max);
+            }}
           />
         </div>
         <div>
