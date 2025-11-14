@@ -19,13 +19,13 @@ export default function MultiRangeSlider({
 
   useEffect(() => {
     const range = max - min;
-    let minPercent = ((minVal - min) / range) * 100;
-    let maxPercent = 100 - ((maxVal - min) / range) * 100;
+    const minPercent = ((minVal - min) / range) * 100;
+    const maxPercent = 100 - ((maxVal - min) / range) * 100;
     setRangeSize([minPercent + "%", maxPercent + "%"]);
   }, [minVal, maxVal]);
 
   useEffect(() => {
-    onChange({ min: minVal, max: maxVal });
+    onChange({ "min": minVal, "max": maxVal });
   }, [minVal, maxVal, onChange]);
 
   return (
