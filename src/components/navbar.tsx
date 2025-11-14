@@ -136,14 +136,14 @@ const SearchBox = ({ onNavigate }: { onNavigate: () => void }) => {
         spellCheck={false}
         autoComplete="off"
         type="search"
-        className="focus:border-primary focus:ring-primary block w-full rounded-md border border-gray-300 bg-white px-2 py-1 text-sm placeholder-gray-400 focus:outline-none focus:ring-1"
+        className="block w-full rounded-md border border-gray-300 bg-white px-2 py-1 text-sm placeholder-gray-400 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
         placeholder="Search..."
         value={query}
         onChange={(event) => setQuery(event.currentTarget.value)}
       />
       <ComboboxOptions
         as="ul"
-        className="w-2xs z-50 rounded-md border border-gray-200 bg-white shadow-lg [--anchor-gap:6px]"
+        className="z-50 w-2xs rounded-md border border-gray-200 bg-white shadow-lg [--anchor-gap:6px]"
         aria-busy={isLoading}
         anchor="bottom"
       >
@@ -151,7 +151,7 @@ const SearchBox = ({ onNavigate }: { onNavigate: () => void }) => {
           <li className="flex items-center gap-2 px-3 py-2 text-sm text-gray-500">
             <FontAwesomeIcon
               icon={faSpinner}
-              className="text-primary h-4 w-4 animate-spin"
+              className="h-4 w-4 animate-spin text-primary"
             />
             Searching…
           </li>
@@ -173,7 +173,7 @@ const SearchBox = ({ onNavigate }: { onNavigate: () => void }) => {
                 as={Link}
                 href={r.url}
                 value={r}
-                className="data-focus:bg-gray-100 block px-3 py-2 text-sm"
+                className="block px-3 py-2 text-sm data-focus:bg-gray-100"
               >
                 <div className="line-clamp-1 font-medium text-gray-800">
                   {r.meta?.title || r.url}
@@ -225,7 +225,7 @@ const Navbar: FC = () => {
             <DisclosureButton
               type="button"
               onClick={() => setMobileOpen((v) => !v)}
-              className="focus:outline-hidden group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white"
+              className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-hidden"
               aria-controls="mobile-menu"
               aria-expanded="false"
             >
@@ -234,19 +234,19 @@ const Navbar: FC = () => {
               <FontAwesomeIcon
                 icon={faBars}
                 aria-hidden="true"
-                className="block! group-data-open:hidden! size-6"
+                className="block! size-6 group-data-open:hidden!"
               />
               <FontAwesomeIcon
                 icon={faXmark}
                 aria-hidden="true"
-                className="hidden! group-data-open:block! size-6"
+                className="hidden! size-6 group-data-open:block!"
               />
             </DisclosureButton>
           </div>
           <div className="flex h-full flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <Link
               href="/"
-              className="text-primary flex shrink-0 items-center text-2xl font-bold"
+              className="flex shrink-0 items-center text-2xl font-bold text-primary"
             >
               <FontAwesomeIcon icon={faLeaf} className="mr-2" />
               AHORN
@@ -288,7 +288,7 @@ const Navbar: FC = () => {
       {/* Mobile menu, show/hide based on menu state. */}
       <DisclosurePanel className="sm:hidden">
         {({ close }) => (
-          <div className="h-[calc(100vh-4rem)] space-y-1 px-2 pb-3 pt-2">
+          <div className="h-[calc(100vh-4rem)] space-y-1 px-2 pt-2 pb-3">
             <div className="px-1 pb-2">
               <SearchBox
                 onNavigate={() => {

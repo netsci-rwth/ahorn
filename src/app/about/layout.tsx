@@ -51,7 +51,7 @@ export default function AboutLayout({
   return (
     <div className="sm:flex">
       <aside>
-        <nav className="sm:w-3xs flex flex-1 flex-col">
+        <nav className="flex flex-1 flex-col sm:w-3xs">
           <ul className="flex flex-1 flex-col gap-y-7">
             {Object.entries(links).map(([group_name, group]) => (
               <li key={group_name}>
@@ -68,8 +68,8 @@ export default function AboutLayout({
                           className={classnames(
                             "flex gap-x-3 rounded-md p-2 text-sm font-semibold",
                             {
-                              "text-primary bg-gray-50": active,
-                              "hover:text-primary group text-gray-700 hover:bg-gray-50":
+                              "bg-gray-50 text-primary": active,
+                              "group text-gray-700 hover:bg-gray-50 hover:text-primary":
                                 !active,
                             },
                           )}
@@ -78,7 +78,7 @@ export default function AboutLayout({
                             icon={link.icon}
                             className={classnames("shrink-0 text-xl", {
                               "text-primary": active,
-                              "group-hover:text-primary text-gray-400": !active,
+                              "text-gray-400 group-hover:text-primary": !active,
                             })}
                           />
                           {link.label}

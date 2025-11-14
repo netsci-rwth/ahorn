@@ -42,7 +42,7 @@ export default function Person({ avatar, name, role, className }: PersonProps) {
         <h3 className="text-base/7 font-semibold tracking-tight text-gray-900">
           {name}
         </h3>
-        <p className="text-primary text-sm/6 font-semibold">{role}</p>
+        <p className="text-sm/6 font-semibold text-primary">{role}</p>
       </div>
     </div>
   );

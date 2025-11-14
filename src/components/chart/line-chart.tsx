@@ -165,13 +165,15 @@ export default function LineChart({
 
   const chart_data = {
     labels: ["Hyperedges"],
-    datasets: [{
-      label: "Hyperedges",
-      data: Object.keys(aggregatedData).map((date) => ({
-        x: date,
-        y: aggregatedData[date],
-      })),
-    }],
+    datasets: [
+      {
+        label: "Hyperedges",
+        data: Object.keys(aggregatedData).map((date) => ({
+          x: date,
+          y: aggregatedData[date],
+        })),
+      },
+    ],
   };
 
   return (
@@ -197,4 +199,4 @@ export default function LineChart({
       <Line options={chart_options} data={chart_data} />
     </>
   );
-};
+}

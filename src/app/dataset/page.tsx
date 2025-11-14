@@ -28,7 +28,7 @@ export default async function DatasetList() {
           tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],
           statistics: {
             numNodes: frontmatter.statistics?.["num-nodes"] ?? 0,
-          }
+          },
         };
       }),
   );

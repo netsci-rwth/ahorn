@@ -103,7 +103,7 @@ export default async function DatasetPage({
         </div>
       </div>
 
-      <aside className="lg:w-sm mt-8 flex w-full shrink-0 flex-col gap-y-7 lg:ml-8 lg:mt-0">
+      <aside className="mt-8 flex w-full shrink-0 flex-col gap-y-7 lg:mt-0 lg:ml-8 lg:w-sm">
         <section>
           <h2 className="mb-4 text-2xl font-bold text-gray-900 sm:hidden">
             Usage
@@ -144,7 +144,7 @@ export default async function DatasetPage({
                 <dd className="mt-2 text-sm text-gray-900 sm:mt-0">
                   <ul
                     role="list"
-                    className="border divide-y divide-gray-100 rounded-md border-gray-200"
+                    className="divide-y divide-gray-100 rounded-md border border-gray-200"
                   >
                     {Object.entries(attachments).map(([key, attachment]) => {
                       const url = new URL(
