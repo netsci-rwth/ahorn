@@ -74,8 +74,15 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
       {/* Sidebar */}
       <aside className="mb-8 flex flex-col gap-y-8 md:mb-0 md:w-72 md:min-w-[18rem] md:pr-8">
         <div>
-          <div className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
-            Filter by name:
+          <div className="mb-2 flex items-center justify-between text-sm font-semibold text-gray-700 dark:text-gray-300">
+            <span>Filter by name:</span>
+            <button
+              type="button"
+              onClick={() => setSearch("")}
+              className="text-xs font-normal text-gray-500 hover:underline dark:text-gray-400 cursor-pointer"
+            >
+              Reset
+            </button>
           </div>
           <input
             type="search"
@@ -86,8 +93,8 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
           />
         </div>
         <div>
-          <div className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
-            Filter by node size (|V|):
+          <div className="mb-2 flex items-center justify-between text-sm font-semibold text-gray-700 dark:text-gray-300">
+            <span>Filter by node size (|V|):</span>
           </div>
           <MultiRangeSlider
             min={nodeExtremes.min}
@@ -99,8 +106,15 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
           />
         </div>
         <div>
-          <div className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
-            Filter by tag:
+          <div className="mb-2 flex items-center justify-between text-sm font-semibold text-gray-700 dark:text-gray-300">
+            <span>Filter by tag:</span>
+            <button
+              type="button"
+              onClick={() => setSelectedTags([])}
+              className="text-xs font-normal text-gray-500 hover:underline dark:text-gray-400 cursor-pointer"
+            >
+              Reset
+            </button>
           </div>
           <ul className="flex flex-wrap gap-3">
             {allTags.map((tag) => (
