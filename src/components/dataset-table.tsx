@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Tag from "@/components/tag";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 
 import MultiRangeSlider from "@/components/multirange";
 import { formatNumber } from "@/utils/format";
@@ -44,10 +44,10 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
     return { min, max };
   }, [datasets]);
 
-  const [nodeRangeMin, setNodeRangeMin] = useState<number>(nodeExtremes.min);
-  const [nodeRangeMax, setNodeRangeMax] = useState<number>(nodeExtremes.max);
+  const [nodeRangeMin, setNodeRangeMin] = useState(nodeExtremes.min);
+  const [nodeRangeMax, setNodeRangeMax] = useState(nodeExtremes.max);
 
-  useEffect(() => {
+  useMemo(() => {
     setNodeRangeMin(nodeExtremes.min);
     setNodeRangeMax(nodeExtremes.max);
   }, [nodeExtremes.min, nodeExtremes.max]);
