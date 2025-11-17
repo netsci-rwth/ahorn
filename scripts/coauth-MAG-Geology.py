@@ -9,7 +9,7 @@ https://www.cs.cornell.edu/~arb/data/coauth-MAG-Geology/
 import gzip
 import json
 import re
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 
 import yaml
@@ -30,6 +30,7 @@ hyperedges = load_benson_simplices(root_dir / "data" / "coauth-MAG-Geology-full"
 
 # write dataset file
 yearly_hyperedges = defaultdict(list)
+degrees = defaultdict(int)
 with gzip.open(dataset_file, "wt") as f:
     f.write(json.dumps({"_format_version": "0.1"}) + "\n")
 
@@ -38,6 +39,9 @@ with gzip.open(dataset_file, "wt") as f:
 
     for hyperedge in track(hyperedges, description="Writing simplices"):
         yearly_hyperedges[hyperedge["time"]].append(hyperedge)
+        # update node degrees
+        for nid in hyperedge.elements:
+            degrees[nid] += 1
         f.write(
             f"{','.join(map(str, hyperedge.elements))} {json.dumps({'year': hyperedge['time']})}\n"
         )
@@ -62,9 +66,11 @@ else:
     frontmatter = {}
     body = content
 
+degree_histogram = Counter(degrees.values())
 frontmatter["statistics"] = {
     "num-nodes": len(nodes),
     "num-edges": len(hyperedges),
+    "node-degrees": dict(sorted(degree_histogram.items())),
 }
 
 frontmatter["attachments"] = {

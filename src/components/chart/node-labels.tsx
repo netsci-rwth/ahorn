@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
@@ -10,6 +11,30 @@ export type NodeLabelsProps = {
 };
 
 export default function NodeLabelsChart({ labels }: NodeLabelsProps) {
+  const [isDark, setIsDark] = useState<boolean>(false);
+
+  // Detect dark mode via prefers-color-scheme only
+  useEffect(() => {
+    const mql = window.matchMedia("(prefers-color-scheme: dark)");
+    const update = () => setIsDark(mql.matches);
+    update();
+    try {
+      mql.addEventListener("change", update);
+    } catch {
+      // Safari fallback
+      mql.addListener(update);
+    }
+    return () => {
+      try {
+        mql.removeEventListener("change", update);
+      } catch {
+        mql.removeListener(update);
+      }
+    };
+  }, []);
+
+  const tickColor = isDark ? "rgba(255,255,255,0.75)" : "rgba(0,0,0,0.7)";
+
   const data = {
     labels: Object.keys(labels),
     datasets: [
@@ -31,5 +56,18 @@ export default function NodeLabelsChart({ labels }: NodeLabelsProps) {
     ],
   };
 
-  return <Pie data={data} />;
+  const options = {
+    plugins: {
+      legend: {
+        labels: { color: tickColor },
+      },
+    },
+    maintainAspectRatio: false,
+  } as const;
+
+  return (
+    <div style={{ height: 320 }}>
+      <Pie data={data} options={options} />
+    </div>
+  );
 }

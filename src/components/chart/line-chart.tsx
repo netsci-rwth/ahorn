@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Chart as ChartJS,
@@ -77,6 +76,27 @@ export default function LineChart({
   maxUnit = "year",
 }: LineChartProps) {
   const [timeUnit, setTimeUnit] = useState<TimeUnit>(minUnit);
+  const [isDark, setIsDark] = useState<boolean>(false);
+
+  // Detect dark mode via prefers-color-scheme only
+  useEffect(() => {
+    const mql = window.matchMedia("(prefers-color-scheme: dark)");
+    const update = () => setIsDark(mql.matches);
+    update();
+    try {
+      mql.addEventListener("change", update);
+    } catch {
+      // Safari fallback
+      mql.addListener(update);
+    }
+    return () => {
+      try {
+        mql.removeEventListener("change", update);
+      } catch {
+        mql.removeListener(update);
+      }
+    };
+  }, []);
 
   // Compute allowed units based on min_unit and max_unit
   const minIdx = allowedTimeUnits.indexOf(minUnit);
@@ -138,8 +158,13 @@ export default function LineChart({
     aggregatedData = data;
   }
 
+  const gridColor = isDark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)";
+  const tickColor = isDark ? "rgba(255,255,255,0.75)" : "rgba(0,0,0,0.7)";
+  const borderColor = isDark ? "rgba(255,255,255,0.25)" : "rgba(0,0,0,0.25)";
+
   const chart_options = {
     responsive: true,
+    maintainAspectRatio: false,
     scales: {
       x: {
         type: "time" as const,
@@ -147,18 +172,24 @@ export default function LineChart({
           unit: timeUnit,
         },
         stacked: true,
+        ticks: { color: tickColor },
+        grid: { color: gridColor, borderColor },
       },
       y: {
         stacked: true,
+        ticks: { color: tickColor },
+        grid: { color: gridColor, borderColor },
       },
     },
     plugins: {
       legend: {
         position: "top" as const,
+        labels: { color: tickColor },
       },
       title: {
         display: true,
         text: "Dataset Shape",
+        color: tickColor,
       },
     },
   };
@@ -177,7 +208,7 @@ export default function LineChart({
   };
 
   return (
-    <>
+    <div style={{ height: 360 }}>
       {selectableUnits.length > 1 && (
         <div style={{ marginBottom: "20px" }}>
           <label htmlFor="time-unit">Aggregate by: </label>
@@ -197,6 +228,6 @@ export default function LineChart({
       )}
 
       <Line options={chart_options} data={chart_data} />
-    </>
+    </div>
   );
 }

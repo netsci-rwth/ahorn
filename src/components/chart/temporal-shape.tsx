@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Chart as ChartJS,
@@ -75,6 +74,27 @@ const TemporalShapeChart = ({
   maxUnit: maxUnit = "year",
 }: TemporalShapeChartProps) => {
   const [timeUnit, setTimeUnit] = useState<TimeUnit>(minUnit);
+  const [isDark, setIsDark] = useState<boolean>(false);
+
+  // Detect dark mode via prefers-color-scheme only
+  useEffect(() => {
+    const mql = window.matchMedia("(prefers-color-scheme: dark)");
+    const update = () => setIsDark(mql.matches);
+    update();
+    try {
+      mql.addEventListener("change", update);
+    } catch {
+      // Safari fallback
+      mql.addListener(update);
+    }
+    return () => {
+      try {
+        mql.removeEventListener("change", update);
+      } catch {
+        mql.removeListener(update);
+      }
+    };
+  }, []);
 
   const maxRanks = Math.max(...Object.values(shape).map((arr) => arr.length));
 
@@ -130,8 +150,13 @@ const TemporalShapeChart = ({
     }
   });
 
+  const gridColor = isDark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)";
+  const tickColor = isDark ? "rgba(255,255,255,0.75)" : "rgba(0,0,0,0.7)";
+  const borderColor = isDark ? "rgba(255,255,255,0.25)" : "rgba(0,0,0,0.25)";
+
   const chart_options = {
     responsive: true,
+    maintainAspectRatio: false,
     scales: {
       x: {
         type: "time" as const,
@@ -139,18 +164,24 @@ const TemporalShapeChart = ({
           unit: timeUnit,
         },
         stacked: true,
+        ticks: { color: tickColor },
+        grid: { color: gridColor, borderColor },
       },
       y: {
         stacked: true,
+        ticks: { color: tickColor },
+        grid: { color: gridColor, borderColor },
       },
     },
     plugins: {
       legend: {
         position: "top" as const,
+        labels: { color: tickColor },
       },
       title: {
         display: true,
         text: "Dataset Shape",
+        color: tickColor,
       },
     },
   };
@@ -167,7 +198,7 @@ const TemporalShapeChart = ({
   };
 
   return (
-    <>
+    <div style={{ height: 360 }}>
       <div style={{ marginBottom: "20px" }}>
         <label htmlFor="time-unit">Aggregate by: </label>
         <select
@@ -185,7 +216,7 @@ const TemporalShapeChart = ({
       </div>
 
       <Bar options={chart_options} data={chart_data} />
-    </>
+    </div>
   );
 };
 

@@ -9,7 +9,7 @@ https://www.cs.cornell.edu/~arb/data/NDC-classes/
 import gzip
 import json
 import re
-from collections import defaultdict
+from collections import Counter, defaultdict
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -31,6 +31,7 @@ hyperedges = load_benson_simplices(root_dir / "data" / "NDC-classes-full")
 
 # write dataset file
 daily_hyperedges = defaultdict(list)
+degrees = defaultdict(int)
 with gzip.open(dataset_file, "wt") as f:
     f.write(json.dumps({"_format_version": "0.1"}) + "\n")
 
@@ -43,6 +44,9 @@ with gzip.open(dataset_file, "wt") as f:
         ms = int(hyperedge["time"])
         day = date(1, 1, 1) + timedelta(milliseconds=ms)
         daily_hyperedges[day].append(hyperedge)
+        # update node degrees
+        for nid in hyperedge.elements:
+            degrees[nid] += 1
         f.write(
             f"{','.join(map(str, hyperedge.elements))} {json.dumps(hyperedge._attributes)}\n"
         )
@@ -67,9 +71,11 @@ else:
     frontmatter = {}
     body = content
 
+degree_histogram = Counter(degrees.values())
 frontmatter["statistics"] = {
     "num-nodes": len(nodes),
     "num-edges": len(hyperedges),
+    "node-degrees": dict(sorted(degree_histogram.items())),
 }
 
 frontmatter["attachments"] = {
