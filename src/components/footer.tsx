@@ -5,8 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 
 const legal_links = [
-  { name: "Legal Notice", link: "/legal/imprint" },
-  { name: "Privacy", link: "/legal/privacy" },
+  { name: "Legal Notice", link: "/about/imprint" },
+  { name: "Privacy", link: "/about/privacy" },
 ];
 
 const Footer = () => {

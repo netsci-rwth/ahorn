@@ -12,6 +12,8 @@ import {
   faFileCode,
   faHandshake,
   faGavel,
+  faShieldHalved,
+  faSection,
 } from "@fortawesome/free-solid-svg-icons";
 
 import Link from "next/link";
@@ -32,6 +34,10 @@ const links = {
     { href: "/about/dataset-converter", label: "Converter", icon: faCode },
     { href: "/about/code-of-conduct", label: "Code of Conduct", icon: faGavel },
   ],
+  Legal: [
+    { href: "/about/privacy", label: "Privacy Policy", icon: faShieldHalved },
+    { href: "/about/imprint", label: "Legal Notice", icon: faSection },
+  ]
 };
 
 export default function AboutLayout({
