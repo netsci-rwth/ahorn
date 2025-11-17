@@ -5,6 +5,7 @@ import Tag from "@/components/tag";
 import { useState, useMemo, useEffect } from "react";
 
 import MultiRangeSlider from "@/components/multirange";
+import { formatNumber } from "@/utils/format";
 
 type Dataset = {
   slug: string;
@@ -158,7 +159,7 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
                     </Link>
                   </td>
                   <td className="px-3 py-4 text-right text-sm whitespace-nowrap text-gray-500 dark:text-gray-300">
-                    {dataset.statistics.numNodes.toLocaleString()}
+                    {formatNumber(dataset.statistics.numNodes)}
                   </td>
                   <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-300">
                     <div className="flex flex-wrap gap-2">
