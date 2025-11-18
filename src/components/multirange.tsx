@@ -13,6 +13,22 @@ export default function MultiRangeSlider({
   minGap?: number;
   onChange: (value: { min: number; max: number }) => void;
 }) {
+  const handleMinSubmit = (inputValue: string) => {
+    const newMin = parseInt(inputValue, 10);
+    const clampedMin = isNaN(newMin) 
+      ? min 
+      : Math.max(min, Math.min(newMin, value.max - minGap));
+    onChange({ min: clampedMin, max: value.max });
+  };
+
+  const handleMaxSubmit = (inputValue: string) => {
+    const newMax = parseInt(inputValue, 10);
+    const clampedMax = isNaN(newMax) 
+      ? max 
+      : Math.min(max, Math.max(newMax, value.min + minGap));
+    onChange({ min: value.min, max: clampedMax });
+  };
+
   const range = max - min;
   const minPercent = ((value.min - min) / range) * 100;
   const maxPercent = 100 - ((value.max - min) / range) * 100;
@@ -59,9 +75,45 @@ export default function MultiRangeSlider({
           ></div>
         </div>
       </div>
-      <div className="mt-3 flex justify-between text-gray-600 dark:text-gray-400">
-        <span>Min: {formatNumber(value.min)}</span>
-        <span>Max: {formatNumber(value.max)}</span>
+      <div className="mt-3 flex justify-between gap-4 text-gray-600 dark:text-gray-400">
+        <div className="flex flex-col gap-1">
+          <label htmlFor="range-min" className="text-xs">Min:</label>
+          <input
+            id="range-min"
+            type="number"
+            min={min}
+            max={value.max - minGap}
+            defaultValue={value.min}
+            key={`min-${value.min}`}
+            onBlur={(e) => handleMinSubmit(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleMinSubmit(e.currentTarget.value);
+                e.currentTarget.blur();
+              }
+            }}
+            className="w-28 rounded border border-gray-300 bg-white px-2 py-1 text-sm text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+          />
+        </div>
+        <div className="flex flex-col gap-1">
+          <label htmlFor="range-max" className="text-xs">Max:</label>
+          <input
+            id="range-max"
+            type="number"
+            min={value.min + minGap}
+            max={max}
+            defaultValue={value.max}
+            key={`max-${value.max}`}
+            onBlur={(e) => handleMaxSubmit(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleMaxSubmit(e.currentTarget.value);
+                e.currentTarget.blur();
+              }
+            }}
+            className="w-28 rounded border border-gray-300 bg-white px-2 py-1 text-sm text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+          />
+        </div>
       </div>
     </>
   );
