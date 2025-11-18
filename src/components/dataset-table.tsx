@@ -95,10 +95,21 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
         <div>
           <div className="mb-2 flex items-center justify-between text-sm font-semibold text-gray-700 dark:text-gray-300">
             <span>Filter by node size (|V|):</span>
+            <button
+              type="button"
+              onClick={() => {
+                setNodeRangeMin(nodeExtremes.min);
+                setNodeRangeMax(nodeExtremes.max);
+              }}
+              className="text-xs font-normal text-gray-500 hover:underline dark:text-gray-400 cursor-pointer"
+            >
+              Reset
+            </button>
           </div>
           <MultiRangeSlider
             min={nodeExtremes.min}
             max={nodeExtremes.max}
+            value={{ min: nodeRangeMin, max: nodeRangeMax }}
             onChange={({ min, max }) => {
               setNodeRangeMin(min);
               setNodeRangeMax(max);

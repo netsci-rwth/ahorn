@@ -1,29 +1,22 @@
-import { useEffect, useState } from "react";
-
 import { formatNumber } from "@/utils/format";
 
 export default function MultiRangeSlider({
   min,
   max,
+  value,
   minGap = 10,
   onChange,
 }: {
   min: number;
   max: number;
+  value: { min: number; max: number };
   minGap?: number;
   onChange: (value: { min: number; max: number }) => void;
 }) {
-  const [minVal, setMinVal] = useState(min);
-  const [maxVal, setMaxVal] = useState(max);
-
   const range = max - min;
-  const minPercent = ((minVal - min) / range) * 100;
-  const maxPercent = 100 - ((maxVal - min) / range) * 100;
+  const minPercent = ((value.min - min) / range) * 100;
+  const maxPercent = 100 - ((value.max - min) / range) * 100;
   const rangeSize = [minPercent + "%", maxPercent + "%"];
-
-  useEffect(() => {
-    onChange({ "min": minVal, "max": maxVal });
-  }, [minVal, maxVal, onChange]);
 
   return (
     <>
@@ -33,30 +26,28 @@ export default function MultiRangeSlider({
           type="range"
           min={min}
           max={max}
-          value={minVal}
+          value={value.min}
           className="pointer-events-none absolute z-2 h-full w-full appearance-none bg-transparent [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-gray-100 [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-gray-100"
           onChange={(event) => {
-            const value = Math.min(
+            const newMin = Math.min(
               parseInt(event.target.value, 10),
-              maxVal - minGap,
+              value.max - minGap,
             );
-            setMinVal(value);
-            event.target.value = value.toString();
+            onChange({ min: newMin, max: value.max });
           }}
         />
         <input
           type="range"
           min={min}
           max={max}
-          value={maxVal}
+          value={value.max}
           className="pointer-events-none absolute z-2 h-full w-full appearance-none bg-transparent [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-gray-100 [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-gray-100"
           onChange={(event) => {
-            const value = Math.max(
+            const newMax = Math.max(
               parseInt(event.currentTarget.value, 10),
-              minVal + minGap,
+              value.min + minGap,
             );
-            setMaxVal(value);
-            event.target.value = value.toString();
+            onChange({ min: value.min, max: newMax });
           }}
         />
 
@@ -69,8 +60,8 @@ export default function MultiRangeSlider({
         </div>
       </div>
       <div className="mt-3 flex justify-between text-gray-600 dark:text-gray-400">
-        <span>Min: {formatNumber(minVal)}</span>
-        <span>Max: {formatNumber(maxVal)}</span>
+        <span>Min: {formatNumber(value.min)}</span>
+        <span>Max: {formatNumber(value.max)}</span>
       </div>
     </>
   );
