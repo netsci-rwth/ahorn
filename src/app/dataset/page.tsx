@@ -33,13 +33,7 @@ export default async function DatasetList() {
       }),
   );
 
-  // filter out disabled datasets
   datasets = datasets.filter((d) => !d.disable);
-
-  // sort datasets by case-insensitive title
-  datasets = datasets.sort((a, b) =>
-    a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
-  );
 
   return (
     <>

@@ -29,6 +29,8 @@ function getAllTags(datasets: Dataset[]): string[] {
 export default function DatasetTable({ datasets }: DatasetTableProps) {
   const [search, setSearch] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [sortField, setSortField] = useState<"title" | "numNodes">("title");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const allTags = getAllTags(datasets);
 
   // Compute global min/max node counts and keep local state in sync
@@ -58,6 +60,15 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
     );
   };
 
+  const handleSort = (field: "title" | "numNodes") => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortDirection("asc");
+    }
+  };
+
   const filtered = datasets.filter((d) => {
     const matchesSearch = d.title.toLowerCase().includes(search.toLowerCase());
     const matchesTags =
@@ -67,6 +78,17 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
       d.statistics.numNodes >= nodeRangeMin &&
       d.statistics.numNodes <= nodeRangeMax;
     return matchesSearch && matchesTags && matchesRange;
+  });
+
+  const sorted = [...filtered].sort((a, b) => {
+    let comparison = 0;
+    if (sortField === "title") {
+      comparison = a.title.localeCompare(b.title);
+    } else if (sortField === "numNodes") {
+      comparison = a.statistics.numNodes - b.statistics.numNodes;
+    }
+
+    return sortDirection === "asc" ? comparison : -comparison;
   });
 
   return (
@@ -79,7 +101,7 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
             <button
               type="button"
               onClick={() => setSearch("")}
-              className="text-xs font-normal text-gray-500 hover:underline dark:text-gray-400 cursor-pointer"
+              className="cursor-pointer text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
             >
               Reset
             </button>
@@ -101,7 +123,7 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
                 setNodeRangeMin(nodeExtremes.min);
                 setNodeRangeMax(nodeExtremes.max);
               }}
-              className="text-xs font-normal text-gray-500 hover:underline dark:text-gray-400 cursor-pointer"
+              className="cursor-pointer text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
             >
               Reset
             </button>
@@ -122,7 +144,7 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
             <button
               type="button"
               onClick={() => setSelectedTags([])}
-              className="text-xs font-normal text-gray-500 hover:underline dark:text-gray-400 cursor-pointer"
+              className="cursor-pointer text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
             >
               Reset
             </button>
@@ -154,11 +176,31 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
         <table className="w-full divide-y divide-gray-300 dark:divide-gray-700">
           <thead>
             <tr>
-              <th className="px-3 py-3 text-left text-sm font-semibold text-gray-900 sm:pl-0 dark:text-gray-100">
-                Name
+              <th
+                className="cursor-pointer px-3 py-3 text-left text-sm font-semibold text-gray-900 hover:bg-gray-50 sm:pl-0 dark:text-gray-100 dark:hover:bg-gray-800"
+                onClick={() => handleSort("title")}
+              >
+                <div className="flex items-center gap-1">
+                  <span>Name</span>
+                  {sortField === "title" && (
+                    <span className="text-xs">
+                      {sortDirection === "asc" ? "↑" : "↓"}
+                    </span>
+                  )}
+                </div>
               </th>
-              <th className="px-3 py-3 text-right text-sm font-semibold text-gray-900 dark:text-gray-100">
-                |V|
+              <th
+                className="cursor-pointer px-3 py-3 text-right text-sm font-semibold text-gray-900 hover:bg-gray-50 dark:text-gray-100 dark:hover:bg-gray-800"
+                onClick={() => handleSort("numNodes")}
+              >
+                <div className="flex items-center justify-end gap-1">
+                  <span>|V|</span>
+                  {sortField === "numNodes" && (
+                    <span className="text-xs">
+                      {sortDirection === "asc" ? "↑" : "↓"}
+                    </span>
+                  )}
+                </div>
               </th>
               <th className="px-3 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
                 Tags
@@ -166,7 +208,7 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
-            {filtered.length === 0 ? (
+            {sorted.length === 0 ? (
               <tr>
                 <td
                   colSpan={3}
@@ -176,7 +218,7 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
                 </td>
               </tr>
             ) : (
-              filtered.map((dataset) => (
+              sorted.map((dataset) => (
                 <tr key={dataset.slug}>
                   <td className="py-4 pr-3 text-sm font-medium whitespace-nowrap text-gray-900 dark:text-gray-100">
                     <Link href={`/dataset/${dataset.slug}`}>
