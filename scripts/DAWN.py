@@ -6,16 +6,19 @@ References
 https://www.cs.cornell.edu/~arb/data/cat-edge-DAWN/
 """
 
-import json
-import re
 from collections import Counter
 from pathlib import Path
 
 import toponetx as tnx
-import yaml
 from more_itertools import first
 from rich.progress import track
 
+from .utils.write import (
+    update_frontmatter,
+    write_edge,
+    write_network_metadata,
+    write_node,
+)
 from .utils.yaml import patch_dumper
 
 # TODO: The dataset we downloaded from Benson's repository seems to be broken.
@@ -35,46 +38,30 @@ nodes, hyperedges = tnx.datasets.benson.load_benson_hyperedges(
 
 edge_label_counts = Counter(x["label"] for x in hyperedges)
 
-# write shape into existing frontmatter
-with datasheet_file.open() as f:
-    content = f.read()
-
-frontmatter_match = re.match(r"---\n(.*?)\n---\n(.*)", content, re.DOTALL)
-if frontmatter_match:
-    frontmatter = yaml.safe_load(frontmatter_match.group(1))
-    body = frontmatter_match.group(2)
-
-    if not isinstance(body, str):
-        body = ""
-else:
-    frontmatter = {}
-    body = content
-
-frontmatter["statistics"] = {
-    "num-nodes": len(nodes),
-}
-
-frontmatter["shape"] = {
-    "nodes": len(nodes),
-    "hyperedges": len(hyperedges),
-}
-frontmatter["edge-label-count"] = dict(edge_label_counts)
-
-with datasheet_file.open("w") as f:
-    f.write("---\n")
-    yaml.dump(frontmatter, f, sort_keys=False)
-    f.write("---\n")
-    f.write(body)
+update_frontmatter(
+    datasheet_file,
+    {
+        "attachments": {
+            "dataset": {
+                "url": dataset_file.name,
+                "size": dataset_file.stat().st_size,
+            }
+        },
+        "statistics": {
+            "num-nodes": len(nodes),
+        },
+        "shape": {
+            "nodes": len(nodes),
+            "hyperedges": len(hyperedges),
+        },
+        "edge-label-count": dict(edge_label_counts),
+    },
+)
 
 # write dataset file
 with dataset_file.open("w") as f:
-    f.write(json.dumps({"_format_version": "0.1"}) + "\n")
+    write_network_metadata(f, datasheet_file.stem)
     for node in track(nodes, description="Writing nodes"):
-        f.write(str(first(node)) + ' {"party": "' + node["label"] + '"}\n')
+        write_node(f, first(node), party=node["label"])
     for hyperedge in track(hyperedges, description="Writing hyperedges"):
-        f.write(
-            ",".join(map(str, hyperedge.elements))
-            + ' {"label": "'
-            + hyperedge["label"]
-            + '"}\n'
-        )
+        write_edge(f, hyperedge, label=hyperedge["label"])

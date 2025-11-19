@@ -1,5 +1,8 @@
 """Utility scripts for handling YAML data."""
 
+import re
+from typing import Any
+
 import yaml
 
 
@@ -13,3 +16,32 @@ def patch_dumper() -> None:
         return dumper.org_represent_str(data)
 
     yaml.add_representer(str, repr_str, Dumper=yaml.Dumper)
+
+
+def read_frontmatter(markdown: str) -> tuple[dict[str, Any], str]:
+    """Read the frontmatter from a markdown string.
+
+    Parameters
+    ----------
+    markdown : str
+        The markdown content as a string.
+
+    Returns
+    -------
+    frontmatter : dict
+        The frontmatter as a dictionary.
+    body : str
+        The body of the markdown content.
+    """
+    frontmatter_match = re.match(r"---\n(.*?)\n---\n(.*)", markdown, re.DOTALL)
+    if frontmatter_match:
+        frontmatter = yaml.safe_load(frontmatter_match.group(1))
+        body = frontmatter_match.group(2)
+
+        if not isinstance(body, str):
+            body = ""
+    else:
+        frontmatter = {}
+        body = markdown
+
+    return frontmatter, body
