@@ -1,7 +1,9 @@
-import { Cite } from "@citation-js/core";
+import { Cite, util, version } from "@citation-js/core";
 import "@citation-js/plugin-bibtex";
 import "@citation-js/plugin-csl";
 import "@citation-js/plugin-doi";
+
+util.setUserAgent(`Aachen Higher-Order Repository of Networks (mailto:teaching-netsci@cs.rwth-aachen.de) Citation.js/${version} Node.js/${process.versions.node}`)
 
 export async function toApa(bibtex: string): Promise<[string, string][]> {
   const citations = await Cite.async(bibtex);

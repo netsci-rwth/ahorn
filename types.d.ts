@@ -14,4 +14,10 @@ declare module "@citation-js/core" {
       },
     ): [string, string][];
   }
+
+  export const util: {
+    setUserAgent: (ua: string) => void;
+  };
+
+  export const version: string;
 }
