@@ -48,9 +48,9 @@ const Footer = () => {
             href="https://netsci.rwth-aachen.de/"
             className="hover:text-gray-800 dark:text-gray-200 dark:hover:text-white"
           >
-            Computational Network Science
+            Chair for Computational Network Science
           </a>{" "}
-          group at{" "}
+          at{" "}
           <a
             href="https://rwth-aachen.de/"
             className="hover:text-gray-800 dark:text-gray-200 dark:hover:text-white"
