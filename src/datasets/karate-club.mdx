@@ -1,0 +1,43 @@
+---
+title: Karate Club
+source: https://networkx.org/documentation/stable/reference/generated/networkx.generators.social.karate_club_graph.html
+citation:
+  - 10.1086/jar.33.4.3629752
+network-type: simplicial
+tags:
+  - social networks
+  - 'lifting: clique complex'
+statistics:
+  num-nodes: 34
+  num-edges: 136
+shape:
+  - 34
+  - 78
+  - 45
+  - 11
+  - 2
+attachments:
+  dataset:
+    url: https://zenodo.org/records/17953924/files/karate-club.txt?download=1
+    size: 2931
+---
+
+import Stat from "@/components/stat";
+import ShapeChart from "@/components/chart/shape";
+import { formatNumber } from "@/utils/format";
+
+Zachary's karate club network is the classic social network of friendships at a university karate club.
+We lifted the graph to its clique complex using [`toponetx.graph_to_clique_complex`](https://pyt-team.github.io/toponetx/api/transform.html#toponetx.transform.graph_to_simplicial_complex.graph_to_clique_complex), so cliques become higher-dimensional simplices (edges, triangles, and higher cliques).
+
+This dataset is suited to test your code, especially concerning your interaction with AHORN and our dataset structure.
+
+## Dataset Statistics
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
+  <Stat title="Node Type" value="Club Members" />
+</dl>
+
+### Simplicial Complex Shape
+
+<ShapeChart shape={frontmatter["shape"]} />
