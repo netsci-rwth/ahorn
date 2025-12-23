@@ -98,13 +98,15 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
         <div>
           <div className="mb-2 flex items-center justify-between text-sm font-semibold text-gray-700 dark:text-gray-300">
             <span>Filter by name:</span>
-            <button
-              type="button"
-              onClick={() => setSearch("")}
-              className="cursor-pointer text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
-            >
-              Reset
-            </button>
+            {search.trim() !== "" && (
+              <button
+                type="button"
+                onClick={() => setSearch("")}
+                className="cursor-pointer text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
+              >
+                Reset
+              </button>
+            )}
           </div>
           <input
             type="search"
@@ -117,16 +119,19 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
         <div>
           <div className="mb-2 flex items-center justify-between text-sm font-semibold text-gray-700 dark:text-gray-300">
             <span>Filter by node size (|V|):</span>
-            <button
-              type="button"
-              onClick={() => {
-                setNodeRangeMin(nodeExtremes.min);
-                setNodeRangeMax(nodeExtremes.max);
-              }}
-              className="cursor-pointer text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
-            >
-              Reset
-            </button>
+            {(nodeRangeMin !== nodeExtremes.min ||
+              nodeRangeMax !== nodeExtremes.max) && (
+              <button
+                type="button"
+                onClick={() => {
+                  setNodeRangeMin(nodeExtremes.min);
+                  setNodeRangeMax(nodeExtremes.max);
+                }}
+                className="cursor-pointer text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
+              >
+                Reset
+              </button>
+            )}
           </div>
           <MultiRangeSlider
             min={nodeExtremes.min}
@@ -141,13 +146,15 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
         <div>
           <div className="mb-2 flex items-center justify-between text-sm font-semibold text-gray-700 dark:text-gray-300">
             <span>Filter by tag:</span>
-            <button
-              type="button"
-              onClick={() => setSelectedTags([])}
-              className="cursor-pointer text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
-            >
-              Reset
-            </button>
+            {selectedTags.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setSelectedTags([])}
+                className="cursor-pointer text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
+              >
+                Reset
+              </button>
+            )}
           </div>
           <ul className="flex flex-wrap gap-3">
             {allTags.map((tag) => (
