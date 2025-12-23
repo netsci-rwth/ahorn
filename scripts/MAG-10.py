@@ -34,7 +34,7 @@ nodes, hyperedges = load_benson_hyperedges(root_dir / "data" / "cat-edge-MAG-10"
 # write dataset file
 covered_nodes = set(chain.from_iterable(hyperedge.elements for hyperedge in hyperedges))
 with gzip.open(dataset_file, "wt") as f:
-    write_dataset_metadata(f, datasheet_file.stem)
+    write_dataset_metadata(f, datasheet_file.stem, revision=1)
     for node in track(map(first, nodes), description="Writing nodes"):
         if node in covered_nodes:
             continue

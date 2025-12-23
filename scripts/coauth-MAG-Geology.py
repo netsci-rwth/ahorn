@@ -35,7 +35,7 @@ hyperedges = load_benson_simplices(root_dir / "data" / "coauth-MAG-Geology-full"
 yearly_hyperedges = defaultdict(list)
 degrees = defaultdict(int)
 with gzip.open(dataset_file, "wt") as f:
-    write_dataset_metadata(f, datasheet_file.stem)
+    write_dataset_metadata(f, datasheet_file.stem, revision=1)
 
     for node in track(nodes, description="Writing nodes"):
         write_node(f, first(node.elements), substance=node["label"])

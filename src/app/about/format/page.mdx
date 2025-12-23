@@ -32,7 +32,7 @@ The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL N
 Before giving the formal specification, here is a minimal example of a dataset in the described format:
 
 ```plain
-{"network-name": "example", "more-network-metadata": "value", "_format-version": "0.1"}
+{"name": "example-dataset", "more-dataset-metadata": "value", "_format-version": "0.1", "_revision": 1}
 1 {"name": "John Doe", "age": 28}
 1,2,5 {"time": "2023-01-01T07:42:45+00:00", "weight": 1.0, "other-data": "value"}
 4,2,1 {"time": "2023-01-02T19:13:09+00:00", "weight": 2.5}
@@ -67,7 +67,7 @@ In general, nodes are defined implicitly by their appearance in edges, but can b
 
 <Alert type="info">
   AHORN is a repository for higher-order networks. For brevity, we use the term
-  “edge” to refer to simplices, cells, or hyperedges depending on whether the
+  “edge” in this specification to refer to simplices, cells, or hyperedges depending on whether the
   network is a simplicial complex, cell complex, or hypergraph. Different to a
   graph, edges in our case can connect more than two nodes.
 </Alert>
@@ -88,6 +88,7 @@ Generic names like `label` or `data` do not convey specific information about th
 
 The following sections describe standardized attributes that are commonly used in higher-order networks.
 If an attribute has a standardized meaning, it MUST be used as described below.
+Attribute names starting with an underscore (`_`) are always reserved and MUST only be used for metadata according to this specification.
 
 ### Weights
 
@@ -115,6 +116,8 @@ We provide the datasets in a “minimal” form, that is, any nodes, simplices, 
 
 ## Versioning
 
-- TODO: We should implement a versioning scheme for the dataset format.
-- The version number MUST be included in the dataset metadata.
-- The version number MUST follow semantic versioning.
+The published datasets are versioned to ensure reproducibility and track changes over time.
+The dataset-level metadata MUST include the `_revision` attribute, which is an integer that indicates the version of the dataset.
+When a dataset is updated or modified, the `_revision` number MUST be incremented by one.
+
+<Alert type="info">The website always links to the latest revision of a dataset and `ahorn-loader` always loads the latest revision. Older revisions are available on [Zenodo](https://zenodo.org/communities/ahorn/) for download.</Alert>

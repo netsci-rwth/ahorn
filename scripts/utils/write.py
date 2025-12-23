@@ -60,7 +60,7 @@ def write_edge(file: TextIO, elements: Iterable[int | str], **kwargs: Any) -> No
 
 
 def write_dataset_metadata(
-    file: TextIO, name: str, format_version: str = "0.2", **kwargs: Any
+    file: TextIO, name: str, revision: int, format_version: str = "0.2", **kwargs: Any
 ) -> None:
     """Write dataset metadata to a file in JSON format.
 
@@ -70,12 +70,23 @@ def write_dataset_metadata(
         File object to write the metadata to.
     name : str
         Name of the network.
+    revision : int
+        Revision number of the dataset. Must be incremented by one for each published
+        update.
     format_version : str, optional
         Format version string, by default "0.1".
     **kwargs
         Additional metadata attributes.
     """
-    metadata = {"name": name, "_format-version": format_version, **kwargs}
+    if any(key in kwargs for key in ["name", "_format-version", "_revision"]):
+        raise ValueError("Used a reserved metadata key.")
+
+    metadata = {
+        "name": name,
+        **kwargs,
+        "_format-version": format_version,
+        "_revision": revision,
+    }
     file.write(json.dumps(_format_attributes(metadata)) + "\n")
 
 

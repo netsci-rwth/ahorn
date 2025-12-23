@@ -37,7 +37,7 @@ const links = {
   Legal: [
     { href: "/about/privacy", label: "Privacy Policy", icon: faShieldHalved },
     { href: "/about/imprint", label: "Legal Notice", icon: faSection },
-  ]
+  ],
 };
 
 export default function AboutLayout({
@@ -56,8 +56,8 @@ export default function AboutLayout({
 
   return (
     <div className="sm:flex">
-      <aside>
-        <nav className="flex flex-1 flex-col sm:w-3xs">
+      <aside className="sm:w-64 sm:shrink-0">
+        <nav className="flex flex-col">
           <ul className="flex flex-1 flex-col gap-y-7">
             {Object.entries(links).map(([group_name, group]) => (
               <li key={group_name}>
@@ -101,7 +101,7 @@ export default function AboutLayout({
         </nav>
       </aside>
       <main
-        className="prose max-w-none flex-1 max-sm:mt-8 sm:ml-10 dark:prose-invert"
+        className="prose max-w-none flex-1 max-sm:mt-8 sm:ml-10 sm:min-w-0 dark:prose-invert"
         data-pagefind-body
       >
         {children}

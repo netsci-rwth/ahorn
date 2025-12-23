@@ -29,7 +29,7 @@ nodes = set(chain.from_iterable(simplex.elements for simplex in simplices))
 
 # write dataset file
 with dataset_file.open("w") as f:
-    write_dataset_metadata(f, datasheet_file.stem)
+    write_dataset_metadata(f, datasheet_file.stem, revision=1)
     for simplex in track(simplices, description="Writing simplices"):
         write_edge(f, simplex, time=datetime.fromtimestamp(simplex["time"], tz=UTC))
 

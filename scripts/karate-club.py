@@ -33,7 +33,7 @@ clique_complex = tnx.graph_to_clique_complex(G)
 
 # write dataset file
 with dataset_file.open("w") as f:
-    write_dataset_metadata(f, datasheet_file.stem)
+    write_dataset_metadata(f, datasheet_file.stem, revision=1)
 
     for node, data in track(G.nodes(data=True), description="Writing nodes"):
         write_node(f, node, **data)

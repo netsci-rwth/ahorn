@@ -30,7 +30,7 @@ simplices = tnx.datasets.load_benson_simplices(root_dir / "data" / "congress-bil
 
 # write dataset file
 with gzip.open(dataset_file, "wt") as f:
-    write_dataset_metadata(f, datasheet_file.stem)
+    write_dataset_metadata(f, datasheet_file.stem, revision=1)
     for simplex in simplices:
         write_edge(f, simplex, time=datetime.fromtimestamp(simplex["time"], tz=UTC))
 

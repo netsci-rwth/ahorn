@@ -31,7 +31,7 @@ nodes, hyperedges = load_benson_hyperedges(root_dir / "data" / "senate-committee
 
 # write dataset file
 with dataset_file.open("w") as f:
-    write_dataset_metadata(f, datasheet_file.stem)
+    write_dataset_metadata(f, datasheet_file.stem, revision=1)
     for node in track(nodes, description="Writing nodes"):
         write_node(f, first(node), party=node["label"])
     for hyperedge in track(hyperedges, description="Writing hyperedges"):
