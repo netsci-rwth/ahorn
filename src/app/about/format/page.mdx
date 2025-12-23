@@ -7,7 +7,7 @@ export const metadata = {
 
 <h1 className="flex items-center justify-between gap-4">
   <span>Dataset Format</span>
-  <Badge color="primary">Version 0.1</Badge>
+  <Badge color="primary">Version 0.2</Badge>
 </h1>
 
 All datasets distributed in this project follow a standardized format to ensure consistency and ease of use.
@@ -22,9 +22,9 @@ Design goals of the dataset format:
 The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
 <Alert type="warning">
-  TODOs: - Format currently focused on one network; some datasets are
-  multi-graph, e.g., for network-level tasks. - Handle directed edges. -
-  Trajectory data
+  TODOs:
+  - Handle directed edges.
+  - Trajectory data
 </Alert>
 
 ## Example
@@ -55,6 +55,23 @@ The dataset is a plain or gzipped text file with the following structure:
 - The first line MAY contain dataset-level metadata in JSON format.
 - Afterwards, there is a section for nodes, where each node is defined on a separate line.
 - Following the nodes, there are lines for edges (hyperedges or simplices), where each line contains a comma-separated list of node identifiers.
+
+Some datasets in AHORN contain multiple networks (e.g., different molecules) in a single file.
+In that case, each network begins with a marker line that contains the network-level metadata as a JSON object.
+The marker line is followed by the node and edge definitions for that network.
+The dataset-level metadata MUST list the number of networks in the `_num-networks` attribute.
+
+```plain
+{"_num-networks": 2, "_format-version": "0.2", "_revision": 2}
+{"id":"network-001", "label": "toxic"}
+1 {"feat": [0.1, 0.2]}
+2 {"feat": [0.0, 0.3]}
+1,2 {"weight": 1.0}
+{"id":"network-002", "label": "non-toxic"}
+a {"feat": [0.5, 0.4]}
+b {"feat": [0.6, 0.1]}
+a,b {"weight": 2.0}
+```
 
 ## Nodes
 
@@ -92,7 +109,7 @@ Attribute names starting with an underscore (`_`) are always reserved and MUST o
 
 ### Weights
 
-- The `weight` attribute is an integer or floating-point number that represents the weight of the edge.
+- The `weight` attribute, if present, MUST be an integer or floating-point number that represents the weight of the edge.
 - If only some edges are weighted, the `weight` attribute for all other edges SHOULD be present and set to `1.0`.
 
 ### Timestamps
@@ -121,3 +138,15 @@ The dataset-level metadata MUST include the `_revision` attribute, which is an i
 When a dataset is updated or modified, the `_revision` number MUST be incremented by one.
 
 <Alert type="info">The website always links to the latest revision of a dataset and `ahorn-loader` always loads the latest revision. Older revisions are available on [Zenodo](https://zenodo.org/communities/ahorn/) for download.</Alert>
+
+## Changelog
+
+<details className="mt-3 rounded border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
+  <summary className="cursor-pointer select-none">Version 0.2</summary>
+  <div>
+    - **Support for dataset revisions**: Added the `_revision` attribute in the dataset-level metadata to track dataset versions. The revision number is increased with each update of the dataset.
+    - **Support for multi-network datasets**: Added the ability to include multiple networks in a single dataset file, each with its own metadata.
+    - The `name` attribute in the dataset-level metadata is now mandatory. Before it sometimes was called `network-name`.
+    - Clarified the usage of reserved attribute names starting with an underscore (`_`).
+  </div>
+</details>

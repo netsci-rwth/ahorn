@@ -90,6 +90,22 @@ def write_dataset_metadata(
     file.write(json.dumps(_format_attributes(metadata)) + "\n")
 
 
+def write_network_metadata(file: TextIO, **kwargs: Any) -> None:
+    """Write network metadata to a file in JSON format.
+
+    Notice to use this method if in a multi-network dataset context. Otherwise, network
+    metadata should be part of the dataset metadata in ``write_dataset_metadata``.
+
+    Parameters
+    ----------
+    file : TextIO
+        File object to write the metadata to.
+    **kwargs
+        Additional metadata attributes.
+    """
+    file.write(json.dumps(_format_attributes(kwargs)) + "\n")
+
+
 def write_markdown(path: Path | str, frontmatter: dict[Any, Any], body: str) -> None:
     """Write a markdown file with YAML frontmatter.
 
