@@ -16,8 +16,8 @@ from rich.progress import track
 
 from .utils.write import (
     update_frontmatter,
+    write_dataset_metadata,
     write_edge,
-    write_network_metadata,
     write_node,
 )
 from .utils.yaml import patch_dumper
@@ -33,7 +33,7 @@ clique_complex = tnx.graph_to_clique_complex(G)
 
 # write dataset file
 with dataset_file.open("w") as f:
-    write_network_metadata(f, datasheet_file.stem)
+    write_dataset_metadata(f, datasheet_file.stem)
 
     for node, data in track(G.nodes(data=True), description="Writing nodes"):
         write_node(f, node, **data)

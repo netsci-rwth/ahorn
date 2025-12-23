@@ -15,7 +15,7 @@ import toponetx as tnx
 from rich.progress import track
 
 from .benson import load_benson_simplices
-from .utils.write import update_frontmatter, write_edge, write_network_metadata
+from .utils.write import update_frontmatter, write_dataset_metadata, write_edge
 from .utils.yaml import patch_dumper
 
 patch_dumper()
@@ -29,7 +29,7 @@ nodes = set(chain.from_iterable(simplex.elements for simplex in simplices))
 
 # write dataset file
 with dataset_file.open("w") as f:
-    write_network_metadata(f, datasheet_file.stem)
+    write_dataset_metadata(f, datasheet_file.stem)
     for simplex in track(simplices, description="Writing simplices"):
         write_edge(f, simplex, time=datetime.fromtimestamp(simplex["time"], tz=UTC))
 

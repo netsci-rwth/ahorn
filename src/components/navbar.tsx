@@ -26,7 +26,7 @@ import {
 
 const links = [
   { name: "Home", link: "/" },
-  { name: "Networks", link: "/dataset" },
+  { name: "Datasets", link: "/dataset" },
   { name: "Tools", link: "/tools" },
   { name: "About", link: "/about" },
 ];

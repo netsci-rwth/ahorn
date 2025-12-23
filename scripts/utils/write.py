@@ -5,6 +5,7 @@ information in various formats.
 """
 
 import json
+from datetime import datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, TextIO
 
@@ -12,6 +13,13 @@ from .yaml import read_frontmatter
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
+
+
+def _format_attributes(attributes: dict[Any, Any]) -> dict[Any, Any]:
+    for key, value in attributes.items():
+        if isinstance(value, datetime):
+            attributes[key] = value.isoformat()
+    return attributes
 
 
 def update_frontmatter(path: Path | str, update: dict[Any, Any]) -> None:
@@ -51,10 +59,10 @@ def write_edge(file: TextIO, elements: Iterable[int | str], **kwargs: Any) -> No
     file.write(f"{','.join(map(str, elements))} {json.dumps(kwargs)}\n")
 
 
-def write_network_metadata(
-    file: TextIO, name: str, format_version: str = "0.1"
+def write_dataset_metadata(
+    file: TextIO, name: str, format_version: str = "0.2", **kwargs: Any
 ) -> None:
-    """Write network metadata to a file in JSON format.
+    """Write dataset metadata to a file in JSON format.
 
     Parameters
     ----------
@@ -64,9 +72,11 @@ def write_network_metadata(
         Name of the network.
     format_version : str, optional
         Format version string, by default "0.1".
+    **kwargs
+        Additional metadata attributes.
     """
-    metadata = {"name": name, "_format-version": format_version}
-    file.write(json.dumps(metadata) + "\n")
+    metadata = {"name": name, "_format-version": format_version, **kwargs}
+    file.write(json.dumps(_format_attributes(metadata)) + "\n")
 
 
 def write_markdown(path: Path | str, frontmatter: dict[Any, Any], body: str) -> None:

@@ -16,8 +16,8 @@ from rich.progress import track
 from .benson import load_benson_hyperedges
 from .utils.write import (
     update_frontmatter,
+    write_dataset_metadata,
     write_edge,
-    write_network_metadata,
     write_node,
 )
 from .utils.yaml import patch_dumper
@@ -32,7 +32,7 @@ nodes, hyperedges = load_benson_hyperedges(root_dir / "data" / "cat-edge-Cooking
 
 # write dataset file
 with gzip.open(dataset_file, "wt") as f:
-    write_network_metadata(f, datasheet_file.stem)
+    write_dataset_metadata(f, datasheet_file.stem)
     for node in track(nodes, description="Writing nodes"):
         write_node(f, first(node), ingredient=node["name"])
     for hyperedge in track(hyperedges, description="Writing hyperedges"):

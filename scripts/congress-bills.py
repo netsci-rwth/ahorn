@@ -14,7 +14,7 @@ from pathlib import Path
 import toponetx as tnx
 from rich.progress import track
 
-from .utils.write import update_frontmatter, write_edge, write_network_metadata
+from .utils.write import update_frontmatter, write_dataset_metadata, write_edge
 from .utils.yaml import patch_dumper
 
 # TODO: Dataset is too big.
@@ -30,7 +30,7 @@ simplices = tnx.datasets.load_benson_simplices(root_dir / "data" / "congress-bil
 
 # write dataset file
 with gzip.open(dataset_file, "wt") as f:
-    write_network_metadata(f, datasheet_file.stem)
+    write_dataset_metadata(f, datasheet_file.stem)
     for simplex in simplices:
         write_edge(f, simplex, time=datetime.fromtimestamp(simplex["time"], tz=UTC))
 
