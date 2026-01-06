@@ -41,8 +41,6 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
   return filenames.map((filename) => ({ slug: path.parse(filename).name }));
 }
 
-export const dynamicParams = false;
-
 export default async function DatasetPage({
   params,
 }: {
@@ -80,6 +78,32 @@ export default async function DatasetPage({
 
   const attachments: Record<string, { url: string; size: number }> =
     frontmatter.attachments || {};
+
+  const licenseDisplay = (() => {
+    const license = frontmatter.license;
+    if (!license) return null;
+
+    if (typeof license === "string") {
+      return license;
+    }
+
+    if (typeof license === "object") {
+      const spdx = (license as { spdx?: string }).spdx;
+      const link = (license as { link?: string }).link;
+
+      if (spdx && link) {
+        return (
+          <a href={link} target="_blank" rel="noreferrer">
+            {spdx}
+          </a>
+        );
+      }
+
+      if (spdx) return spdx;
+    }
+
+    return null;
+  })();
 
   return (
     <div
@@ -130,13 +154,13 @@ export default async function DatasetPage({
                 </a>
               </dd>
             </div>
-            {frontmatter.license && (
+            {licenseDisplay && (
               <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-gray-900 dark:text-gray-100">
                   License
                 </dt>
                 <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-300">
-                  {frontmatter.license}
+                  {licenseDisplay}
                 </dd>
               </div>
             )}
