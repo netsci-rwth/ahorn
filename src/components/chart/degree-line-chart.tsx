@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -33,7 +33,11 @@ export type DegreeLineChartProps = {
   logScale?: boolean;
 };
 
-export default function DegreeLineChart({ histogram, title = "Node Degree Distribution", logScale = false }: DegreeLineChartProps) {
+export default function DegreeLineChart({
+  histogram,
+  title = "Node Degree Distribution",
+  logScale = false,
+}: DegreeLineChartProps) {
   const [useLogScale, setUseLogScale] = useState<boolean>(logScale);
   const [isDark, setIsDark] = useState<boolean>(false);
 
@@ -56,7 +60,10 @@ export default function DegreeLineChart({ histogram, title = "Node Degree Distri
       }
     };
   }, []);
-  const entries = Object.entries(histogram).map(([k, v]) => [Number(k), v as number]) as [number, number][];
+  const entries = Object.entries(histogram).map(([k, v]) => [
+    Number(k),
+    v as number,
+  ]) as [number, number][];
   const sorted = entries
     .filter(([k]) => !Number.isNaN(k))
     .sort((a, b) => a[0] - b[0]);
@@ -75,7 +82,9 @@ export default function DegreeLineChart({ histogram, title = "Node Degree Distri
     ],
   };
 
-  const yType: "linear" | "logarithmic" = useLogScale ? "logarithmic" : "linear";
+  const yType: "linear" | "logarithmic" = useLogScale
+    ? "logarithmic"
+    : "linear";
 
   const gridColor = isDark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)";
   const tickColor = isDark ? "rgba(255,255,255,0.75)" : "rgba(0,0,0,0.7)";

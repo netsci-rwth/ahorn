@@ -19,13 +19,13 @@ from typing import Any
 from rich.progress import track
 
 from .utils.write import (
+    update_frontmatter,
     write_dataset_metadata,
     write_edge,
-    write_markdown,
     write_network_metadata,
     write_node,
 )
-from .utils.yaml import patch_dumper, read_frontmatter
+from .utils.yaml import patch_dumper
 
 patch_dumper()
 
@@ -141,12 +141,8 @@ for dimension in [2, 3]:
     nodes_box = boxplot_stats(node_counts)
     simplices_box = boxplot_stats(simplex_counts)
 
-    # Prepare datasheet frontmatter/body
-    with datasheet_file.open() as f:
-        datasheet_frontmatter_raw, datasheet_body = read_frontmatter(f.read())
-    datasheet_frontmatter: dict[str, Any] = datasheet_frontmatter_raw
-
-    datasheet_frontmatter.update(
+    update_frontmatter(
+        datasheet_file,
         {
             "statistics": {
                 "num-manifolds": num_manifolds,
@@ -162,7 +158,5 @@ for dimension in [2, 3]:
                     "size": dataset_file.stat().st_size,
                 }
             },
-        }
+        },
     )
-
-    write_markdown(datasheet_file, datasheet_frontmatter, datasheet_body)

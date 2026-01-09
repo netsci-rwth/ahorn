@@ -1,12 +1,16 @@
+import classNames from "classnames";
+
 import { formatNumber } from "@/utils/format";
 
 export function computeBox(values: number[]): BoxPlotStats | null {
   const sorted = [...values].sort((a, b) => a - b);
   const mid = Math.floor(sorted.length / 2);
 
-  const median = sorted.length % 2 === 0 ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid];
+  const median =
+    sorted.length % 2 === 0 ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid];
   const lower = sorted.slice(0, mid);
-  const upper = sorted.length % 2 === 0 ? sorted.slice(mid) : sorted.slice(mid + 1);
+  const upper =
+    sorted.length % 2 === 0 ? sorted.slice(mid) : sorted.slice(mid + 1);
 
   const q1 = lower.length
     ? lower.length % 2 === 0
@@ -40,9 +44,14 @@ export type BoxPlotStats = {
 export type BoxPlotProps = {
   title?: string;
   stats: BoxPlotStats;
+  className?: string;
 };
 
-export default function BoxPlot({ title, stats }: BoxPlotProps) {
+export default function BoxPlot({
+  title,
+  stats,
+  className = "",
+}: BoxPlotProps) {
   const { min, q1, median, q3, max } = stats;
   const span = max - min || 1;
   const toPercent = (value: number) => ((value - min) / span) * 100;
@@ -52,14 +61,19 @@ export default function BoxPlot({ title, stats }: BoxPlotProps) {
   const boxWidth = Math.min(Math.max(boxEnd - boxStart, 0.5), 100 - boxStart);
 
   return (
-    <div className="rounded-lg border border-slate-200 bg-white/50 p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900/70">
+    <div
+      className={classNames(
+        "rounded-lg border border-slate-200 bg-white/50 p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900/70",
+        className,
+      )}
+    >
       {title && (
-        <div className="mb-2 text-sm font-semibold text-slate-900 dark:text-slate-100">
+        <div className="mb-2 truncate text-sm font-semibold text-gray-500 dark:text-gray-400">
           {title}
         </div>
       )}
       <div className="relative h-20">
-        <div className="absolute left-0 right-0 top-1/2 h-px bg-slate-200 dark:bg-slate-700" />
+        <div className="absolute top-1/2 right-0 left-0 h-px bg-slate-200 dark:bg-slate-700" />
 
         <div
           className="absolute top-[30%] h-[40%] bg-blue-200/70 dark:bg-blue-500/30"
@@ -79,7 +93,7 @@ export default function BoxPlot({ title, stats }: BoxPlotProps) {
           />
         ))}
 
-        {(['q1', 'q3'] as const).map((label) => {
+        {(["q1", "q3"] as const).map((label) => {
           const value = label === "q1" ? q1 : q3;
           return (
             <div
@@ -105,7 +119,7 @@ export default function BoxPlot({ title, stats }: BoxPlotProps) {
 function LabelValue({ label, value }: { label: string; value: number }) {
   return (
     <div className="flex flex-col gap-0.5">
-      <span className="text-[10px] uppercase tracking-wide text-slate-500 dark:text-slate-400">
+      <span className="text-[10px] tracking-wide text-slate-500 uppercase dark:text-slate-400">
         {label}
       </span>
       <span className="font-semibold text-slate-900 dark:text-white">
@@ -118,7 +132,12 @@ function LabelValue({ label, value }: { label: string; value: number }) {
 export function ComputedBoxPlot({
   values,
   title,
-}: { values: number[]; title?: string }) {
+  className = "",
+}: {
+  values: number[];
+  title?: string;
+  className?: string;
+}) {
   const stats = computeBox(values);
 
   if (!stats) {
@@ -129,5 +148,5 @@ export function ComputedBoxPlot({
     );
   }
 
-  return <BoxPlot title={title} stats={stats} />;
+  return <BoxPlot title={title} stats={stats} className={className} />;
 }

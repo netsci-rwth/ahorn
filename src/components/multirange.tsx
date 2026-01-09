@@ -1,5 +1,3 @@
-import { formatNumber } from "@/utils/format";
-
 export default function MultiRangeSlider({
   min,
   max,
@@ -15,16 +13,16 @@ export default function MultiRangeSlider({
 }) {
   const handleMinSubmit = (inputValue: string) => {
     const newMin = parseInt(inputValue, 10);
-    const clampedMin = isNaN(newMin) 
-      ? min 
+    const clampedMin = isNaN(newMin)
+      ? min
       : Math.max(min, Math.min(newMin, value.max - minGap));
     onChange({ min: clampedMin, max: value.max });
   };
 
   const handleMaxSubmit = (inputValue: string) => {
     const newMax = parseInt(inputValue, 10);
-    const clampedMax = isNaN(newMax) 
-      ? max 
+    const clampedMax = isNaN(newMax)
+      ? max
       : Math.min(max, Math.max(newMax, value.min + minGap));
     onChange({ min: value.min, max: clampedMax });
   };
@@ -77,7 +75,9 @@ export default function MultiRangeSlider({
       </div>
       <div className="mt-3 flex justify-between gap-4 text-gray-600 dark:text-gray-400">
         <div className="flex flex-col gap-1">
-          <label htmlFor="range-min" className="text-xs">Min:</label>
+          <label htmlFor="range-min" className="text-xs">
+            Min:
+          </label>
           <input
             id="range-min"
             type="number"
@@ -87,7 +87,7 @@ export default function MultiRangeSlider({
             key={`min-${value.min}`}
             onBlur={(e) => handleMinSubmit(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
+              if (e.key === "Enter") {
                 handleMinSubmit(e.currentTarget.value);
                 e.currentTarget.blur();
               }
@@ -96,7 +96,9 @@ export default function MultiRangeSlider({
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label htmlFor="range-max" className="text-xs">Max:</label>
+          <label htmlFor="range-max" className="text-xs">
+            Max:
+          </label>
           <input
             id="range-max"
             type="number"
@@ -106,7 +108,7 @@ export default function MultiRangeSlider({
             key={`max-${value.max}`}
             onBlur={(e) => handleMaxSubmit(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
+              if (e.key === "Enter") {
                 handleMaxSubmit(e.currentTarget.value);
                 e.currentTarget.blur();
               }
