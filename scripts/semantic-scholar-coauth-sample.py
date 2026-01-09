@@ -22,7 +22,9 @@ patch_dumper()
 root_dir = Path(__file__).parent.parent
 
 data_path = root_dir / "data" / "semantic-scholar-coauth-sample"
-dataset_file = root_dir / "public" / "datasets" / "semantic-scholar-coauth-sample.txt.gz"
+dataset_file = (
+    root_dir / "public" / "datasets" / "semantic-scholar-coauth-sample.txt.gz"
+)
 datasheet_file = root_dir / "src" / "datasets" / "semantic-scholar-coauth-sample.mdx"
 
 # Load dataset
@@ -31,7 +33,7 @@ simplices_data = np.load(data_path / "150250_simplices.npy", allow_pickle=True)
 cochains_data = np.load(data_path / "150250_cochains.npy", allow_pickle=True)
 
 for simplex_dim, cochain_dim in zip(simplices_data, cochains_data, strict=True):
-    for simplex, _ in simplex_dim.items():
+    for simplex in simplex_dim:
         if simplex in cochain_dim:
             dataset.add_simplex(list(simplex), citations=cochain_dim[simplex])
 
