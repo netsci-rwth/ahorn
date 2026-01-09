@@ -129,16 +129,76 @@ function LabelValue({ label, value }: { label: string; value: number }) {
   );
 }
 
+function computeBoxFromHistogram(
+  histogram: Record<string | number, number>,
+): BoxPlotStats | null {
+  const entries = Object.entries(histogram)
+    .map(([k, v]) => [Number(k), Number(v)] as [number, number])
+    .filter(([k, v]) => !isNaN(k) && v > 0)
+    .sort((a, b) => a[0] - b[0]);
+
+  if (entries.length === 0) return null;
+
+  const totalCount = entries.reduce((acc, [, count]) => acc + count, 0);
+
+  const getValueAtRank = (rank: number): number => {
+    let currentCount = 0;
+    for (const [val, count] of entries) {
+      currentCount += count;
+      if (currentCount > rank) return val;
+    }
+    return entries[entries.length - 1][0];
+  };
+
+  const midIndex = Math.floor(totalCount / 2);
+  const medianVal =
+    totalCount % 2 === 0
+      ? (getValueAtRank(midIndex - 1) + getValueAtRank(midIndex)) / 2
+      : getValueAtRank(midIndex);
+
+  const lowerLen = midIndex;
+  const upperStart = midIndex + (totalCount % 2);
+  const upperLen = totalCount - upperStart;
+
+  const q1Mid = Math.floor(lowerLen / 2);
+  const q1 =
+    lowerLen > 0
+      ? lowerLen % 2 === 0
+        ? (getValueAtRank(q1Mid - 1) + getValueAtRank(q1Mid)) / 2
+        : getValueAtRank(q1Mid)
+      : medianVal;
+
+  const q3Mid = Math.floor(upperLen / 2);
+  const q3 =
+    upperLen > 0
+      ? upperLen % 2 === 0
+        ? (getValueAtRank(upperStart + q3Mid - 1) +
+            getValueAtRank(upperStart + q3Mid)) /
+          2
+        : getValueAtRank(upperStart + q3Mid)
+      : medianVal;
+
+  return {
+    min: entries[0][0],
+    q1,
+    median: medianVal,
+    q3,
+    max: entries[entries.length - 1][0],
+  };
+}
+
 export function ComputedBoxPlot({
   values,
   title,
   className = "",
 }: {
-  values: number[];
+  values: number[] | Record<string | number, number>;
   title?: string;
   className?: string;
 }) {
-  const stats = computeBox(values);
+  const stats = Array.isArray(values)
+    ? computeBox(values)
+    : computeBoxFromHistogram(values);
 
   if (!stats) {
     return (

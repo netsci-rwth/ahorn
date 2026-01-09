@@ -1,0 +1,148 @@
+---
+title: Semantic Scholar Co-Authorship Sample
+source: https://github.com/stefaniaebli/simplicial_neural_networks
+citation:
+  - |
+    @inproceedings{
+      ebli2020simplicial,
+      title={Simplicial Neural Networks},
+      author={Stefania Ebli and Micha{\"e}l Defferrard and Gard Spreemann},
+      booktitle={TDA {\&} Beyond},
+      year={2020},
+      url={https://openreview.net/forum?id=nPCt39DVIfk}
+    }
+tags:
+  - social
+  - undirected
+  - edge labels
+statistics:
+  num-nodes: 352
+  num-edges: 24200
+  node-degrees:
+    1: 2
+    3: 2
+    7: 6
+    15: 15
+    31: 45
+    62: 1
+    63: 50
+    78: 1
+    127: 55
+    255: 54
+    269: 1
+    286: 2
+    315: 2
+    327: 1
+    509: 1
+    511: 53
+    542: 1
+    573: 1
+    637: 1
+    669: 1
+    673: 1
+    1023: 42
+    1035: 1
+    1053: 2
+    1054: 1
+    1079: 2
+    1083: 2
+    1114: 1
+    1151: 1
+    1278: 1
+    1355: 1
+    1863: 1
+    3787: 1
+  maximal-simplex-sizes:
+    2: 2
+    3: 1
+    4: 2
+    5: 5
+    6: 11
+    7: 10
+    8: 8
+    9: 8
+    10: 6
+    11: 5
+attachments:
+  dataset:
+    url: https://zenodo.org/records/18199501/files/semantic-scholar-coauth-sample.txt.gz?download=1
+    size: 98128
+---
+
+import { ComputedBoxPlot } from "@/components/chart/box-plot";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+Constructed from a subsample of the Semantic Scholar Open Research Corpus, this dataset is a simplicial complex where nodes are authors and simplices are sets of co-authors on papers.
+Values on every simplex indicate the sum of citations of all papers co-authored at least by the corresponding set of authors.
+
+## Example
+
+<div className="grid gap-4 md:grid-cols-2">
+
+  <div>
+    <div className="-mb-8"></div>
+
+    | Paper   | Authors | Citations |
+    | ------- | ------- | --------: |
+    | Paper 1 | A, B, C |       100 |
+    | Paper 2 | A, B    |        50 |
+    | Paper 3 | A, D    |        10 |
+    | Paper 4 | C, D    |         4 |
+
+    <div className="-mt-8"></div>
+  </div>
+
+  <div className="flex items-center justify-center">
+    <svg viewBox="0 0 260 160" className="h-full w-full max-w-[300px]">
+      {/* Triangle ABC */}
+      <path d="M 30 120 L 130 120 L 80 40 Z" className="fill-blue-100 stroke-black stroke-2" />
+      
+      {/* Edge AD and CD */}
+      <line x1="80" y1="40" x2="200" y2="80" className="stroke-black stroke-2" />
+      <line x1="130" y1="120" x2="200" y2="80" className="stroke-black stroke-2" />
+
+      {/* Edge Values */}
+      <text x="80" y="135" textAnchor="middle" className="text-xs fill-slate-500">100</text>
+      <text x="45" y="80" textAnchor="end" className="text-xs fill-slate-500">150</text>
+      <text x="105" y="80" textAnchor="start" className="text-xs fill-slate-500">100</text>
+      <text x="140" y="55" textAnchor="middle" className="text-xs fill-slate-500">10</text>
+      <text x="170" y="115" textAnchor="middle" className="text-xs fill-slate-500">4</text>
+      <text x="80" y="95" textAnchor="middle" className="text-xs fill-slate-500">100</text>
+
+      {/* Nodes */}
+      <circle cx="80" cy="40" r="6" className="fill-primary" />
+      <text x="80" y="30" textAnchor="middle" className="text-sm font-bold fill-slate-700">A</text>
+      <text x="80" y="18" textAnchor="middle" className="text-xs fill-slate-500">160</text>
+      
+      <circle cx="30" cy="120" r="6" className="fill-primary" />
+      <text x="30" y="145" textAnchor="middle" className="text-sm font-bold fill-slate-700">B</text>
+      <text x="30" y="157" textAnchor="middle" className="text-xs fill-slate-500">150</text>
+      
+      <circle cx="130" cy="120" r="6" className="fill-primary" />
+      <text x="130" y="145" textAnchor="middle" className="text-sm font-bold fill-slate-700">C</text>
+      <text x="130" y="157" textAnchor="middle" className="text-xs fill-slate-500">104</text>
+      
+      <circle cx="200" cy="80" r="6" className="fill-primary" />
+      <text x="212" y="85" textAnchor="start" dominantBaseline="middle" className="text-sm font-bold fill-slate-700">D</text>
+      <text x="212" y="97" textAnchor="start" dominantBaseline="middle" className="text-xs fill-slate-500">14</text>
+    </svg>
+  </div>
+</div>
+
+Take note that edge (A, B) has value 150 since both Paper 1 and Paper 2 were co-authored by at least A and B.
+Similarly, node C has value 104 since C co-authored Paper 1 (100 citations) and Paper 4 (4 citations).
+
+## Dataset Statistics
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
+  <Stat title="Node Type" value="Author" />
+  <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-2" />
+  <Stat
+    title="Simplices"
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+  />
+  <Stat title="Simplex Type" value="Co-Authorship" />
+  <ComputedBoxPlot title="Maximal Simplex Size" values={frontmatter["statistics"]["maximal-simplex-sizes"]} className="sm:col-span-2" />
+</dl>
