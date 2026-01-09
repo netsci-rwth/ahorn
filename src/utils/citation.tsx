@@ -3,7 +3,9 @@ import "@citation-js/plugin-bibtex";
 import "@citation-js/plugin-csl";
 import "@citation-js/plugin-doi";
 
-util.setUserAgent(`Aachen Higher-Order Repository of Networks (mailto:teaching-netsci@cs.rwth-aachen.de) Citation.js/${version} Node.js/${process.versions.node}`)
+util.setUserAgent(
+  `Aachen Higher-Order Repository of Networks (mailto:teaching-netsci@cs.rwth-aachen.de) Citation.js/${version} Node.js/${process.versions.node}`,
+);
 
 export async function toApa(bibtex: string): Promise<[string, string][]> {
   const citations = await Cite.async(bibtex);
@@ -19,10 +21,10 @@ export async function toApa(bibtex: string): Promise<[string, string][]> {
     citation[1] = citation[1].replace(/<div[^>]*>(.*?)<\/div>/, "$1");
   }
 
-  // add <a> tag to DOIs
+  // add <a> tags to links
   for (const citation of formattedCitations) {
     citation[1] = citation[1].replace(
-      /(https?:\/\/doi\.org\/[^\s]+)/g,
+      /(https?:\/\/[^\s<]+)/g,
       '<a href="$1" target="_blank">$1</a>',
     );
   }
