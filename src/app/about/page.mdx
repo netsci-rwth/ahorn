@@ -1,8 +1,40 @@
+import fs from "fs";
+import path from "path";
+
 import Person from "@/components/person";
+import Stat from "@/components/stat";
 
 export const metadata = {
   title: "About | AHORN - Aachen Higher-Order Repository of Networks",
 };
+
+export async function getDatasetStatistics() {
+  const datasetsDir = path.join(process.cwd(), "src", "datasets");
+  const filenames = await fs.promises.readdir(datasetsDir);
+
+  const datasets = await Promise.all(
+    filenames
+      .filter((f) => f.endsWith(".mdx"))
+      .map(async (filename) => {
+        const { frontmatter } = await import(`@/datasets/${filename}`);
+        return {
+          disable: frontmatter.disable === true,
+          tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],
+        };
+      }),
+  );
+
+  const activeDatasets = datasets.filter((d) => !d.disable);
+  const tagSet = new Set();
+  activeDatasets.forEach((d) => d.tags.forEach((tag) => tagSet.add(tag)));
+
+  return {
+    datasetCount: activeDatasets.length,
+    uniqueTagCount: tagSet.size,
+  };
+}
+
+export const { datasetCount, uniqueTagCount } = await getDatasetStatistics();
 
 # About
 
@@ -10,6 +42,13 @@ The Aachen Higher-Order Repository of Networks (AHORN) aims to provide a compreh
 This repository is designed to facilitate research and development in the field of higher-order networks by offering a variety of datasets that can be used for benchmarking, testing algorithms, and exploring new concepts in network science.
 
 The project is similar in spirit to graph repositories like [ICON](https://icon.colorado.edu/), [SNAP](https://snap.stanford.edu/), and [Netzschleuder](https://networks.skewed.de/) but specifically tailored for higher-order datasets.
+
+<div className="not-prose my-8">
+  <dl className="grid gap-5 sm:grid-cols-2">
+    <Stat title="Number of Datasets" value={datasetCount} />
+    <Stat title="Unique Tags" value={uniqueTagCount} />
+  </dl>
+</div>
 
 ## White Paper
 
