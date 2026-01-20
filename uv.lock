@@ -26,7 +26,7 @@ requires-dist = [
     { name = "networkx", specifier = "==3.6.1" },
     { name = "pyyaml", specifier = "==6.0.3" },
     { name = "rich", specifier = "==14.2.0" },
-    { name = "toponetx", specifier = "==0.2.0" },
+    { name = "toponetx", specifier = "==0.3.0" },
 ]
 
 [package.metadata.requires-dev]
@@ -255,9 +255,10 @@ wheels = [
 
 [[package]]
 name = "toponetx"
-version = "0.2.0"
+version = "0.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
+    { name = "more-itertools" },
     { name = "networkx" },
     { name = "numpy" },
     { name = "pandas" },
@@ -267,9 +268,9 @@ dependencies = [
     { name = "trimesh" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/81/2a/907d4c2b2bc73babbde70040c3d9babf2963c74825cc5386e2cf63242e50/toponetx-0.2.0.tar.gz", hash = "sha256:f7cc3807c66554353f55c1e000ab8132126ff2860223021be21516677c8e655e", size = 1091128, upload-time = "2025-01-03T10:40:24.893Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/43/53/a11c89f40738236bd80f4db9970a79a0418790e8780aa4c92e2ad665f862/toponetx-0.3.0.tar.gz", hash = "sha256:2798aa741be9fc9bf537b10d5c69cc41eeef2cbc3fa92c5d460e35f5d65814e1", size = 1104322, upload-time = "2026-01-19T16:19:30.93Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/39/00/aeed80e7d4202120285d3cb64011186736f4d051baccdb1b14b732df8eee/TopoNetX-0.2.0-py3-none-any.whl", hash = "sha256:4d0294bb52a39ec23d6a2aaeb1fc53f61cd5f017ba46f82fefa7a6dfbb4fa3ec", size = 114403, upload-time = "2025-01-03T10:40:22.253Z" },
+    { url = "https://files.pythonhosted.org/packages/b8/77/a848af19203b3cc2b1ab2c5d55c89cbdbbd5a9baba403ce2e4b2633e4ec1/toponetx-0.3.0-py3-none-any.whl", hash = "sha256:c025ac2d8cba026b0e528ebf9596911dec25cf5639f032d0ab2b62f6990720e5", size = 132337, upload-time = "2026-01-19T16:19:29.709Z" },
 ]
 
 [[package]]
