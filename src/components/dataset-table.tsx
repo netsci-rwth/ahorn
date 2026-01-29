@@ -287,16 +287,7 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
                   <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-300">
                     <div className="flex flex-wrap gap-2">
                       {dataset.tags.map((tag: string) => (
-                        <Tag
-                          key={tag}
-                          name={tag}
-                          className="cursor-pointer"
-                          onClick={() =>
-                            setSelectedTags((prev) =>
-                              prev.includes(tag) ? prev : [...prev, tag],
-                            )
-                          }
-                        />
+                        <Tag key={tag} name={tag} />
                       ))}
                     </div>
                   </td>
