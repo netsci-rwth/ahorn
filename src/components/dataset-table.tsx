@@ -7,9 +7,15 @@ import { useState, useMemo } from "react";
 import MultiRangeSlider from "@/components/multirange";
 import { formatNumber } from "@/utils/format";
 
+enum NetworkType {
+  simplicialComplex = "simplicial-complex",
+  hypergraph = "hypergraph",
+}
+
 type Dataset = {
   slug: string;
   title: string;
+  networkType: NetworkType[];
   tags: string[];
   statistics: {
     numNodes: number;
@@ -29,6 +35,7 @@ function getAllTags(datasets: Dataset[]): string[] {
 export default function DatasetTable({ datasets }: DatasetTableProps) {
   const [search, setSearch] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedNetworkTypes, setSelectedNetworkTypes] = useState<NetworkType[]>([]);
   const [sortField, setSortField] = useState<"title" | "numNodes">("title");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const allTags = getAllTags(datasets);
@@ -60,6 +67,12 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
     );
   };
 
+  const handleNetworkTypeChange = (type: NetworkType) => {
+    setSelectedNetworkTypes((prev) =>
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type],
+    );
+  };
+
   const handleSort = (field: "title" | "numNodes") => {
     if (sortField === field) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
@@ -74,10 +87,13 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
     const matchesTags =
       selectedTags.length === 0 ||
       selectedTags.every((tag) => d.tags.includes(tag));
+    const matchesNetworkType =
+      selectedNetworkTypes.length === 0 ||
+      selectedNetworkTypes.every((type) => d.networkType.includes(type));
     const matchesRange =
       d.statistics.numNodes >= nodeRangeMin &&
       d.statistics.numNodes <= nodeRangeMax;
-    return matchesSearch && matchesTags && matchesRange;
+    return matchesSearch && matchesTags && matchesNetworkType && matchesRange;
   });
 
   const sorted = [...filtered].sort((a, b) => {
@@ -121,17 +137,17 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
             <span>Filter by node size (|V|):</span>
             {(nodeRangeMin !== nodeExtremes.min ||
               nodeRangeMax !== nodeExtremes.max) && (
-              <button
-                type="button"
-                onClick={() => {
-                  setNodeRangeMin(nodeExtremes.min);
-                  setNodeRangeMax(nodeExtremes.max);
-                }}
-                className="cursor-pointer text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
-              >
-                Reset
-              </button>
-            )}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setNodeRangeMin(nodeExtremes.min);
+                    setNodeRangeMax(nodeExtremes.max);
+                  }}
+                  className="cursor-pointer text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
+                >
+                  Reset
+                </button>
+              )}
           </div>
           <MultiRangeSlider
             min={nodeExtremes.min}
@@ -142,6 +158,39 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
               setNodeRangeMax(max);
             }}
           />
+        </div>
+        <div>
+          <div className="mb-2 flex items-center justify-between text-sm font-semibold text-gray-700 dark:text-gray-300">
+            <span>Filter by network type:</span>
+            {selectedNetworkTypes.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setSelectedNetworkTypes([])}
+                className="cursor-pointer text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
+              >
+                Reset
+              </button>
+            )}
+          </div>
+          <ul className="grid gap-3">
+            {Object.values(NetworkType).map((type) => (
+              <li key={type} className="flex items-center gap-1">
+                <input
+                  id={`network-type-${type}`}
+                  type="checkbox"
+                  checked={selectedNetworkTypes.includes(type)}
+                  onChange={() => handleNetworkTypeChange(type)}
+                  className="rounded border-gray-300 bg-white text-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:focus:ring-primary"
+                />
+                <label
+                  htmlFor={`network-type-${type}`}
+                  className="cursor-pointer text-xs capitalize"
+                >
+                  {type === NetworkType.simplicialComplex ? "Simplicial Complex" : "Hypergraph"}
+                </label>
+              </li>
+            ))}
+          </ul>
         </div>
         <div>
           <div className="mb-2 flex items-center justify-between text-sm font-semibold text-gray-700 dark:text-gray-300">
@@ -238,7 +287,16 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
                   <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-300">
                     <div className="flex flex-wrap gap-2">
                       {dataset.tags.map((tag: string) => (
-                        <Tag key={tag} name={tag} />
+                        <Tag
+                          key={tag}
+                          name={tag}
+                          className="cursor-pointer"
+                          onClick={() =>
+                            setSelectedTags((prev) =>
+                              prev.includes(tag) ? prev : [...prev, tag],
+                            )
+                          }
+                        />
                       ))}
                     </div>
                   </td>

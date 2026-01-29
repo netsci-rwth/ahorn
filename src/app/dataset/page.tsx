@@ -25,6 +25,7 @@ export default async function DatasetList() {
               ? frontmatter.title
               : path.parse(filename).name,
           disable: frontmatter.disable === true,
+          networkType: frontmatter["network-type"],
           tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],
           statistics: {
             numNodes: frontmatter.statistics?.["num-nodes"] ?? 0,

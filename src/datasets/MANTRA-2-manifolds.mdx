@@ -15,7 +15,8 @@ citation:
     }
 related:
   - MANTRA-3-manifolds
-network-type: simplicial-complex
+network-type:
+  - simplicial-complex
 tags:
   - multi-network
 statistics:
@@ -43264,6 +43265,14 @@ import { formatNumber } from "@/utils/format";
 
 The MANTRA collection provides simplicial complexes built from triangulations of closed 2- and 3-manifolds.
 Each manifold is represented by its vertex set and list of simplices (triangles or tetrahedra), enabling topological and combinatorial experiments across two dimensions.
+
+Each network is enriched with the following network-level metadata:
+- `betti_numbers`, e.g., `[1, 0, 1]`
+- `torsion_coefficients`, e.g, `["", "Z_2", ""]`
+- `name`
+- `genus`
+- `orientable`
+- `vertex_transitive`
 
 This dataset is derived from version 0.0.16 of [MANTRA](https://aidos.group/mantra/).
 
