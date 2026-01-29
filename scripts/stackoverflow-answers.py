@@ -46,7 +46,7 @@ with gzip.open(dataset_file, "wt") as f:
 
 label_counts = Counter(chain.from_iterable(x["label"] for x in nodes))
 
-# write shape into existing frontmatter
+# write dataset metadata into existing frontmatter
 update_frontmatter(
     datasheet_file,
     {

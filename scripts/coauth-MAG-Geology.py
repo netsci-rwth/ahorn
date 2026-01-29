@@ -52,7 +52,7 @@ num_hyperedges = {}
 for year, hyperedges_in_year in yearly_hyperedges.items():
     num_hyperedges[year] = len(hyperedges_in_year)
 
-# write shape into existing frontmatter
+# write dataset metadata into existing frontmatter
 degree_histogram = Counter(degrees.values())
 update_frontmatter(
     datasheet_file,

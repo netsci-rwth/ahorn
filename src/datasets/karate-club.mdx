@@ -10,6 +10,18 @@ tags:
 statistics:
   num-nodes: 34
   num-edges: 136
+  node-degrees:
+    1: 1
+    2: 11
+    3: 6
+    4: 6
+    5: 3
+    6: 2
+    9: 1
+    10: 1
+    12: 1
+    16: 1
+    17: 1
 shape:
   - 34
   - 78
@@ -18,13 +30,11 @@ shape:
   - 2
 attachments:
   dataset:
-    url: https://zenodo.org/records/17953924/files/karate-club.txt?download=1
-    size: 2931
+    url: karate-club.txt
+    size: 2947
 ---
 
-import Stat from "@/components/stat";
-import ShapeChart from "@/components/chart/shape";
-import { formatNumber } from "@/utils/format";
+import NetworkViewTabs from "@/components/network-view-tabs";
 
 Zachary's karate club network is the classic social network of friendships at a university karate club.
 We lifted the graph to its clique complex using [`toponetx.graph_to_clique_complex`](https://pyt-team.github.io/toponetx/api/transform.html#toponetx.transform.graph_to_simplicial_complex.graph_to_clique_complex), so cliques become higher-dimensional simplices (edges, triangles, and higher cliques).
@@ -33,11 +43,9 @@ This dataset is suited to test your code, especially concerning your interaction
 
 ## Dataset Statistics
 
-<dl className="not-prose grid gap-5 sm:grid-cols-2">
-  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
-  <Stat title="Node Type" value="Club Members" />
-</dl>
-
-### Simplicial Complex Shape
-
-<ShapeChart shape={frontmatter["shape"]} />
+<NetworkViewTabs
+  numNodes={frontmatter["statistics"]["num-nodes"]}
+  numEdges={frontmatter["statistics"]["num-edges"]}
+  nodeDegrees={frontmatter["statistics"]["node-degrees"]}
+  shape={frontmatter["shape"]}
+/>

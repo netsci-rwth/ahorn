@@ -29,6 +29,8 @@ dataset_file = root_dir / "public" / "datasets" / "karate-club.txt"
 datasheet_file = root_dir / "src" / "datasets" / "karate-club.mdx"
 
 G = nx.karate_club_graph()
+node_degree_histogram = {d: count for d, count in enumerate(nx.degree_histogram(G)) if count > 0}
+
 clique_complex = tnx.graph_to_clique_complex(G)
 
 # write dataset file
@@ -57,6 +59,7 @@ update_frontmatter(
         "statistics": {
             "num-nodes": G.number_of_nodes(),
             "num-edges": sum(islice(clique_complex.shape, 1, None)),
+            "node-degrees": node_degree_histogram,
         },
         "shape": list(clique_complex.shape),
         "attachments": {

@@ -18,9 +18,6 @@ tags:
   - "source: benson"
 related:
   - mathoverflow-answers
-shape:
-  nodes: 15211989
-  hyperedges: 1103243
 ---
 
 import Alert from "@/components/alert";
@@ -35,11 +32,11 @@ Nodes are labeled by the tags used in the questions, and nodes often have multip
 ## Dataset Statistics
 
 <dl className="not-prose grid gap-5 sm:grid-cols-2">
-  <Stat title="Nodes" value={formatNumber(frontmatter["shape"]["nodes"])} />
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
   <Stat title="Node Type" value="Question" />
   <Stat
     title="Hyperedges"
-    value={formatNumber(frontmatter["shape"]["hyperedges"])}
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
   />
   <Stat title="Hyperedge Type" value="Co-answered Questions" />
 </dl>

@@ -7,7 +7,7 @@ https://www.cs.cornell.edu/~arb/data/cat-edge-Cooking/
 """
 
 import gzip
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
 
 from more_itertools import first
@@ -30,6 +30,9 @@ datasheet_file = root_dir / "src" / "datasets" / "cooking.mdx"
 
 nodes, hyperedges = load_benson_hyperedges(root_dir / "data" / "cat-edge-Cooking")
 
+node_degrees = defaultdict(int)
+edge_degree_counts = defaultdict(int)
+
 # write dataset file
 with gzip.open(dataset_file, "wt") as f:
     write_dataset_metadata(f, datasheet_file.stem, revision=1)
@@ -37,6 +40,18 @@ with gzip.open(dataset_file, "wt") as f:
         write_node(f, first(node), ingredient=node["name"])
     for hyperedge in track(hyperedges, description="Writing hyperedges"):
         write_edge(f, hyperedge, cuisine=hyperedge["label"])
+
+        for node in hyperedge.elements:
+            node_degrees[node] += 1
+
+        edge_degree_counts[len(hyperedge.elements)] += 1
+
+node_degree_counts = defaultdict(int)
+for d in node_degrees.values():
+    node_degree_counts[d] += 1
+node_degree_histogram = dict(sorted(node_degree_counts.items()))
+
+edge_degree_histogram = dict(sorted(edge_degree_counts.items()))
 
 edge_label_counts = Counter(x["label"] for x in hyperedges)
 
@@ -51,11 +66,10 @@ update_frontmatter(
         },
         "statistics": {
             "num-nodes": len(nodes),
+            "num-edges": len(hyperedges),
+            "node-degrees": node_degree_histogram,
+            "edge-degrees": edge_degree_histogram,
         },
-        "shape": {
-            "nodes": len(nodes),
-            "hyperedges": len(hyperedges),
-        },
-        "edge-label-count": dict(edge_label_counts),
+        "edge-label-count": dict(sorted(edge_label_counts.items())),
     },
 )

@@ -9,7 +9,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, TextIO
 
-from .yaml import read_frontmatter
+import yaml
+
+from .yaml import Dumper, read_frontmatter
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -56,7 +58,9 @@ def write_edge(file: TextIO, elements: Iterable[int | str], **kwargs: Any) -> No
     **kwargs
         Additional metadata attributes for the edge.
     """
-    file.write(f"{','.join(map(str, elements))} {json.dumps(kwargs)}\n")
+    file.write(
+        f"{','.join(map(str, elements))} {json.dumps(_format_attributes(kwargs))}\n"
+    )
 
 
 def write_dataset_metadata(
@@ -123,8 +127,8 @@ def write_markdown(path: Path | str, frontmatter: dict[Any, Any], body: str) -> 
 
     with path.open("w") as file:
         file.write("---\n")
-        file.write(json.dumps(frontmatter, indent=2, sort_keys=False))
-        file.write("\n---\n")
+        yaml.dump(frontmatter, file, sort_keys=False, Dumper=Dumper)
+        file.write("---\n")
         file.write(body)
 
 
@@ -140,4 +144,4 @@ def write_node(file: TextIO, node: int | str, **kwargs: Any) -> None:
     **kwargs
         Additional metadata attributes for the node.
     """
-    file.write(f"{node} {json.dumps(kwargs)}\n")
+    file.write(f"{node} {json.dumps(_format_attributes(kwargs))}\n")

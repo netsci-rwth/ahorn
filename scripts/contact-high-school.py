@@ -51,7 +51,7 @@ shapes = {}
 for hour, simplicial_complex in hourly_complexes.items():
     shapes[hour] = simplicial_complex.shape
 
-# write shape into existing frontmatter
+# write dataset metadata into existing frontmatter
 update_frontmatter(
     datasheet_file,
     {

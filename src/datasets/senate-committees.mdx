@@ -10,21 +10,106 @@ tags:
   - 'source: benson'
 statistics:
   num-nodes: 282
+  num-edges: 315
+  node-degrees:
+    1: 16
+    2: 9
+    3: 6
+    4: 18
+    5: 3
+    6: 8
+    7: 4
+    8: 15
+    9: 13
+    10: 4
+    11: 18
+    12: 10
+    13: 5
+    14: 9
+    15: 12
+    16: 7
+    17: 7
+    18: 5
+    19: 4
+    20: 6
+    21: 3
+    22: 4
+    23: 2
+    24: 3
+    25: 5
+    26: 2
+    27: 7
+    28: 3
+    29: 1
+    30: 7
+    31: 2
+    32: 5
+    33: 4
+    34: 3
+    35: 5
+    36: 3
+    37: 3
+    38: 2
+    39: 6
+    40: 3
+    41: 3
+    42: 1
+    43: 1
+    44: 3
+    45: 3
+    46: 3
+    47: 2
+    49: 3
+    50: 1
+    51: 2
+    55: 1
+    56: 2
+    57: 1
+    59: 2
+    61: 1
+    63: 1
+  edge-degrees:
+    4: 12
+    5: 25
+    6: 13
+    7: 3
+    8: 2
+    9: 1
+    10: 10
+    11: 2
+    12: 3
+    13: 1
+    14: 12
+    15: 12
+    16: 11
+    17: 15
+    18: 34
+    19: 26
+    20: 23
+    21: 29
+    22: 26
+    23: 14
+    24: 12
+    25: 3
+    26: 8
+    27: 2
+    28: 5
+    29: 5
+    30: 4
+    31: 2
 related:
   - senate-bills
   - house-committees
 label-count:
   Democrat: 140
   Republican: 142
-shape:
-  nodes: 282
-  hyperedges: 315
 attachments:
   dataset:
-    url: https://zenodo.org/records/17200512/files/senate-committees.txt?download=1
-    size: 26606
+    url: senate-committees.txt
+    size: 27596
 ---
 
+import { ComputedBoxPlot } from "@/components/chart/box-plot";
 import NodeLabelsChart from "@/components/chart/node-labels";
 import Stat from "@/components/stat";
 import Alert from "@/components/alert";
@@ -38,14 +123,19 @@ Each node is labeled with political party affiliation.
 
 ## Dataset Statistics
 
-<dl className="not-prose grid gap-5 sm:grid-cols-2">
-  <Stat title="Nodes" value={formatNumber(frontmatter["shape"]["nodes"])} />
+<dl className="not-prose grid gap-5 sm:grid-cols-3">
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
   <Stat title="Node Type" value="Senator" />
+  <Stat title="Node Label" value="Political Party" />
+  <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-3" />
+</dl>
+<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
   <Stat
     title="Hyperedges"
-    value={formatNumber(frontmatter["shape"]["hyperedges"])}
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
   />
   <Stat title="Hyperedge Type" value="Committee Memberships" />
+  <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />
 </dl>
 
 ### Node Labels

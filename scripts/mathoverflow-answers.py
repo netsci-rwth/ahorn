@@ -7,7 +7,7 @@ https://www.cs.cornell.edu/~arb/data/mathoverflow-answers/
 """
 
 import gzip
-from collections import Counter
+from collections import Counter, defaultdict
 from itertools import chain
 from pathlib import Path
 
@@ -31,17 +31,33 @@ datasheet_file = root_dir / "src" / "datasets" / "mathoverflow-answers.mdx"
 
 nodes, hyperedges = load_benson_hyperedges(root_dir / "data" / "mathoverflow-answers")
 
+node_degrees = defaultdict(int)
+edge_degree_counts = defaultdict(int)
+
 # write dataset file
 with gzip.open(dataset_file, "wt") as f:
     write_dataset_metadata(f, datasheet_file.stem, revision=1)
     for node in track(nodes, description="Writing nodes"):
         write_node(f, first(node), tags=node["label"])
+
     for hyperedge in track(hyperedges, description="Writing hyperedges"):
         write_edge(f, hyperedge)
 
+        for node in hyperedge.elements:
+            node_degrees[node] += 1
+
+        edge_degree_counts[len(hyperedge.elements)] += 1
+
+node_degree_counts = defaultdict(int)
+for d in node_degrees.values():
+    node_degree_counts[d] += 1
+node_degree_histogram = dict(sorted(node_degree_counts.items()))
+
 label_counts = Counter(chain.from_iterable(x["label"] for x in nodes))
 
-# write shape into existing frontmatter
+edge_degree_histogram = dict(sorted(edge_degree_counts.items()))
+
+# write dataset metadata into existing frontmatter
 update_frontmatter(
     datasheet_file,
     {
@@ -53,10 +69,9 @@ update_frontmatter(
         },
         "statistics": {
             "num-nodes": len(nodes),
-        },
-        "shape": {
-            "nodes": len(nodes),
-            "hyperedges": len(hyperedges),
+            "num-edges": len(hyperedges),
+            "node-degrees": node_degree_histogram,
+            "edge-degrees": edge_degree_histogram,
         },
         "label-count": dict(label_counts),
     },

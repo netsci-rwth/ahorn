@@ -16,6 +16,85 @@ tags:
   - 'source: benson'
 statistics:
   num-nodes: 565
+  num-edges: 601
+  node-degrees:
+    1: 11
+    2: 31
+    3: 40
+    4: 81
+    5: 57
+    6: 60
+    7: 25
+    8: 105
+    9: 46
+    10: 19
+    11: 17
+    12: 8
+    13: 2
+    14: 4
+    15: 9
+    16: 8
+    17: 5
+    18: 4
+    19: 4
+    20: 3
+    22: 2
+    23: 2
+    24: 3
+    26: 2
+    27: 1
+    29: 2
+    30: 1
+    32: 1
+    35: 1
+    36: 1
+    38: 1
+    40: 1
+    41: 1
+    42: 1
+    46: 1
+    48: 1
+    49: 1
+    51: 1
+    53: 1
+    59: 1
+  edge-degrees:
+    2: 146
+    3: 95
+    4: 46
+    5: 48
+    6: 34
+    7: 23
+    8: 21
+    9: 19
+    10: 20
+    11: 21
+    12: 10
+    13: 18
+    14: 17
+    15: 13
+    16: 5
+    17: 5
+    18: 10
+    19: 5
+    20: 1
+    21: 4
+    22: 5
+    23: 4
+    24: 3
+    26: 6
+    27: 1
+    28: 4
+    29: 4
+    30: 2
+    31: 1
+    32: 3
+    33: 1
+    34: 1
+    36: 1
+    38: 2
+    40: 1
+    43: 1
 shape:
   nodes: 565
   hyperedges: 601
@@ -31,10 +110,11 @@ edge-label-count:
   Indian: 24
 attachments:
   dataset:
-    url: https://zenodo.org/records/17202762/files/madison-restaurant-reviews.txt?download=1
-    size: 29926
+    url: madison-restaurant-reviews.txt
+    size: 29980
 ---
 
+import { ComputedBoxPlot } from "@/components/chart/box-plot";
 import NodeLabelsChart from "@/components/chart/node-labels";
 import Stat from "@/components/stat";
 import { formatNumber } from "@/utils/format";
@@ -47,11 +127,16 @@ The dataset was derived from the [Yelp Kaggle competition data](https://www.kagg
 <dl className="not-prose grid gap-5 sm:grid-cols-2">
   <Stat title="Nodes" value={formatNumber(frontmatter["shape"]["nodes"])} />
   <Stat title="Node Type" value="Yelp User" />
+  <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-2" />
+</dl>
+<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-3">
   <Stat
     title="Hyperedges"
     value={formatNumber(frontmatter["shape"]["hyperedges"])}
   />
-  <Stat title="Hyperedge Type" value="Co-reviewed" />
+  <Stat title="Hyperedge Type" value="Co-reviewed Establishment" />
+  <Stat title="Hyperedge Label" value="Cuisine" />
+  <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-3" />
 </dl>
 
 ### Edge Labels

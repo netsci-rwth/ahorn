@@ -10,6 +10,134 @@ tags:
   - 'source: benson'
 statistics:
   num-nodes: 80198
+  num-edges: 51889
+  node-degrees:
+    1: 55840
+    2: 10782
+    3: 4446
+    4: 2429
+    5: 1505
+    6: 944
+    7: 715
+    8: 542
+    9: 403
+    10: 316
+    11: 290
+    12: 206
+    13: 173
+    14: 150
+    15: 133
+    16: 102
+    17: 120
+    18: 94
+    19: 97
+    20: 71
+    21: 62
+    22: 66
+    23: 37
+    24: 61
+    25: 54
+    26: 42
+    27: 35
+    28: 32
+    29: 22
+    30: 31
+    31: 20
+    32: 19
+    33: 22
+    34: 27
+    35: 16
+    36: 25
+    37: 16
+    38: 18
+    39: 15
+    40: 10
+    41: 10
+    42: 12
+    43: 8
+    44: 8
+    45: 10
+    46: 10
+    47: 6
+    48: 9
+    49: 8
+    50: 6
+    51: 4
+    52: 4
+    53: 7
+    54: 11
+    55: 2
+    56: 1
+    57: 5
+    58: 4
+    59: 4
+    60: 7
+    61: 6
+    62: 3
+    63: 2
+    64: 2
+    65: 4
+    66: 1
+    67: 2
+    68: 2
+    69: 3
+    70: 1
+    71: 1
+    73: 1
+    74: 2
+    75: 2
+    76: 2
+    77: 4
+    78: 2
+    81: 2
+    82: 2
+    83: 1
+    84: 2
+    85: 2
+    86: 2
+    88: 1
+    89: 1
+    90: 1
+    93: 4
+    94: 2
+    95: 1
+    96: 1
+    99: 2
+    103: 1
+    110: 1
+    111: 1
+    112: 1
+    121: 1
+    131: 1
+    137: 1
+    138: 1
+    140: 1
+    187: 1
+  edge-degrees:
+    2: 15496
+    3: 15898
+    4: 10549
+    5: 5272
+    6: 2527
+    7: 1009
+    8: 480
+    9: 238
+    10: 141
+    11: 80
+    12: 61
+    13: 25
+    14: 29
+    15: 14
+    16: 16
+    17: 13
+    18: 11
+    19: 6
+    20: 8
+    21: 3
+    22: 4
+    23: 4
+    24: 4
+    25: 1
 shape:
   nodes: 80198
   hyperedges: 51889
@@ -26,16 +154,17 @@ edge-label-count:
   STOC: 2284
 attachments:
   dataset:
-    url: https://zenodo.org/records/17200740/files/MAG-10.txt.gz?download=1
-    size: 560579
+    url: MAG-10.txt.gz
+    size: 560612
 ---
 
+import { ComputedBoxPlot } from "@/components/chart/box-plot";
 import NodeLabelsChart from "@/components/chart/node-labels";
 import Alert from "@/components/alert";
 import Stat from "@/components/stat";
 import { formatNumber } from "@/utils/format";
 
-The MAG-10 network is a subset of the Microsoft Academic Graph where nodes are authors, hyperedges correspond to a publication from those authors, and the hyperedges are categorized by one of 10 computer science confereneces.
+The MAG-10 network is a subset of the Microsoft Academic Graph where nodes are authors, hyperedges correspond to a publication from those authors, and the hyperedges are categorized by one of 10 computer science conferences.
 If the same set of authors published at more than one conference, we used the most common venue as the category and any cases where there is a tie were discarded.
 Papers with more than 25 authors were omitted.
 
@@ -46,11 +175,16 @@ Papers with more than 25 authors were omitted.
 <dl className="not-prose grid gap-5 sm:grid-cols-2">
   <Stat title="Nodes" value={formatNumber(frontmatter["shape"]["nodes"])} />
   <Stat title="Node Type" value="Paper Author" />
+  <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-2" />
+</dl>
+<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-3">
   <Stat
     title="Hyperedges"
     value={formatNumber(frontmatter["shape"]["hyperedges"])}
   />
   <Stat title="Hyperedge Type" value="Author Collaboration" />
+  <Stat title="Hyperedge Label" value="Publication Venue" />
+  <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-3" />
 </dl>
 
 ### Edge Labels

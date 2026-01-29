@@ -57,7 +57,7 @@ num_hyperedges = {}
 for day, hyperedges_on_day in daily_hyperedges.items():
     num_hyperedges[day] = len(hyperedges_on_day)
 
-# write shape into existing frontmatter
+# write dataset metadata into existing frontmatter
 degree_histogram = Counter(degrees.values())
 update_frontmatter(
     datasheet_file,

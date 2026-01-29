@@ -6,7 +6,7 @@ References
 https://www.cs.cornell.edu/~arb/data/cat-edge-algebra-questions/
 """
 
-from collections import Counter
+from collections import Counter, defaultdict
 from itertools import chain
 from pathlib import Path
 
@@ -32,6 +32,9 @@ nodes, hyperedges = load_benson_hyperedges(
     root_dir / "data" / "cat-edge-algebra-questions"
 )
 
+node_degrees = defaultdict(int)
+edge_degree_counts = defaultdict(int)
+
 # write dataset file
 covered_nodes = set(chain.from_iterable(hyperedge.elements for hyperedge in hyperedges))
 with dataset_file.open("w") as f:
@@ -40,8 +43,21 @@ with dataset_file.open("w") as f:
         if node in covered_nodes:
             continue
         write_node(f, node)
+
     for hyperedge in track(hyperedges, description="Writing hyperedges"):
         write_edge(f, hyperedge, genre=hyperedge["label"])
+
+        for node in hyperedge.elements:
+            node_degrees[node] += 1
+
+        edge_degree_counts[len(hyperedge.elements)] += 1
+
+node_degree_counts = defaultdict(int)
+for d in node_degrees.values():
+    node_degree_counts[d] += 1
+node_degree_histogram = dict(sorted(node_degree_counts.items()))
+
+edge_degree_histogram = dict(sorted(edge_degree_counts.items()))
 
 edge_label_counts = Counter(x["label"] for x in hyperedges)
 
@@ -56,11 +72,10 @@ update_frontmatter(
         },
         "statistics": {
             "num-nodes": len(nodes),
+            "num-edges": len(hyperedges),
+            "node-degrees": node_degree_histogram,
+            "edge-degrees": edge_degree_histogram,
         },
-        "shape": {
-            "nodes": len(nodes),
-            "hyperedges": len(hyperedges),
-        },
-        "edge-label-count": dict(edge_label_counts),
+        "edge-label-count": dict(sorted(edge_label_counts.items())),
     },
 )

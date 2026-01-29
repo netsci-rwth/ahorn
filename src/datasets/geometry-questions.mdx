@@ -15,43 +15,205 @@ tags:
   - 'source: benson'
 statistics:
   num-nodes: 580
+  num-edges: 1193
+  node-degrees:
+    1: 99
+    2: 51
+    3: 26
+    4: 12
+    5: 17
+    6: 23
+    7: 7
+    8: 8
+    9: 8
+    10: 53
+    11: 38
+    12: 17
+    13: 9
+    14: 8
+    15: 7
+    16: 6
+    17: 2
+    18: 5
+    19: 6
+    20: 20
+    21: 11
+    22: 8
+    23: 2
+    24: 6
+    25: 2
+    26: 4
+    27: 3
+    28: 2
+    29: 3
+    30: 6
+    31: 6
+    32: 3
+    33: 5
+    34: 4
+    35: 2
+    36: 2
+    37: 2
+    39: 1
+    40: 6
+    41: 6
+    42: 2
+    43: 1
+    44: 1
+    45: 4
+    46: 2
+    47: 1
+    48: 1
+    49: 5
+    50: 1
+    54: 1
+    55: 1
+    56: 1
+    57: 2
+    58: 2
+    60: 3
+    62: 1
+    64: 1
+    65: 1
+    67: 2
+    68: 1
+    71: 2
+    73: 1
+    74: 1
+    75: 1
+    76: 1
+    77: 1
+    79: 1
+    82: 1
+    85: 1
+    88: 1
+    91: 1
+    92: 1
+    96: 2
+    98: 1
+    100: 3
+    101: 1
+    103: 1
+    104: 1
+    109: 1
+    111: 1
+    124: 1
+    139: 2
+    155: 1
+    165: 1
+    176: 1
+    188: 1
+    197: 1
+    201: 1
+    205: 2
+    219: 1
+    230: 1
+    237: 1
+    258: 1
+    260: 1
+  edge-degrees:
+    2: 307
+    3: 196
+    4: 131
+    5: 85
+    6: 54
+    7: 51
+    8: 37
+    9: 27
+    10: 27
+    11: 19
+    12: 18
+    13: 11
+    14: 12
+    15: 9
+    16: 8
+    17: 8
+    18: 10
+    19: 7
+    20: 10
+    21: 11
+    22: 5
+    23: 3
+    24: 3
+    25: 4
+    26: 4
+    27: 3
+    28: 1
+    29: 5
+    30: 1
+    31: 3
+    32: 4
+    33: 2
+    34: 2
+    35: 4
+    36: 2
+    37: 4
+    38: 3
+    39: 2
+    40: 6
+    41: 4
+    42: 5
+    43: 3
+    44: 3
+    45: 7
+    46: 4
+    47: 3
+    48: 7
+    49: 4
+    50: 4
+    51: 7
+    52: 4
+    53: 6
+    54: 3
+    55: 1
+    56: 5
+    57: 3
+    58: 4
+    59: 4
+    60: 1
+    62: 3
+    64: 2
+    65: 2
+    68: 1
+    70: 1
+    77: 1
+    104: 1
+    230: 1
 related:
   - algebra-questions
-shape:
-  nodes: 580
-  hyperedges: 1193
 edge-label-count:
   ag.algebraic-geometry: 122
-  complex-geometry: 113
-  tropical-geometry: 2
-  dg.differential-geometry: 122
-  mg.metric-geometry: 121
-  riemannian-geometry: 90
-  log-geometry: 9
-  arithmetic-geometry: 103
-  discrete-geometry: 81
-  noncommutative-geometry: 88
-  euclidean-geometry: 28
-  projective-geometry: 37
-  sg.symplectic-geometry: 88
-  hyperbolic-geometry: 43
-  anabelian-geometry: 10
-  conformal-geometry: 9
-  real-algebraic-geometry: 16
-  computational-geometry: 13
-  convex-geometry: 22
-  spin-geometry: 11
   alexandrov-geometry: 20
-  combinatorial-geometry: 16
-  plane-geometry: 13
+  anabelian-geometry: 10
+  arithmetic-geometry: 103
   birational-geometry: 11
+  combinatorial-geometry: 16
+  complex-geometry: 113
+  computational-geometry: 13
+  conformal-geometry: 9
+  convex-geometry: 22
+  dg.differential-geometry: 122
+  discrete-geometry: 81
+  euclidean-geometry: 28
+  hyperbolic-geometry: 43
+  log-geometry: 9
+  mg.metric-geometry: 121
+  noncommutative-geometry: 88
+  plane-geometry: 13
+  projective-geometry: 37
+  real-algebraic-geometry: 16
+  riemannian-geometry: 90
+  sg.symplectic-geometry: 88
   spherical-geometry: 5
+  spin-geometry: 11
+  tropical-geometry: 2
 attachments:
   dataset:
-    url: https://zenodo.org/records/17202479/files/geometry-questions.txt?download=1
-    size: 83454
+    url: geometry-questions.txt
+    size: 83500
 ---
 
+import { ComputedBoxPlot } from "@/components/chart/box-plot";
 import NodeLabelsChart from "@/components/chart/node-labels";
 import Stat from "@/components/stat";
 import { formatNumber } from "@/utils/format";
@@ -62,13 +224,18 @@ The dataset was derived from the [Stack Exchange data dump](https://archive.org/
 ## Dataset Statistics
 
 <dl className="not-prose grid gap-5 sm:grid-cols-2">
-  <Stat title="Nodes" value={formatNumber(frontmatter["shape"]["nodes"])} />
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
   <Stat title="Node Type" value="User" />
+  <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-2" />
+</dl>
+<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-3">
   <Stat
     title="Hyperedges"
-    value={formatNumber(frontmatter["shape"]["hyperedges"])}
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
   />
-  <Stat title="Hyperedge Type" value="Question Category" />
+  <Stat title="Hyperedge Type" value="Co-Answered Question" />
+  <Stat title="Hyperedge Label" value="Question Category" />
+  <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-3" />
 </dl>
 
 ### Edge Labels
