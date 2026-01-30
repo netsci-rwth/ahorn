@@ -29,15 +29,3 @@ import { formatNumber } from "@/utils/format";
 
 The stackoverflow-answers network is a hypergraph where hyperedges are sets of questions answered by users on Stack Overflow.
 Nodes are labeled by the tags used in the questions, and nodes often have multiple labels.
-
-## Dataset Statistics
-
-<dl className="not-prose grid gap-5 sm:grid-cols-2">
-  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
-  <Stat title="Node Type" value="Question" />
-  <Stat
-    title="Hyperedges"
-    value={formatNumber(frontmatter["statistics"]["num-edges"])}
-  />
-  <Stat title="Hyperedge Type" value="Co-answered Questions" />
-</dl>
