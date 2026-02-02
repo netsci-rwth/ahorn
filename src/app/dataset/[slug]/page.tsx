@@ -7,9 +7,14 @@ import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import bash from "highlight.js/lib/languages/bash";
 import { toJsxRuntime } from "hast-util-to-jsx-runtime";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPaperclip,
+  faHexagonNodes,
+  faTag,
+} from "@fortawesome/free-solid-svg-icons";
 
 import Tag from "@/components/tag";
+import Badge from "@/components/badge";
 import Card from "@/components/card";
 
 import { toApa } from "@/utils/citation";
@@ -111,16 +116,49 @@ export default async function DatasetPage({
       data-pagefind-body
     >
       <div className="min-w-0 flex-1">
-        <h1 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight dark:text-gray-100">
-          {frontmatter.title}
-        </h1>
-        {frontmatter.tags.length > 0 && (
-          <div className="mt-1 flex flex-wrap gap-2">
-            {frontmatter.tags.map((tag: string, index: number) => (
-              <Tag key={index} name={tag} />
-            ))}
+        <header>
+          <h1 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight dark:text-gray-100">
+            {frontmatter.title}
+          </h1>
+          <div className="mt-4 flex flex-col sm:flex-row sm:flex-wrap sm:space-x-6">
+            <div>
+              <h3 className="mb-2 flex items-center gap-2 text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400">
+                <FontAwesomeIcon icon={faHexagonNodes} className="size-4" />
+                Network Type
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {frontmatter["network-type"].map(
+                  (type: string, index: number) => (
+                    <Badge
+                      key={index}
+                      href={`/dataset?types=${encodeURIComponent(type)}`}
+                      color="info"
+                    >
+                      {type === "simplicial-complex"
+                        ? "Simplicial Complex"
+                        : type === "hypergraph"
+                          ? "Hypergraph"
+                          : type}
+                    </Badge>
+                  ),
+                )}
+              </div>
+            </div>
+            {frontmatter.tags.length > 0 && (
+              <div>
+                <h3 className="mb-2 flex items-center gap-2 text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400">
+                  <FontAwesomeIcon icon={faTag} className="size-4" />
+                  Tags
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {frontmatter.tags.map((tag: string, index: number) => (
+                    <Tag key={index} name={tag} href={`/dataset?tags=${encodeURIComponent(tag)}`} />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
-        )}
+        </header>
 
         <div className="prose mt-6 max-w-none dark:prose-invert">
           <Dataset />

@@ -60,9 +60,7 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
     NetworkType[]
   >(() => {
     const types = searchParams.get("types");
-    return types
-      ? (types.split(",").filter(Boolean) as NetworkType[])
-      : [];
+    return types ? (types.split(",").filter(Boolean) as NetworkType[]) : [];
   });
   const [sortField, setSortField] = useState<"title" | "numNodes">(
     () => (searchParams.get("sort") as "title" | "numNodes") || "title",
