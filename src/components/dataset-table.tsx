@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import Tag from "@/components/tag";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import MultiRangeSlider from "@/components/multirange";
 import { formatNumber } from "@/utils/format";
@@ -33,14 +34,10 @@ function getAllTags(datasets: Dataset[]): string[] {
 }
 
 export default function DatasetTable({ datasets }: DatasetTableProps) {
-  const [search, setSearch] = useState("");
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [selectedNetworkTypes, setSelectedNetworkTypes] = useState<NetworkType[]>([]);
-  const [sortField, setSortField] = useState<"title" | "numNodes">("title");
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
-  const allTags = getAllTags(datasets);
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  // Compute global min/max node counts and keep local state in sync
+  // Compute global min/max node counts
   const nodeExtremes = useMemo(() => {
     if (datasets.length === 0) return { min: 0, max: 0 };
     let min = Infinity;
@@ -53,13 +50,78 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
     return { min, max };
   }, [datasets]);
 
-  const [nodeRangeMin, setNodeRangeMin] = useState(nodeExtremes.min);
-  const [nodeRangeMax, setNodeRangeMax] = useState(nodeExtremes.max);
+  // Initialize state from URL parameters
+  const [search, setSearch] = useState(() => searchParams.get("search") || "");
+  const [selectedTags, setSelectedTags] = useState<string[]>(() => {
+    const tags = searchParams.get("tags");
+    return tags ? tags.split(",").filter(Boolean) : [];
+  });
+  const [selectedNetworkTypes, setSelectedNetworkTypes] = useState<
+    NetworkType[]
+  >(() => {
+    const types = searchParams.get("types");
+    return types
+      ? (types.split(",").filter(Boolean) as NetworkType[])
+      : [];
+  });
+  const [sortField, setSortField] = useState<"title" | "numNodes">(
+    () => (searchParams.get("sort") as "title" | "numNodes") || "title",
+  );
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">(
+    () => (searchParams.get("dir") as "asc" | "desc") || "asc",
+  );
+  const [nodeRangeMin, setNodeRangeMin] = useState(() => {
+    const min = searchParams.get("minNodes");
+    return min ? parseInt(min, 10) : nodeExtremes.min;
+  });
+  const [nodeRangeMax, setNodeRangeMax] = useState(() => {
+    const max = searchParams.get("maxNodes");
+    return max ? parseInt(max, 10) : nodeExtremes.max;
+  });
 
+  const allTags = getAllTags(datasets);
+
+  // Reset node range when extremes change
   useMemo(() => {
-    setNodeRangeMin(nodeExtremes.min);
-    setNodeRangeMax(nodeExtremes.max);
-  }, [nodeExtremes.min, nodeExtremes.max]);
+    if (!searchParams.get("minNodes")) setNodeRangeMin(nodeExtremes.min);
+    if (!searchParams.get("maxNodes")) setNodeRangeMax(nodeExtremes.max);
+  }, [nodeExtremes.min, nodeExtremes.max, searchParams]);
+
+  // Sync state to URL
+  useEffect(() => {
+    const params = new URLSearchParams();
+
+    if (search) params.set("search", search);
+    if (selectedTags.length > 0) params.set("tags", selectedTags.join(","));
+    if (selectedNetworkTypes.length > 0)
+      params.set("types", selectedNetworkTypes.join(","));
+    if (sortField !== "title") params.set("sort", sortField);
+    if (sortDirection !== "asc") params.set("dir", sortDirection);
+    if (nodeRangeMin !== nodeExtremes.min)
+      params.set("minNodes", nodeRangeMin.toString());
+    if (nodeRangeMax !== nodeExtremes.max)
+      params.set("maxNodes", nodeRangeMax.toString());
+
+    const paramString = params.toString();
+    const newUrl = paramString ? `?${paramString}` : window.location.pathname;
+
+    if (window.location.search !== `?${paramString}` && paramString) {
+      router.replace(newUrl, { scroll: false });
+    } else if (!paramString && window.location.search) {
+      router.replace(newUrl, { scroll: false });
+    }
+  }, [
+    search,
+    selectedTags,
+    selectedNetworkTypes,
+    sortField,
+    sortDirection,
+    nodeRangeMin,
+    nodeRangeMax,
+    nodeExtremes.min,
+    nodeExtremes.max,
+    router,
+  ]);
 
   const handleTagChange = (tag: string) => {
     setSelectedTags((prev) =>
@@ -137,17 +199,17 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
             <span>Filter by node size (|V|):</span>
             {(nodeRangeMin !== nodeExtremes.min ||
               nodeRangeMax !== nodeExtremes.max) && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setNodeRangeMin(nodeExtremes.min);
-                    setNodeRangeMax(nodeExtremes.max);
-                  }}
-                  className="cursor-pointer text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
-                >
-                  Reset
-                </button>
-              )}
+              <button
+                type="button"
+                onClick={() => {
+                  setNodeRangeMin(nodeExtremes.min);
+                  setNodeRangeMax(nodeExtremes.max);
+                }}
+                className="cursor-pointer text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
+              >
+                Reset
+              </button>
+            )}
           </div>
           <MultiRangeSlider
             min={nodeExtremes.min}
@@ -186,7 +248,9 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
                   htmlFor={`network-type-${type}`}
                   className="cursor-pointer text-xs capitalize"
                 >
-                  {type === NetworkType.simplicialComplex ? "Simplicial Complex" : "Hypergraph"}
+                  {type === NetworkType.simplicialComplex
+                    ? "Simplicial Complex"
+                    : "Hypergraph"}
                 </label>
               </li>
             ))}
@@ -287,7 +351,16 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
                   <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-300">
                     <div className="flex flex-wrap gap-2">
                       {dataset.tags.map((tag: string) => (
-                        <Tag key={tag} name={tag} />
+                        <Tag
+                          key={tag}
+                          name={tag}
+                          className="cursor-pointer"
+                          onClick={() =>
+                            setSelectedTags((prev) =>
+                              prev.includes(tag) ? prev : [...prev, tag],
+                            )
+                          }
+                        />
                       ))}
                     </div>
                   </td>
