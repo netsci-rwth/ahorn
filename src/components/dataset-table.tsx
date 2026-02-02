@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Tag from "@/components/tag";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import MultiRangeSlider from "@/components/multirange";
@@ -33,7 +33,7 @@ function getAllTags(datasets: Dataset[]): string[] {
   return Array.from(tagSet).sort();
 }
 
-export default function DatasetTable({ datasets }: DatasetTableProps) {
+function DatasetTableContent({ datasets }: DatasetTableProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -369,5 +369,13 @@ export default function DatasetTable({ datasets }: DatasetTableProps) {
         </table>
       </div>
     </div>
+  );
+}
+
+export default function DatasetTable({ datasets }: DatasetTableProps) {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <DatasetTableContent datasets={datasets} />
+    </Suspense>
   );
 }
