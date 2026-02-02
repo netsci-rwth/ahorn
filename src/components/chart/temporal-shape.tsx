@@ -183,6 +183,9 @@ const TemporalShapeChart = ({
         text: "Dataset Shape",
         color: tickColor,
       },
+      datalabels: {
+        display: false,
+      },
     },
   };
 

@@ -25,6 +25,7 @@
     "@tailwindcss/typography": "0.5.19",
     "chart.js": "4.5.1",
     "chartjs-adapter-date-fns": "3.0.0",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "classnames": "2.5.1",
     "next": "16.1.6",
     "postcss": "8.5.6",

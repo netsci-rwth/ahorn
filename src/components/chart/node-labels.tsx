@@ -61,6 +61,9 @@ export default function NodeLabelsChart({ labels }: NodeLabelsProps) {
       legend: {
         labels: { color: tickColor },
       },
+      datalabels: {
+        display: false,
+      },
     },
     maintainAspectRatio: false,
   } as const;

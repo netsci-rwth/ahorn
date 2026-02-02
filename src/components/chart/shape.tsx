@@ -93,6 +93,9 @@ export default function ShapeChart({ shape }: ShapeChartProps) {
       title: {
         display: false,
       },
+      datalabels: {
+        display: false,
+      },
     },
     scales: {
       y: {

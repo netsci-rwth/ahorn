@@ -191,6 +191,9 @@ export default function LineChart({
         text: "Dataset Shape",
         color: tickColor,
       },
+      datalabels: {
+        display: false,
+      },
     },
   };
 

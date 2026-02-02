@@ -116,6 +116,9 @@ export default function DegreeLineChart({
     plugins: {
       legend: { position: "top" as const, labels: { color: tickColor } },
       title: { display: true, text: title, color: tickColor },
+      datalabels: {
+        display: false,
+      },
     },
   };
 

@@ -3,6 +3,7 @@ import path from "path";
 
 import Person from "@/components/person";
 import Stat from "@/components/stat";
+import NetworkTypeChart from "@/components/chart/network-type";
 
 export const metadata = {
   title: "About | AHORN - Aachen Higher-Order Repository of Networks",
@@ -20,6 +21,9 @@ export async function getDatasetStatistics() {
         return {
           disable: frontmatter.disable === true,
           tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],
+          networkType: Array.isArray(frontmatter["network-type"])
+            ? frontmatter["network-type"]
+            : [],
         };
       }),
   );
@@ -28,13 +32,22 @@ export async function getDatasetStatistics() {
   const tagSet = new Set();
   activeDatasets.forEach((d) => d.tags.forEach((tag) => tagSet.add(tag)));
 
+  const networkTypeCount = {};
+  activeDatasets.forEach((d) => {
+    d.networkType.forEach((type) => {
+      networkTypeCount[type] = (networkTypeCount[type] || 0) + 1;
+    });
+  });
+
   return {
     datasetCount: activeDatasets.length,
     uniqueTagCount: tagSet.size,
+    networkTypeCount,
   };
 }
 
-export const { datasetCount, uniqueTagCount } = await getDatasetStatistics();
+export const { datasetCount, uniqueTagCount, networkTypeCount } =
+  await getDatasetStatistics();
 
 # About
 
@@ -47,6 +60,7 @@ The project is similar in spirit to graph repositories like [ICON](https://icon.
   <dl className="grid gap-5 sm:grid-cols-2">
     <Stat title="Number of Datasets" value={datasetCount} />
     <Stat title="Unique Tags" value={uniqueTagCount} />
+    <NetworkTypeChart data={networkTypeCount} className="col-span-2" />
   </dl>
 </div>
 
