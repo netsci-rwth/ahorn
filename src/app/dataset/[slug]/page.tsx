@@ -152,7 +152,11 @@ export default async function DatasetPage({
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {frontmatter.tags.map((tag: string, index: number) => (
-                    <Tag key={index} name={tag} href={`/dataset?tags=${encodeURIComponent(tag)}`} />
+                    <Tag
+                      key={index}
+                      name={tag}
+                      href={`/dataset?tags=${encodeURIComponent(tag)}`}
+                    />
                   ))}
                 </div>
               </div>

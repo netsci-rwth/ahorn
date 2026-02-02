@@ -265,7 +265,7 @@ const Navbar: FC = () => {
                     className={classnames(
                       "inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium",
                       {
-                        "border-primary text-gray-900 dark:text-white": active,
+                        "border-primary text-primary dark:text-white": active,
                         "border-white text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:border-gray-900 dark:text-gray-300 dark:hover:border-gray-700 dark:hover:text-gray-100":
                           !active,
                       },
