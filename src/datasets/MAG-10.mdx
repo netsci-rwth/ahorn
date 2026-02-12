@@ -9,6 +9,10 @@ network-type:
 tags:
   - edge labels
   - 'source: benson'
+attachments:
+  dataset:
+    url: MAG-10.txt.gz
+    size: 560612
 statistics:
   num-nodes: 80198
   num-edges: 51889
@@ -139,9 +143,6 @@ statistics:
     23: 4
     24: 4
     25: 1
-shape:
-  nodes: 80198
-  hyperedges: 51889
 edge-label-count:
   NeurIPS: 7060
   SIGMOD: 4292
@@ -153,10 +154,6 @@ edge-label-count:
   KDD: 4675
   FOCS: 2487
   STOC: 2284
-attachments:
-  dataset:
-    url: MAG-10.txt.gz
-    size: 560612
 ---
 
 import { ComputedBoxPlot } from "@/components/chart/box-plot";
@@ -174,14 +171,14 @@ Papers with more than 25 authors were omitted.
 ## Dataset Statistics
 
 <dl className="not-prose grid gap-5 sm:grid-cols-2">
-  <Stat title="Nodes" value={formatNumber(frontmatter["shape"]["nodes"])} />
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
   <Stat title="Node Type" value="Paper Author" />
   <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-2" />
 </dl>
 <dl className="not-prose grid mt-5 gap-5 sm:grid-cols-3">
   <Stat
     title="Hyperedges"
-    value={formatNumber(frontmatter["shape"]["hyperedges"])}
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
   />
   <Stat title="Hyperedge Type" value="Author Collaboration" />
   <Stat title="Hyperedge Label" value="Publication Venue" />

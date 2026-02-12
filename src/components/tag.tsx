@@ -19,6 +19,8 @@ const labelColors: Record<string, string> = {
     "bg-amber-50 text-amber-800 ring-amber-600/20 dark:bg-amber-900 dark:text-amber-100 dark:ring-amber-400/30",
   lifting:
     "bg-teal-50 text-teal-800 ring-teal-600/20 dark:bg-teal-900 dark:text-teal-100 dark:ring-teal-400/30",
+  metadata:
+    "bg-indigo-50 text-indigo-800 ring-indigo-600/20 dark:bg-indigo-900 dark:text-indigo-100 dark:ring-indigo-400/30",
 };
 
 export default function Tag({

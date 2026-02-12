@@ -8,8 +8,14 @@ network-type:
   - hypergraph
 tags:
   - undirected
-  - labelled nodes
+  - 'metadata: node labels'
   - 'source: benson'
+related:
+  - stackoverflow-answers
+attachments:
+  dataset:
+    url: mathoverflow-answers.txt.gz
+    size: 1082323
 statistics:
   num-nodes: 73851
   num-edges: 5446
@@ -360,8 +366,6 @@ statistics:
     1288: 1
     1497: 1
     1784: 1
-related:
-  - stackoverflow-answers
 label-count:
   at.algebraic-topology: 4458
   homology: 163
@@ -1804,10 +1808,6 @@ label-count:
   real-combinatorics: 1
   character-sheaves: 1
   homogenization: 1
-attachments:
-  dataset:
-    url: mathoverflow-answers.txt.gz
-    size: 1082323
 ---
 
 import { ComputedBoxPlot } from "@/components/chart/box-plot";

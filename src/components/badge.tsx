@@ -12,10 +12,9 @@ interface BadgeProps {
 
 const schemeClasses: Record<string, string> = {
   default: "bg-yellow-50 text-yellow-800 ring-yellow-600/20",
-  primary: "bg-primary/10 text-primary ring-primary/30",
+  info: "bg-primary/10 text-primary ring-primary/30",
   warning: "bg-orange-50 text-orange-800 ring-orange-600/20",
   success: "bg-green-50 text-green-800 ring-green-600/20",
-  info: "bg-blue-50 text-blue-800 ring-blue-600/20",
   none: "",
 };
 

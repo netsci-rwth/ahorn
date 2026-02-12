@@ -8,8 +8,12 @@ network-type:
   - hypergraph
 tags:
   - undirected
-  - labelled nodes
+  - 'metadata: node classes'
   - 'source: benson'
+attachments:
+  dataset:
+    url: trivago-clicks.txt.gz
+    size: 2966049
 statistics:
   num-nodes: 172738
   num-edges: 233202
@@ -399,10 +403,6 @@ label-count:
   Venezuela: 75
   Vietnam: 832
   Zimbabwe: 1
-attachments:
-  dataset:
-    url: trivago-clicks.txt.gz
-    size: 2966049
 ---
 
 import { ComputedBoxPlot } from "@/components/chart/box-plot";

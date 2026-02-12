@@ -16,6 +16,10 @@ tags:
   - edge labels
   - reviews
   - 'source: benson'
+attachments:
+  dataset:
+    url: madison-restaurant-reviews.txt
+    size: 29980
 statistics:
   num-nodes: 565
   num-edges: 601
@@ -97,9 +101,6 @@ statistics:
     38: 2
     40: 1
     43: 1
-shape:
-  nodes: 565
-  hyperedges: 601
 edge-label-count:
   Mexican: 131
   Chinese: 109
@@ -110,10 +111,6 @@ edge-label-count:
   Thai: 82
   American (Traditional): 47
   Indian: 24
-attachments:
-  dataset:
-    url: madison-restaurant-reviews.txt
-    size: 29980
 ---
 
 import { ComputedBoxPlot } from "@/components/chart/box-plot";
@@ -127,14 +124,14 @@ The dataset was derived from the [Yelp Kaggle competition data](https://www.kagg
 ## Dataset Statistics
 
 <dl className="not-prose grid gap-5 sm:grid-cols-2">
-  <Stat title="Nodes" value={formatNumber(frontmatter["shape"]["nodes"])} />
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
   <Stat title="Node Type" value="Yelp User" />
   <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-2" />
 </dl>
 <dl className="not-prose grid mt-5 gap-5 sm:grid-cols-3">
   <Stat
     title="Hyperedges"
-    value={formatNumber(frontmatter["shape"]["hyperedges"])}
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
   />
   <Stat title="Hyperedge Type" value="Co-reviewed Establishment" />
   <Stat title="Hyperedge Label" value="Cuisine" />

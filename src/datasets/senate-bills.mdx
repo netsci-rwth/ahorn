@@ -9,8 +9,16 @@ network-type:
   - hypergraph
 tags:
   - undirected
-  - labelled nodes
+  - 'metadata: node classes'
   - 'source: benson'
+related:
+  - senate-committees
+  - congress-bills
+  - house-bills
+attachments:
+  dataset:
+    url: senate-bills.txt
+    size: 952154
 statistics:
   num-nodes: 294
   num-edges: 29157
@@ -375,17 +383,9 @@ statistics:
     96: 1
     98: 1
     99: 2
-related:
-  - senate-committees
-  - congress-bills
-  - house-bills
 label-count:
   Democrat: 150
   Republican: 144
-attachments:
-  dataset:
-    url: senate-bills.txt
-    size: 952154
 ---
 
 import { ComputedBoxPlot } from "@/components/chart/box-plot";

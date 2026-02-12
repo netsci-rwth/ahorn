@@ -18,17 +18,18 @@ Inside the text, the frontmatter is accessible via the `frontmatter` variable.
 Required fields in the frontmatter:
 
 - `title`: The title of the dataset.
+- `network-type`: List of suggested network interpretations for the dataset.
 - `source`: A link to the original source of the dataset. If possible, this should be a link to the dataset description page, not a deeplink to the dataset file.
 
 Optional fields that are automatically used when present:
 
-- `license`: The license of the dataset. This can be either a string or an object with `spdx` and `link` fields.
-- `citation`: One or more BibTex entries that should be cited when using the dataset.
-- `tags`: A list of tags that describe the dataset. These are used for filtering datasets in the UI.
+- `license`: The license of the dataset. This can be either a string or an object with `spdx` and `link` fields. Prefer the later for standard licenses for an easier presentation.
+- `citation`: List of DOIs or BibTeX entries that should be cited when using the dataset. DOIs are automatically resolved.
+- `tags`: List of tags that describe the dataset. These are used for filtering datasets in the UI.
 
 ## Attributes
 
-- All attributes appearing in the dataset must be listed on the dataset page.
+- All attributes appearing as metadata in the dataset must be listed on the dataset page.
 - Non-standardized attributes must be described in the text.
 
 ## Statistics

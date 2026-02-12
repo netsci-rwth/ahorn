@@ -8,8 +8,12 @@ network-type:
   - hypergraph
 tags:
   - undirected
-  - labelled nodes
+  - 'metadata: node classes'
   - 'source: benson'
+attachments:
+  dataset:
+    url: walmart-trips.txt.gz
+    size: 1420115
 statistics:
   num-nodes: 88860
   num-edges: 69906
@@ -310,10 +314,6 @@ label-count:
   Pharmacy, Health & Beauty: 12441
   Sports, Fitness & Outdoors: 1590
   Toys, Games, and Video Games: 2902
-attachments:
-  dataset:
-    url: walmart-trips.txt.gz
-    size: 1420115
 ---
 
 import { ComputedBoxPlot } from "@/components/chart/box-plot";
