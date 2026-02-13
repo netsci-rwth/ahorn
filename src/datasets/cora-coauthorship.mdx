@@ -1,0 +1,107 @@
+---
+title: Cora Co-Authorship
+source: https://drive.google.com/file/d/1J5fLPABWrM9SH_7m85n7--oHDVmwJeib/view?usp=sharing
+network-type:
+  - simplicial-complex
+  - hypergraph
+tags:
+  - undirected
+  - 'metadata: node classes'
+  - collaboration
+related:
+  - cora-cocitation
+  - dblp-coauthorship
+attachments:
+  dataset:
+    url: https://zenodo.org/records/18632379/files/cora-coauthorship.txt.gz?download=1
+    size: 19101
+statistics:
+  num-nodes: 1072
+  num-edges: 2388
+  node-degrees:
+    2: 486
+    3: 205
+    4: 106
+    5: 78
+    6: 45
+    7: 28
+    8: 21
+    9: 11
+    10: 16
+    11: 7
+    12: 6
+    13: 14
+    14: 11
+    15: 6
+    16: 1
+    17: 2
+    18: 4
+    19: 6
+    20: 2
+    21: 5
+    22: 1
+    24: 4
+    26: 1
+    27: 1
+    28: 1
+    30: 1
+    31: 1
+    32: 1
+    43: 1
+  edge-degrees:
+    1: 995
+    2: 951
+    3: 287
+    4: 84
+    5: 36
+    6: 16
+    7: 1
+    8: 4
+    9: 5
+    10: 2
+    12: 2
+    14: 1
+    15: 1
+    16: 1
+    19: 1
+    23: 1
+label-count:
+  Case_Based: 167
+  Genetic_Algorithms: 152
+  Neural_Networks: 88
+  Probabilistic_Methods: 344
+  Reinforcement_Learning: 103
+  Rule_Learning: 149
+  Theory: 69
+---
+
+import { ComputedBoxPlot } from "@/components/chart/box-plot";
+import NodeLabelsChart from "@/components/chart/node-labels";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+The Cora co-authorship network is a hypergraph where nodes are authors from the Cora dataset and hyperedges are papers, representing sets of authors who collaborated on a publication.
+Each author is labeled with their primary research area, inferred from the majority research area of their publications.
+The research areas include Case-Based Reasoning, Genetic Algorithms, Neural Networks, Probabilistic Methods, Reinforcement Learning, Rule Learning, and Theory.
+This dataset is commonly used as a benchmark in hypergraph learning tasks for author classification and link prediction.
+
+## Dataset Statistics
+
+<dl className="not-prose grid gap-5 sm:grid-cols-3">
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
+  <Stat title="Node Type" value="Author" />
+  <Stat title="Node Label" value="Research Area" />
+  <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-3" />
+</dl>
+<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+  />
+  <Stat title="Hyperedge Type" value="Publication" />
+  <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />
+</dl>
+
+### Node Labels
+
+<NodeLabelsChart labels={frontmatter["label-count"]} />
