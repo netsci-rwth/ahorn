@@ -1,0 +1,180 @@
+---
+title: PubMed Co-Citation
+source: https://drive.google.com/file/d/1XbqDJnHnV0HYvie3fcM8rquamnQsLTpK/view?usp=sharing
+network-type:
+  - simplicial-complex
+  - hypergraph
+tags:
+  - undirected
+  - 'metadata: node classes'
+  - biomedical
+related:
+  - cora-cocitation
+  - citeseer-cocitation
+attachments:
+  dataset:
+    url: https://zenodo.org/records/18632387/files/pubmed-cocitation.txt.gz?download=1
+    size: 136661
+statistics:
+  num-nodes: 19717
+  num-edges: 7963
+  node-degrees:
+    1: 339
+    2: 313
+    3: 292
+    4: 327
+    5: 291
+    6: 250
+    7: 245
+    8: 238
+    9: 198
+    10: 159
+    11: 174
+    12: 122
+    13: 112
+    14: 119
+    15: 78
+    16: 73
+    17: 62
+    18: 65
+    19: 42
+    20: 46
+    21: 34
+    22: 23
+    23: 32
+    24: 20
+    25: 28
+    26: 19
+    27: 14
+    28: 12
+    29: 13
+    30: 10
+    31: 11
+    32: 8
+    33: 5
+    34: 2
+    35: 9
+    36: 4
+    37: 5
+    38: 3
+    39: 7
+    41: 5
+    42: 4
+    43: 4
+    44: 2
+    45: 2
+    47: 2
+    48: 1
+    49: 1
+    50: 1
+    51: 1
+    52: 1
+    53: 1
+    54: 1
+    55: 1
+    56: 1
+    57: 1
+    59: 1
+    62: 1
+    68: 1
+    73: 1
+    82: 1
+    87: 1
+    99: 1
+  edge-degrees:
+    2: 3522
+    3: 1626
+    4: 845
+    5: 534
+    6: 297
+    7: 247
+    8: 161
+    9: 124
+    10: 110
+    11: 79
+    12: 60
+    13: 61
+    14: 39
+    15: 41
+    16: 23
+    17: 29
+    18: 15
+    19: 18
+    20: 7
+    21: 9
+    22: 11
+    23: 13
+    24: 9
+    25: 5
+    26: 8
+    27: 3
+    28: 7
+    29: 7
+    30: 5
+    31: 2
+    32: 1
+    33: 1
+    34: 2
+    35: 3
+    36: 2
+    37: 4
+    39: 1
+    40: 2
+    41: 2
+    42: 3
+    44: 1
+    47: 1
+    49: 1
+    50: 1
+    51: 2
+    52: 1
+    53: 1
+    56: 1
+    57: 1
+    58: 2
+    59: 2
+    60: 1
+    62: 1
+    64: 1
+    66: 1
+    69: 1
+    72: 1
+    74: 2
+    120: 1
+    154: 1
+    171: 1
+label-count:
+  Diabetes_Mellitus_Experimental: 4103
+  Diabetes_Mellitus_Type_1: 7875
+  Diabetes_Mellitus_Type_2: 7739
+---
+
+import { ComputedBoxPlot } from "@/components/chart/box-plot";
+import NodeLabelsChart from "@/components/chart/node-labels";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+The PubMed co-citation network is a hypergraph where nodes are scientific papers from the PubMed database and hyperedges are sets of papers that are co-cited together by another paper.
+Each node is labeled with the paper's research topic, chosen from three diabetes-related categories: Diabetes Mellitus Experimental, Diabetes Mellitus Type 1, and Diabetes Mellitus Type 2.
+This dataset is commonly used as a benchmark in hypergraph learning tasks, particularly for biomedical document classification.
+
+## Dataset Statistics
+
+<dl className="not-prose grid gap-5 sm:grid-cols-3">
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
+  <Stat title="Node Type" value="Scientific Paper" />
+  <Stat title="Node Label" value="Research Topic" />
+  <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-3" />
+</dl>
+<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+  />
+  <Stat title="Hyperedge Type" value="Co-Citation Set" />
+  <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />
+</dl>
+
+### Node Labels
+
+<NodeLabelsChart labels={frontmatter["label-count"]} />
