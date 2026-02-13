@@ -1,0 +1,96 @@
+---
+title: Cora Co-Citation
+source: https://drive.google.com/file/d/1WVRx5yDxSdZpvL6FK5Ji8H3lOnyYlraN/view?usp=sharing
+network-type:
+  - simplicial-complex
+  - hypergraph
+tags:
+  - undirected
+  - 'metadata: node classes'
+related:
+  - citeseer-cocitation
+  - pubmed-cocitation
+  - cora-coauthorship
+attachments:
+  dataset:
+    url: https://zenodo.org/records/18632383/files/cora-cocitation.txt.gz?download=1
+    size: 17848
+statistics:
+  num-nodes: 2708
+  num-edges: 1579
+  node-degrees:
+    1: 575
+    2: 327
+    3: 156
+    4: 110
+    5: 83
+    6: 35
+    7: 36
+    8: 20
+    9: 19
+    10: 14
+    11: 4
+    12: 10
+    13: 6
+    14: 4
+    15: 6
+    16: 5
+    17: 5
+    18: 1
+    22: 1
+    23: 2
+    24: 1
+    26: 2
+    27: 1
+    29: 2
+    32: 2
+    33: 1
+    37: 1
+    39: 1
+    55: 2
+    73: 1
+    145: 1
+  edge-degrees:
+    2: 623
+    3: 464
+    4: 312
+    5: 180
+label-count:
+  Case_Based: 418
+  Genetic_Algorithms: 351
+  Neural_Networks: 180
+  Probabilistic_Methods: 818
+  Reinforcement_Learning: 298
+  Rule_Learning: 426
+  Theory: 217
+---
+
+import { ComputedBoxPlot } from "@/components/chart/box-plot";
+import NodeLabelsChart from "@/components/chart/node-labels";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+The Cora co-citation network is a hypergraph where nodes are scientific papers from the Cora dataset and hyperedges are sets of papers that are co-cited together by another paper.
+Each node is labeled with the paper's research field, chosen from seven computer science topics.
+This dataset is commonly used as a benchmark in hypergraph learning tasks.
+
+## Dataset Statistics
+
+<dl className="not-prose grid gap-5 sm:grid-cols-3">
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
+  <Stat title="Node Type" value="Scientific Paper" />
+  <Stat title="Node Label" value="Research Field" />
+  <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-3" />
+</dl>
+<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+  />
+  <Stat title="Hyperedge Type" value="Co-Citation Set" />
+  <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />
+</dl>
+
+### Node Labels
+
+<NodeLabelsChart labels={frontmatter["label-count"]} />
