@@ -1,0 +1,100 @@
+---
+title: CiteSeer Co-Citation
+source: https://drive.google.com/file/d/1XWfu1jtijsmHmfCP6UQxyLsuPM8GBNJb/view?usp=sharing
+network-type:
+  - simplicial-complex
+  - hypergraph
+tags:
+  - 'metadata: node classes'
+  - undirected
+related:
+  - cora-cocitation
+  - pubmed-cocitation
+attachments:
+  dataset:
+    url: https://zenodo.org/records/18632377/files/citeseer-cocitation.txt.gz?download=1
+    size: 17378
+statistics:
+  num-nodes: 3312
+  num-edges: 1079
+  node-degrees:
+    1: 798
+    2: 307
+    3: 144
+    4: 73
+    5: 28
+    6: 25
+    7: 16
+    8: 9
+    9: 16
+    10: 11
+    11: 6
+    12: 3
+    13: 5
+    15: 3
+    16: 3
+    17: 1
+    18: 2
+    20: 1
+    21: 1
+    27: 2
+    28: 1
+    32: 1
+    33: 1
+    88: 1
+  edge-degrees:
+    2: 541
+    3: 254
+    4: 118
+    5: 65
+    6: 40
+    7: 23
+    8: 10
+    9: 6
+    10: 8
+    11: 4
+    12: 4
+    13: 1
+    14: 1
+    15: 1
+    18: 1
+    19: 1
+    26: 1
+label-count:
+  AI: 596
+  Agents: 701
+  DB: 508
+  HCI: 249
+  IR: 590
+  ML: 668
+---
+
+import { ComputedBoxPlot } from "@/components/chart/box-plot";
+import NodeLabelsChart from "@/components/chart/node-labels";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+The CiteSeer co-citation network is a hypergraph where nodes are scientific papers from the CiteSeer dataset and hyperedges are sets of papers that are co-cited together by another paper.
+Each node is labeled with the paper's research field, chosen from six computer science topics: Agents, Artificial Intelligence (AI), Databases (DB), Information Retrieval (IR), Machine Learning (ML), and Human-Computer Interaction (HCI).
+This dataset is commonly used as a benchmark in hypergraph learning tasks.
+
+## Dataset Statistics
+
+<dl className="not-prose grid gap-5 sm:grid-cols-3">
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
+  <Stat title="Node Type" value="Scientific Paper" />
+  <Stat title="Node Label" value="Research Field" />
+  <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-3" />
+</dl>
+<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+  />
+  <Stat title="Hyperedge Type" value="Co-Citation Set" />
+  <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />
+</dl>
+
+### Node Labels
+
+<NodeLabelsChart labels={frontmatter["label-count"]} />
