@@ -36,10 +36,10 @@ datasheet_file = root_dir / "src" / "datasets" / "dblp-coauthorship.mdx"
 
 # Load dataset from pickle files
 with (data_dir / "hypergraph.pickle").open("rb") as f:
-    hypergraph_dict = pickle.load(f)
+    hypergraph_dict = pickle.load(f)  # noqa: S301
 
 with (data_dir / "labels.pickle").open("rb") as f:
-    paper_labels = pickle.load(f)
+    paper_labels = pickle.load(f)  # noqa: S301
 
 # Label names for DBLP dataset (research areas)
 label_names = [

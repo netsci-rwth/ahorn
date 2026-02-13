@@ -35,10 +35,10 @@ datasheet_file = root_dir / "src" / "datasets" / "pubmed-cocitation.mdx"
 
 # Load dataset from pickle files
 with (data_dir / "hypergraph.pickle").open("rb") as f:
-    hypergraph_dict = pickle.load(f)
+    hypergraph_dict = pickle.load(f)  # noqa: S301
 
 with (data_dir / "labels.pickle").open("rb") as f:
-    node_labels = pickle.load(f)
+    node_labels = pickle.load(f)  # noqa: S301
 
 # Label names for PubMed dataset (diabetes research topics)
 label_names = [
@@ -56,7 +56,7 @@ for i, node in enumerate(nodes):
 # Create hyperedges (cocitation sets)
 # The hypergraph dict maps citing paper IDs to sets of cited paper IDs
 hyperedges = []
-for citing_paper_id, cited_papers in hypergraph_dict.items():
+for cited_papers in hypergraph_dict.values():
     # Convert to regular Python ints and add 1 to match 1-indexed nodes
     cited_paper_list = sorted([int(paper_id) + 1 for paper_id in cited_papers])
     hyperedges.append(Simplex(cited_paper_list))
