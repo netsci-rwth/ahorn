@@ -8,6 +8,13 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  turbopack: {
+    rules: {
+      "*.css": {
+        loaders: ['@tailwindcss/webpack'],
+      },
+    },
+  },
 };
 
 const withMDX = createMDX({
