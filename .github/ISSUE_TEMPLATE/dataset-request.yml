@@ -19,7 +19,7 @@ body:
     id: tags
     attributes:
       label: Dataset Tags
-      description: Comma-separated tags that describe the dataset (e.g., "undirected, temporal, social data").
+      description: Comma-separated tags that describe the dataset (e.g., "temporal, social").
   - type: input
     id: url
     attributes:
