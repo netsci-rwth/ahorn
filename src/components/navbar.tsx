@@ -16,10 +16,10 @@ import {
   DisclosurePanel,
 } from "@headlessui/react";
 
+import Logo from "@/app/icon.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
-  faLeaf,
   faSpinner,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
@@ -252,7 +252,7 @@ const Navbar: FC = () => {
               href="/"
               className="flex shrink-0 items-center text-2xl font-bold text-primary"
             >
-              <FontAwesomeIcon icon={faLeaf} className="mr-2" />
+              <Logo className="mr-2 h-6 w-6" />
               AHORN
             </Link>
             <div className="hidden sm:ml-6 sm:flex sm:items-stretch sm:space-x-8">

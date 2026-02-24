@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
       "*.css": {
         loaders: ['@tailwindcss/webpack'],
       },
+      "*.svg": {
+        loaders: ["@svgr/webpack"],
+        as: "*.js",
+      },
     },
   },
 };
