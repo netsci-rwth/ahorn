@@ -21,6 +21,9 @@ attachments:
   revision-1:
     url: https://zenodo.org/records/17202446/files/algebra-questions.txt?download=1
     size: 68569
+  revision-2:
+    url: https://zenodo.org/records/18771367/files/algebra-questions.txt.gz?download=1
+    size: 9862
 statistics:
   num-nodes: 423
   num-edges: 1268
@@ -174,6 +177,13 @@ import { formatNumber } from "@/utils/format";
 Hypergraph where nodes are users on [MathOverflow](https://mathoverflow.net/) and hyperedges are sets of users who answered a certain question category (derived from different tags involving algebra).
 The dataset was derived from the [Stack Exchange data dump](https://archive.org/details/stackexchange).
 
+## Attributes
+
+- `category : string`: The category of the question that the users co-answered, derived from the question tags.
+
+For simplicial complexes, the suggested construction to satisfy simplicial closure is to interpret the category label as a set.
+Non-maximal simplices get the category of all maximal simplices they are contained in.
+
 ## Dataset Statistics
 
 <dl className="not-prose grid gap-5 sm:grid-cols-2">
@@ -194,3 +204,13 @@ The dataset was derived from the [Stack Exchange data dump](https://archive.org/
 ### Edge Labels
 
 <NodeLabelsChart labels={frontmatter["edge-label-count"]} />
+
+## Changelog
+
+<details className="mt-3 rounded border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
+  <summary className="cursor-pointer select-none">Revision 2</summary>
+  <div>
+    - The edge attribute was renamed from `genre` to `category`.
+    - The dataset is now provided in gzipped format to reduce file size.
+  </div>
+</details>

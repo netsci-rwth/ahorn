@@ -41,7 +41,16 @@ def update_frontmatter(path: Path | str, update: dict[Any, Any]) -> None:
         content = file.read()
 
     frontmatter, body = read_frontmatter(content)
-    frontmatter.update(update)
+    if "attachments" in update:
+        existing_attachments = frontmatter.get("attachments", {})
+        incoming_attachments = update.get("attachments")
+        merged_attachments = {**existing_attachments, **incoming_attachments}
+        frontmatter["attachments"] = merged_attachments
+
+    merged_update = {
+        key: value for key, value in update.items() if key != "attachments"
+    }
+    frontmatter.update(merged_update)
 
     write_markdown(path, frontmatter, body)
 
