@@ -138,6 +138,8 @@ def _infer_hyperedge_filenames(
         hyperedge_label_names_file = "hyperedge-label-names.txt"
     elif (folder / "hyperedge-label-identities.txt").exists():
         hyperedge_label_names_file = "hyperedge-label-identities.txt"
+    elif (folder / "hyperedge-labels-identities.txt").exists():
+        hyperedge_label_names_file = "hyperedge-labels-identities.txt"
     else:
         hyperedge_label_names_file = None
 

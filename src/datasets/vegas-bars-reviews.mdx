@@ -20,6 +20,9 @@ attachments:
   revision-1:
     url: https://zenodo.org/records/17202660/files/vegas-bars-reviews.txt?download=1
     size: 65695
+  revision-2:
+    url: https://zenodo.org/records/18771537/files/vegas-bars-reviews.txt.gz?download=1
+    size: 21694
 statistics:
   num-nodes: 1234
   num-edges: 1194
@@ -137,21 +140,21 @@ statistics:
     72: 2
     73: 1
 edge-label-count:
-  '11': 139
-  '5': 133
-  '15': 126
-  '4': 94
-  '6': 106
-  '12': 56
-  '16': 115
-  '7': 104
-  '1': 93
-  '14': 94
-  '8': 68
-  '10': 48
-  '13': 9
-  '3': 6
-  '9': 3
+  Karaoke: 139
+  Cocktail Bars: 133
+  Pubs: 126
+  Champagne Bars: 94
+  Comedy Clubs: 106
+  Lounges: 56
+  Sports Bars: 115
+  Dance Clubs: 104
+  Adult Entertainment: 93
+  Pool Halls: 94
+  Dive Bars: 68
+  Hookah Bars: 48
+  Piano Bars: 9
+  Bar Crawl: 6
+  Gay Bars: 3
 ---
 
 import { ComputedBoxPlot } from "@/components/chart/box-plot";
@@ -161,6 +164,15 @@ import { formatNumber } from "@/utils/format";
 
 Hypergraph where nodes are Yelp users and hyperedges are users who reviewed an establishment of a particular category (different types of bars in Las Vegas, NV) within a month timeframe.
 The dataset was derived from the [Yelp Kaggle competition data](https://www.kaggle.com/yelp-dataset/yelp-dataset).
+
+## Attributes
+
+This dataset has the following edge attributes:
+
+- `category : string`: The category of the bar that the users co-reviewed.
+
+For simplicial complexes, the suggested construction to satisfy simplicial closure is to interpret the category label as a set.
+Non-maximal simplices get the category of all maximal simplices they are contained in.
 
 ## Dataset Statistics
 
@@ -182,3 +194,14 @@ The dataset was derived from the [Yelp Kaggle competition data](https://www.kagg
 ### Edge Labels
 
 <NodeLabelsChart labels={frontmatter["edge-label-count"]} />
+
+## Changelog
+
+<details className="mt-3 rounded border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
+  <summary className="cursor-pointer select-none">Revision 2</summary>
+  <div>
+    - The edge attribute was renamed from `genre` to `category`.
+    - The `category` edge attribute now contains the category name instead of a numeric code.
+    - The dataset is now provided in gzipped format to reduce file size.
+  </div>
+</details>
