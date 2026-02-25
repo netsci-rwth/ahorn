@@ -162,6 +162,13 @@ The dataset was derived from the product reviews collected by Jianmo Ni, Jiachen
 
 <Alert type="warning">The original dataset is temporal, which this version does not capture, yet.</Alert>
 
+## Attributes
+
+- `genre : string`: The genre of blues music that the reviewers co-reviewed.
+
+For simplicial complexes, the suggested construction to satisfy simplicial closure is to interpret the category label as a set.
+Non-maximal simplices get the category of all maximal simplices they are contained in.
+
 ## Dataset Statistics
 
 <dl className="not-prose grid gap-5 sm:grid-cols-2">
@@ -175,7 +182,7 @@ The dataset was derived from the product reviews collected by Jianmo Ni, Jiachen
     value={formatNumber(frontmatter["statistics"]["num-edges"])}
   />
   <Stat title="Hyperedge Type" value="Co-reviewed" />
-  <Stat title="Hyperedge Label" value="Product Category" />
+  <Stat title="Hyperedge Label" value="Genre of Blues Music" />
   <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-3" />
 </dl>
 
