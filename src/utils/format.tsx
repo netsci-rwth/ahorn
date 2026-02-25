@@ -1,5 +1,17 @@
 const formatter = Intl.NumberFormat("en-US");
 
+/**
+ * Converts an attachment tag (e.g., `revision-1`) to a human-readable label.
+ *
+ * @param attachmentTag - The attachment tag to format.
+ * @returns A human-friendly label (e.g., `Revision 1`).
+ */
+export function formatAttachmentTag(attachmentTag: string): string {
+  const match = attachmentTag.match(/^revision-(\d+)$/i);
+  if (!match) return attachmentTag;
+  return `Revision ${match[1]}`;
+}
+
 export function formatNumber(number: number): string {
   return formatter.format(number);
 }

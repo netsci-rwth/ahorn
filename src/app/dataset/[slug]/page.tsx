@@ -18,7 +18,7 @@ import Badge from "@/components/badge";
 import Card from "@/components/card";
 
 import { toApa } from "@/utils/citation";
-import { formatFileSize } from "@/utils/format";
+import { formatAttachmentTag, formatFileSize } from "@/utils/format";
 
 const lowlight = createLowlight({ bash });
 
@@ -221,7 +221,6 @@ export default async function DatasetPage({
                         attachment.url,
                         "https://ahorn.rwth-aachen.de/",
                       );
-                      const name = url.pathname.split("/").pop() || key;
                       return (
                         <li key={key} className="flex text-sm">
                           <a
@@ -235,7 +234,7 @@ export default async function DatasetPage({
                             />
                             <div className="ml-4 flex min-w-0 flex-1 gap-2">
                               <span className="truncate font-medium">
-                                {name}
+                                {formatAttachmentTag(key)}
                               </span>
                               <span className="shrink-0 text-gray-400 dark:text-gray-500">
                                 {formatFileSize(attachment.size)}
