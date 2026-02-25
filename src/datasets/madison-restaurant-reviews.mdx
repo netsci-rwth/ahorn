@@ -20,6 +20,9 @@ attachments:
   revision-1:
     url: https://zenodo.org/records/17202762/files/madison-restaurant-reviews.txt?download=1
     size: 29980
+  revision-2:
+    url: https://zenodo.org/records/18771507/files/madison-restaurant-reviews.txt.gz?download=1
+    size: 8004
 statistics:
   num-nodes: 565
   num-edges: 601
@@ -121,6 +124,13 @@ import { formatNumber } from "@/utils/format";
 Hypergraph where nodes are Yelp users and hyperedges are users who reviewed an establishment of a particular category (different types of restaurants in Madison, WI) within a month timeframe.
 The dataset was derived from the [Yelp Kaggle competition data](https://www.kaggle.com/datasets/yelp-dataset/yelp-dataset).
 
+## Attributes
+
+- `cuisine : string`: The category of the restaurant that the users co-reviewed.
+
+For simplicial complexes, the suggested construction to satisfy simplicial closure is to interpret the category label as a set.
+Non-maximal simplices get the category of all maximal simplices they are contained in.
+
 ## Dataset Statistics
 
 <dl className="not-prose grid gap-5 sm:grid-cols-2">
@@ -141,3 +151,13 @@ The dataset was derived from the [Yelp Kaggle competition data](https://www.kagg
 ### Edge Labels
 
 <NodeLabelsChart labels={frontmatter["edge-label-count"]} />
+
+## Changelog
+
+<details className="mt-3 rounded border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
+  <summary className="cursor-pointer select-none">Revision 2</summary>
+  <div>
+    - The edge attribute was renamed from `genre` to `cuisine`.
+    - The dataset is now provided in gzipped format to reduce file size.
+  </div>
+</details>
