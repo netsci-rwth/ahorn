@@ -120,11 +120,15 @@ export default async function DatasetPage({
           <h1 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight dark:text-gray-100">
             {frontmatter.title}
           </h1>
-          <div className="mt-4 flex flex-col sm:flex-row sm:flex-wrap sm:space-x-6">
-            <div>
+          <div className="mt-4 flex flex-col space-y-6 sm:flex-row sm:flex-wrap sm:space-x-6 sm:space-y-0">
+            <div className="group relative">
               <h3 className="mb-2 flex items-center gap-2 text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400">
                 <FontAwesomeIcon icon={faHexagonNodes} className="size-4" />
                 Network Type
+                <span className="pointer-events-none absolute left-1/2 bottom-full z-10 mb-2 hidden w-48 -translate-x-1/2 rounded-md bg-gray-900 px-3 py-2 text-xs font-normal normal-case text-white shadow-lg group-hover:block dark:bg-gray-700">
+                  These network types are suggested interpretations and do not claim to be complete.
+                  <span className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900 dark:border-t-gray-700"></span>
+                </span>
               </h3>
               <div className="flex flex-wrap gap-2">
                 {frontmatter["network-type"].map(
