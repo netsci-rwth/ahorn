@@ -1,13 +1,18 @@
 """Lint dataset frontmatter for required fields and ordering."""
 
+# /// script
+# requires-python = ">= 3.13"
+# dependencies = [
+#     "pyyaml",
+# ]
+# ///
+
 from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 from urllib.parse import urlparse
 
 import yaml
-from rich.console import Console
-from rich.table import Table
 
 if TYPE_CHECKING:
     from collections.abc import Hashable, Iterable, Sequence
@@ -118,9 +123,7 @@ def extract_frontmatter(
         issues.append(
             FrontmatterIssue(
                 path=path,
-                line=2 + e.problem_mark.line
-                if hasattr(e, "problem_mark")
-                else 2,
+                line=2 + e.problem_mark.line if hasattr(e, "problem_mark") else 2,
                 message=f"Invalid YAML: {e}",
             )
         )
@@ -302,9 +305,7 @@ def lint_file(path: Path) -> list[FrontmatterIssue]:
                     )
 
             # Check for revision fields (revision-1, revision-2, etc.)
-            revision_keys = [
-                key for key in attachments if key.startswith("revision-")
-            ]
+            revision_keys = [key for key in attachments if key.startswith("revision-")]
 
             if not revision_keys:
                 issues.append(
@@ -385,18 +386,10 @@ def render_issues(issues: Sequence[FrontmatterIssue]) -> None:
     issues : Sequence[FrontmatterIssue]
         The linting issues to display.
     """
-    console = Console()
-    table = Table(title="Frontmatter Lint")
-    table.add_column("File", style="cyan")
-    table.add_column("Line", justify="right", style="magenta")
-    table.add_column("Message", style="white")
+    print(f"Found {len(issues)} frontmatter issue(s):")
 
-    for issue in sorted(
-        issues, key=lambda item: (str(item.path), item.line, item.message)
-    ):
-        table.add_row(str(issue.path), str(issue.line), issue.message)
-
-    console.print(table)
+    for issue in sorted(issues, key=lambda item: (str(item.path), item.line, item.message)):
+        print(f"{issue.path}:{issue.line}: {issue.message}")
 
 
 if __name__ == "__main__":

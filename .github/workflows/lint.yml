@@ -38,4 +38,4 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v7
       - name: Lint frontmatter
-        run: uv run ./tools/datasheet_linter.py
+        run: uv run --script ./tools/datasheet_linter.py
