@@ -7,6 +7,7 @@ information in various formats.
 import json
 from datetime import datetime
 from pathlib import Path
+import re
 from typing import TYPE_CHECKING, Any, TextIO
 
 import yaml
@@ -73,7 +74,7 @@ def write_edge(file: TextIO, elements: Iterable[int | str], **kwargs: Any) -> No
 
 
 def write_dataset_metadata(
-    file: TextIO, name: str, revision: int, format_version: str = "0.2", **kwargs: Any
+    file: TextIO, name: str, revision: int, format_version: str = "0.3", **kwargs: Any
 ) -> None:
     """Write dataset metadata to a file in JSON format.
 
@@ -86,19 +87,25 @@ def write_dataset_metadata(
     revision : int
         Revision number of the dataset. Must be incremented by one for each published
         update.
-    format_version : str, optional
-        Format version string, by default "0.1".
+    format_version : str, default="0.3"
+        Format version string.
     **kwargs
         Additional metadata attributes.
     """
-    if any(key in kwargs for key in ["name", "_format-version", "_revision"]):
+    regex = re.compile(r"[A-Za-z0-9-]+")
+    if not all(regex.fullmatch(key) for key in kwargs):
+        raise ValueError(
+            "Metadata keys must be non-empty strings containing only letters, numbers, or hyphens."
+        )
+
+    if any(key in kwargs for key in ["name", "format-version"]):
         raise ValueError("Used a reserved metadata key.")
 
     metadata = {
         "name": name,
         **kwargs,
-        "_format-version": format_version,
-        "_revision": revision,
+        "format-version": format_version,
+        "revision": revision,
     }
     file.write(json.dumps(_format_attributes(metadata)) + "\n")
 
