@@ -273,34 +273,25 @@ def lint_file(path: Path) -> list[FrontmatterIssue]:
             )
         else:
             for attachment_key, attachment in attachments.items():
-                if not isinstance(attachment, dict):
+                if not isinstance(attachment, str):
                     issues.append(
                         FrontmatterIssue(
                             path=path,
                             line=attachments_line,
-                            message=("Each attachments entry must be a mapping."),
-                        )
-                    )
-                    continue
-
-                if "url" not in attachment:
-                    issues.append(
-                        FrontmatterIssue(
-                            path=path,
-                            line=attachments_line,
-                            message=("Each attachment must include an 'url' field."),
+                            message="Each attachments entry must be a full https URL string.",
                         )
                     )
                     continue
 
                 # Check that URL is valid for all attachments
-                url_value = attachment.get("url")
-                if not isinstance(url_value, str) or not is_full_url(url_value):
+                if not is_full_url(attachment):
                     issues.append(
                         FrontmatterIssue(
                             path=path,
                             line=attachments_line,
-                            message=f"attachments.{attachment_key}.url must be a full https URL.",
+                            message=(
+                                f"attachments.{attachment_key} must be a full https URL."
+                            ),
                         )
                     )
 
@@ -388,7 +379,9 @@ def render_issues(issues: Sequence[FrontmatterIssue]) -> None:
     """
     print(f"Found {len(issues)} frontmatter issue(s):")
 
-    for issue in sorted(issues, key=lambda item: (str(item.path), item.line, item.message)):
+    for issue in sorted(
+        issues, key=lambda item: (str(item.path), item.line, item.message)
+    ):
         print(f"{issue.path}:{issue.line}: {issue.message}")
 
 

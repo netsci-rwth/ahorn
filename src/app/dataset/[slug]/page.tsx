@@ -19,6 +19,7 @@ import Card from "@/components/card";
 
 import { toApa } from "@/utils/citation";
 import { formatAttachmentTag, formatFileSize } from "@/utils/format";
+import { resolveAttachmentSizes } from "@/utils/zenodo";
 
 const lowlight = createLowlight({ bash });
 
@@ -81,8 +82,9 @@ export default async function DatasetPage({
     related_datasets = [];
   }
 
-  const attachments: Record<string, { url: string; size: number }> =
-    frontmatter.attachments || {};
+  const attachments = await resolveAttachmentSizes(
+    frontmatter.attachments || {},
+  );
 
   const licenseDisplay = (() => {
     const license = frontmatter.license;
@@ -120,13 +122,14 @@ export default async function DatasetPage({
           <h1 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight dark:text-gray-100">
             {frontmatter.title}
           </h1>
-          <div className="mt-4 flex flex-col space-y-6 sm:flex-row sm:flex-wrap sm:space-x-6 sm:space-y-0">
+          <div className="mt-4 flex flex-col space-y-6 sm:flex-row sm:flex-wrap sm:space-y-0 sm:space-x-6">
             <div className="group relative">
               <h3 className="mb-2 flex items-center gap-2 text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400">
                 <FontAwesomeIcon icon={faHexagonNodes} className="size-4" />
                 Network Type
-                <span className="pointer-events-none absolute left-1/2 bottom-full z-10 mb-2 hidden w-48 -translate-x-1/2 rounded-md bg-gray-900 px-3 py-2 text-xs font-normal normal-case text-white shadow-lg group-hover:block dark:bg-gray-700">
-                  These network types are suggested interpretations and do not claim to be complete.
+                <span className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 hidden w-48 -translate-x-1/2 rounded-md bg-gray-900 px-3 py-2 text-xs font-normal text-white normal-case shadow-lg group-hover:block dark:bg-gray-700">
+                  These network types are suggested interpretations and do not
+                  claim to be complete.
                   <span className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900 dark:border-t-gray-700"></span>
                 </span>
               </h3>
@@ -240,9 +243,11 @@ export default async function DatasetPage({
                               <span className="truncate font-medium">
                                 {formatAttachmentTag(key)}
                               </span>
-                              <span className="shrink-0 text-gray-400 dark:text-gray-500">
-                                {formatFileSize(attachment.size)}
-                              </span>
+                              {typeof attachment.size === "number" && (
+                                <span className="shrink-0 text-gray-400 dark:text-gray-500">
+                                  {formatFileSize(attachment.size)}
+                                </span>
+                              )}
                             </div>
                           </a>
                         </li>
