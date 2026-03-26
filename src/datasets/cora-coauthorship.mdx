@@ -14,41 +14,39 @@ attachments:
   revision-1:
     url: https://zenodo.org/records/18632379/files/cora-coauthorship.txt.gz?download=1
     size: 19101
+  revision-2:
+    url: https://zenodo.org/records/19232933/files/cora-coauthorship.txt.gz?download=1
+    size: 16903
 statistics:
   num-nodes: 1072
-  num-edges: 2388
+  num-edges: 1393
   node-degrees:
-    2: 486
-    3: 205
-    4: 106
-    5: 78
-    6: 45
-    7: 28
-    8: 21
-    9: 11
-    10: 16
-    11: 7
-    12: 6
-    13: 14
-    14: 11
-    15: 6
+    1: 108
+    2: 410
+    3: 171
+    4: 98
+    5: 69
+    6: 34
+    7: 24
+    8: 11
+    9: 8
+    10: 6
+    11: 11
+    12: 7
+    13: 8
+    14: 9
+    15: 1
     16: 1
     17: 2
-    18: 4
-    19: 6
-    20: 2
-    21: 5
+    18: 3
+    19: 2
+    20: 3
+    21: 2
     22: 1
-    24: 4
-    26: 1
-    27: 1
-    28: 1
-    30: 1
-    31: 1
-    32: 1
-    43: 1
+    23: 1
+    25: 1
+    28: 2
   edge-degrees:
-    1: 995
     2: 951
     3: 287
     4: 84
@@ -104,3 +102,13 @@ This dataset is commonly used as a benchmark in hypergraph learning tasks for au
 ### Node Labels
 
 <NodeLabelsChart labels={frontmatter["label-count"]} />
+
+## Changelog
+
+<details className="mt-3 rounded border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
+  <summary className="cursor-pointer select-none">Revision 2</summary>
+  <div>
+    - Update to format version `0.3`.
+    - Drop papers with only one author.
+  </div>
+</details>

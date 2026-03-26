@@ -5,9 +5,9 @@ information in various formats.
 """
 
 import json
+import re
 from datetime import datetime
 from pathlib import Path
-import re
 from typing import TYPE_CHECKING, Any, TextIO
 
 import yaml

@@ -33,6 +33,7 @@ root_dir = Path(__file__).parent.parent
 data_dir = root_dir / "data" / "coauthorship_cora"
 dataset_file = root_dir / "public" / "datasets" / "cora-coauthorship.txt.gz"
 datasheet_file = root_dir / "src" / "datasets" / "cora-coauthorship.mdx"
+revision = 2
 
 # Load dataset from pickle files
 with (data_dir / "hypergraph.pickle").open("rb") as f:
@@ -87,14 +88,15 @@ for author_idx, author_name in enumerate(author_names):
 hyperedges = []
 for paper_id in sorted(papers_to_authors.keys()):
     author_list = sorted(set(papers_to_authors[paper_id]))  # Remove duplicates if any
-    hyperedges.append(Simplex(author_list))
+    if len(author_list) > 1:  # Only include papers with more than one author
+        hyperedges.append(Simplex(author_list))
 
 node_degrees = defaultdict(int)
 edge_degree_counts = defaultdict(int)
 
 # Write dataset file
 with gzip.open(dataset_file, "wt") as f:
-    write_dataset_metadata(f, datasheet_file.stem, revision=1)
+    write_dataset_metadata(f, datasheet_file.stem, revision)
 
     for i, node in track(
         enumerate(nodes), description="Writing nodes", total=len(nodes)
@@ -124,7 +126,7 @@ update_frontmatter(
     datasheet_file,
     {
         "attachments": {
-            "dataset": {
+            f"revision-{revision}": {
                 "url": dataset_file.name,
                 "size": dataset_file.stat().st_size,
             }
