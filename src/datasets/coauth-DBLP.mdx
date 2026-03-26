@@ -716,7 +716,6 @@ shape:
   '2018': 166
 ---
 
-import Alert from "@/components/alert";
 import Stat from "@/components/stat";
 import LineChart from "@/components/chart/line-chart";
 import DegreeLineChart from "@/components/chart/degree-line-chart";
@@ -726,7 +725,8 @@ This is a temporal higher-order network dataset, which here means a sequence of 
 In this dataset, nodes are authors and a simplex is a publication recorded on DBLP.
 Timestamps are the year of publication.
 
-<Alert type="warning">In the original dataset, some nodes are repeated within hyperedges. This version of the dataset has removed these duplicates.</Alert>
+> [!IMPORTANT]
+> In the original dataset, some nodes are repeated within hyperedges. This version of the dataset has removed these duplicates.
 
 ## Dataset Statistics
 

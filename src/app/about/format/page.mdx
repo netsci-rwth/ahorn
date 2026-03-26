@@ -1,4 +1,3 @@
-import Alert from "@/components/alert";
 import Badge from "@/components/badge";
 
 export const metadata = {
@@ -21,11 +20,10 @@ Design goals of the dataset format:
 
 The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
-<Alert type="warning">
-  TODOs:
-  - Handle directed edges.
-  - Trajectory data
-</Alert>
+> [!IMPORTANT]
+> TODOs:
+> - Handle directed edges.
+> - Trajectory data
 
 ## Example
 
@@ -78,16 +76,16 @@ a,b {"weight": 2.0}
 Nodes (vertices) MUST be integers (non-consecutive) or strings (e.g., names), but MUST NOT contain commas or other special characters.
 In general, nodes are defined implicitly by their appearance in edges, but can be explicitly defined if they have attributes or are unconnected.
 
-<Alert type="info">For some datasets, nodes are numbered but get assigned a unique name as attribute, e.g., `{"name": "John Doe"}`. This makes the edge definitions simpler and more compact.</Alert>
+> [!NOTE]
+> For some datasets, nodes are numbered but get assigned a unique name as attribute, e.g., `{"name": "John Doe"}`. This makes the edge definitions simpler and more compact.
 
 ## Edges
 
-<Alert type="info">
-  AHORN is a repository for higher-order networks. For brevity, we use the term
-  “edge” in this specification to refer to simplices, cells, or hyperedges depending on whether the
-  network is a simplicial complex, cell complex, or hypergraph. Different to a
-  graph, edges in our case can connect more than two nodes.
-</Alert>
+> [!NOTE]
+> AHORN is a repository for higher-order networks. For brevity, we use the term
+> “edge” in this specification to refer to simplices, cells, or hyperedges depending on whether the
+> network is a simplicial complex, cell complex, or hypergraph. Different to a
+> graph, edges in our case can connect more than two nodes.
 
 - Each line represents a (hyper-)edge or simplex; the nodes in the edge are separated by a comma
 - The edge line MAY contain attributes in JSON format at the end of the line.
@@ -113,12 +111,11 @@ If an attribute has a standardized meaning, it MUST be used as described below.
 
 ### Timestamps
 
-<Alert type="info">
-  In Python, it is recommended to read timestamps using
-  [`date.fromisoformat()`](https://docs.python.org/3/library/datetime.html#datetime.date.fromisoformat)
-  and
-  [`datetime.fromisoformat()`](https://docs.python.org/3/library/datetime.html#datetime.datetime.fromisoformat).
-</Alert>
+> [!NOTE]
+> In Python, it is recommended to read timestamps using
+> [`date.fromisoformat()`](https://docs.python.org/3/library/datetime.html#datetime.date.fromisoformat)
+> and
+> [`datetime.fromisoformat()`](https://docs.python.org/3/library/datetime.html#datetime.datetime.fromisoformat).
 
 - For temporal datasets, each edge has a `time` attribute.
 - Time MUST be formatted as [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) string and MAY include a time, e.g., `2025-02-04` or `2023-01-01T04:45:00+00:00`.

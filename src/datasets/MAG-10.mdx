@@ -158,7 +158,6 @@ edge-label-count:
 
 import { ComputedBoxPlot } from "@/components/chart/box-plot";
 import NodeLabelsChart from "@/components/chart/node-labels";
-import Alert from "@/components/alert";
 import Stat from "@/components/stat";
 import { formatNumber } from "@/utils/format";
 
@@ -166,7 +165,8 @@ The MAG-10 network is a subset of the Microsoft Academic Graph where nodes are a
 If the same set of authors published at more than one conference, we used the most common venue as the category and any cases where there is a tie were discarded.
 Papers with more than 25 authors were omitted.
 
-<Alert type="warning">Node 40706 has an erroneous label assignment in the source dataset. We assigned it to the first category.</Alert>
+> [!IMPORTANT]
+> Node `40706` has an erroneous label assignment in the source dataset. We assigned it to the first category.
 
 ## Attributes
 

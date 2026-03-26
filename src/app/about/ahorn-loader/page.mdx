@@ -1,5 +1,3 @@
-import Alert from "@/components/alert";
-
 export const metadata = {
   title: "ahorn-loader | AHORN - Aachen Higher-Order Repository of Networks",
 };
@@ -56,4 +54,6 @@ with ahorn_loader.read_dataset("dataset_name") as dataset:
 ahorn_loader.validate_dataset("path_to_dataset_file")
 ```
 
-<Alert type="info">`ahorn-loader` loads the latest revision of a dataset by default. To ensure future reproducibility, it is recommended to pin the revision number of the datasets you use.</Alert>
+> [!NOTE]
+> `ahorn-loader` loads the latest revision of a dataset by default.
+> To ensure future reproducibility, it is recommended to pin the revision number of the datasets you use.

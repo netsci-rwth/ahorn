@@ -570,14 +570,14 @@ edge-label-count:
 
 import { ComputedBoxPlot } from "@/components/chart/box-plot";
 import NodeLabelsChart from "@/components/chart/node-labels";
-import Alert from "@/components/alert";
 import Stat from "@/components/stat";
 import { formatNumber } from "@/utils/format";
 
 Hypergraph where nodes are food ingredients, hyperedges are recipes made from combining multiple ingredients and categories indicate cuisine.
 Raw data was obtained from the [“What's Cooking?” Kaggle competition](https://www.kaggle.com/c/whats-cooking).
 
-<Alert type="warning">In the original dataset, some nodes are repeated within hyperedges. This version of the dataset has removed these duplicates.</Alert>
+> [!IMPORTANT]
+> In the original dataset, some nodes are repeated within hyperedges. This version of the dataset has removed these duplicates.
 
 ## Attributes
 

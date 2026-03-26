@@ -136,14 +136,14 @@ label-count:
 import { ComputedBoxPlot } from "@/components/chart/box-plot";
 import NodeLabelsChart from "@/components/chart/node-labels";
 import Stat from "@/components/stat";
-import Alert from "@/components/alert";
 import { formatNumber } from "@/utils/format";
 
 This is a hypergraph, where nodes are members of the US House of Representatives and hyperedges correspond to committee memberships.
 The dataset is derived from Congressional data compiled by Charles Stewart and Jonathan Woon.
 Each node is labeled with political party affiliation.
 
-<Alert type="warning">In the original dataset, some nodes are repeated within hyperedges. This version of the dataset has removed these duplicates.</Alert>
+> [!IMPORTANT]
+> In the original dataset, some nodes are repeated within hyperedges. This version of the dataset has removed these duplicates.
 
 ## Dataset Statistics
 
