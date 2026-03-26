@@ -1,5 +1,3 @@
-import Alert from "@/components/alert";
-
 export const metadata = {
   title:
     "Dataset Converter | AHORN - Aachen Higher-Order Repository of Networks",
@@ -10,15 +8,16 @@ export const metadata = {
 Each dataset in this project is accompanied by a parser that takes the raw dataset and converts it into our [dataset format](/about/format).
 The parsers are implemented in Python.
 
-<Alert type="warning">
-  TODOs: - Give guidelines when to produce a `.txt` and when to produce a
-  `.txt.gz` file.
-</Alert>
+## Output File
+
+Converters SHOULD produce a plain `.txt` file when the resulting dataset is small and remains convenient to inspect directly in a text editor.
+Converters SHOULD produce a `.txt.gz` file when the dataset is large enough that compression materially reduces storage or download size.
+The file content is identical in both cases; gzip only affects how the dataset is stored and distributed, not the AHORN format itself.
 
 ## Validation
 
-We provide a validation script that checks if the dataset conforms to the expected format.
-This script can be used to ensure that the dataset is correctly formatted and ready for use.
+We provide a validation script that checks whether a converted dataset conforms to the expected AHORN format and catches common structural issues before a dataset is submitted.
+The validation script is part of the [`ahorn-loader`](/about/ahorn-loader) package.
 Any new dataset MUST pass the validation script before it can be included in the repository.
 
 ```bash
