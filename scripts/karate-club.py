@@ -27,15 +27,18 @@ patch_dumper()
 root_dir = Path(__file__).parent.parent
 dataset_file = root_dir / "public" / "datasets" / "karate-club.txt"
 datasheet_file = root_dir / "src" / "datasets" / "karate-club.mdx"
+revision = 2
 
 G = nx.karate_club_graph()
-node_degree_histogram = {d: count for d, count in enumerate(nx.degree_histogram(G)) if count > 0}
+node_degree_histogram = {
+    d: count for d, count in enumerate(nx.degree_histogram(G)) if count > 0
+}
 
 clique_complex = tnx.graph_to_clique_complex(G)
 
 # write dataset file
 with dataset_file.open("w") as f:
-    write_dataset_metadata(f, datasheet_file.stem, revision=1)
+    write_dataset_metadata(f, datasheet_file.stem, revision)
 
     for node, data in track(G.nodes(data=True), description="Writing nodes"):
         write_node(f, node, **data)
@@ -63,7 +66,7 @@ update_frontmatter(
         },
         "shape": list(clique_complex.shape),
         "attachments": {
-            "dataset": {
+            f"revision-{revision}": {
                 "url": dataset_file.name,
                 "size": dataset_file.stat().st_size,
             }
