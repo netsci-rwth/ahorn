@@ -16,8 +16,9 @@ import {
 import Tag from "@/components/tag";
 import Badge from "@/components/badge";
 import Card from "@/components/card";
+import CitationCopyButton from "@/components/CitationCopyButton";
 
-import { toApa } from "@/utils/citation";
+import { citeToApa, citeToBibtex, toCite } from "@/utils/citation";
 import { formatAttachmentTag, formatFileSize } from "@/utils/format";
 import { resolveAttachmentSizes } from "@/utils/zenodo";
 
@@ -85,6 +86,11 @@ export default async function DatasetPage({
   const attachments = await resolveAttachmentSizes(
     frontmatter.attachments || {},
   );
+  const citations = frontmatter.citation
+    ? await toCite(frontmatter.citation)
+    : null;
+  const apaCitations = citations ? citeToApa(citations) : [];
+  const bibtex = citations ? citeToBibtex(citations) : "";
 
   const licenseDisplay = (() => {
     const license = frontmatter.license;
@@ -280,9 +286,12 @@ export default async function DatasetPage({
           )}
 
         {frontmatter.citation && (
-          <Card title="Cite this Dataset">
+          <Card
+            title="Cite this Dataset"
+            button={<CitationCopyButton bibtex={bibtex} />}
+          >
             <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-              {(await toApa(frontmatter.citation || "")).map((citation) => (
+              {apaCitations.map((citation) => (
                 <li
                   key={citation[0]}
                   className="prose px-6 py-4 dark:prose-invert"

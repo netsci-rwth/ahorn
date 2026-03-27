@@ -65,23 +65,12 @@ export async function toCite(
 }
 
 /**
- * Converts a citation string into APA-formatted bibliography entries as HTML.
+ * Formats a parsed citation collection into APA-formatted bibliography entries as HTML.
  *
- * The function:
- * - parses the provided citation source into citation objects,
- * - formats them using the APA template as an entry array,
- * - and wraps plain HTTP(S) URLs in clickable `<a>` tags.
- *
- * Citations can be provided in BibTeX format or as DOI identifiers, which are automatically
- * resolved to their corresponding metadata.
- *
- * @param citation - Raw citation content containing one or more entries.
- * @returns A promise resolving to an array of `[id, html]` tuples, where:
- * - `id` is the citation key/identifier,
- * - `html` is the processed APA-formatted citation markup.
+ * @param citations - Parsed citations.
+ * @returns An array of `[id, html]` tuples.
  */
-export async function toApa(citation: string): Promise<[string, string][]> {
-  const citations = await toCite(citation);
+export function citeToApa(citations: Cite): [string, string][] {
   const formattedCitations = citations.format("bibliography", {
     template: "apa",
     lang: "en-US",
@@ -103,4 +92,49 @@ export async function toApa(citation: string): Promise<[string, string][]> {
   }
 
   return formattedCitations;
+}
+
+/**
+ * Formats a parsed citation collection as BibTeX.
+ *
+ * @param citations - Parsed citations.
+ * @returns BibTeX representation of the citations.
+ */
+export function citeToBibtex(citations: Cite): string {
+  return citations.format("bibtex");
+}
+
+/**
+ * Converts a citation string into APA-formatted bibliography entries as HTML.
+ *
+ * The function:
+ * - parses the provided citation source into citation objects,
+ * - formats them using the APA template as an entry array,
+ * - and wraps plain HTTP(S) URLs in clickable `<a>` tags.
+ *
+ * Citations can be provided in BibTeX format or as DOI identifiers, which are automatically
+ * resolved to their corresponding metadata.
+ *
+ * @param citation - Raw citation content containing one or more entries.
+ * @returns A promise resolving to an array of `[id, html]` tuples, where:
+ * - `id` is the citation key/identifier,
+ * - `html` is the processed APA-formatted citation markup.
+ */
+export async function toApa(citation: string): Promise<[string, string][]> {
+  const citations = await toCite(citation);
+  return citeToApa(citations);
+}
+
+/**
+ * Converts a citation string into BibTeX.
+ *
+ * Citations can be provided in BibTeX format or as DOI identifiers, which are automatically
+ * resolved to their corresponding metadata.
+ *
+ * @param citation - Raw citation content containing one or more entries.
+ * @returns A promise resolving to the BibTeX representation.
+ */
+export async function toBibtex(citation: string): Promise<string> {
+  const citations = await toCite(citation);
+  return citeToBibtex(citations);
 }
