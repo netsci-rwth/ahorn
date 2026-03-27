@@ -15,6 +15,7 @@ import {
 
 import Tag from "@/components/tag";
 import Badge from "@/components/badge";
+import Button from "@/components/button";
 import CitationCopyButton from "@/components/CitationCopyButton";
 import CopyTextButton from "@/components/CopyTextButton";
 import PageHeader from "@/components/page-header";
@@ -94,6 +95,29 @@ export default async function DatasetPage({
   const apaCitations = citations ? citeToApa(citations) : [];
   const bibtex = citations ? citeToBibtex(citations) : "";
   const usageCommand = `uvx ahorn-loader download ${slug}`;
+  const latestAttachment = (() => {
+    const attachmentEntries = Object.entries(attachments);
+    if (attachmentEntries.length === 0) {
+      return null;
+    }
+
+    const byRevision = attachmentEntries
+      .map(([key, attachment]) => {
+        const match = key.match(/^revision-(\d+)$/);
+        return {
+          key,
+          attachment,
+          revision: match ? Number.parseInt(match[1], 10) : Number.NaN,
+        };
+      })
+      .filter((entry) => !Number.isNaN(entry.revision))
+      .sort((a, b) => b.revision - a.revision);
+
+    return (byRevision[0] ?? {
+      key: attachmentEntries[0][0],
+      attachment: attachmentEntries[0][1],
+    }).attachment;
+  })();
 
   const licenseDisplay = (() => {
     const license = frontmatter.license;
@@ -130,6 +154,18 @@ export default async function DatasetPage({
         <PageHeader
           eyebrow="Dataset"
           title={frontmatter.title}
+          actions={
+            latestAttachment ? (
+              <Button
+                as="a"
+                href={latestAttachment.url}
+                download
+                target="_blank"
+              >
+                Download
+              </Button>
+            ) : undefined
+          }
           className="border-b border-slate-200"
         >
           <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:flex-wrap sm:gap-8">
