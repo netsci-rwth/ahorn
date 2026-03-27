@@ -1,12 +1,16 @@
 import React from "react";
 import classNames from "classnames";
 
-export type ButtonProps = {
+type ButtonOwnProps = {
   variant?: "primary" | "secondary" | "danger" | "text";
   className?: string;
-  as?: React.ElementType;
   children: React.ReactNode;
-} & React.ComponentPropsWithoutRef<"button">;
+};
+
+export type ButtonProps<C extends React.ElementType = "button"> =
+  ButtonOwnProps & {
+    as?: C;
+  } & Omit<React.ComponentPropsWithoutRef<C>, keyof ButtonOwnProps | "as">;
 
 const variantStyles: Record<string, string> = {
   primary: "bg-primary text-white shadow-[0_12px_30px_rgb(35_93_156_/_0.22)]",
@@ -16,14 +20,17 @@ const variantStyles: Record<string, string> = {
   text: "text-slate-700 hover:text-slate-950",
 };
 
-const Button: React.FC<ButtonProps> = ({
+const Button = <C extends React.ElementType = "button">({
   variant = "primary",
   className = "",
-  as: Component = "button",
+  as,
   children,
   ...props
-}) => (
-  <Component
+}: ButtonProps<C>) => {
+  const Component = (as ?? "button") as React.ElementType;
+
+  return (
+    <Component
     className={classNames(
       "inline-flex items-center rounded-xl px-4 py-2.5 text-sm font-semibold",
       variantStyles[variant],
@@ -33,6 +40,7 @@ const Button: React.FC<ButtonProps> = ({
   >
     {children}
   </Component>
-);
+  );
+};
 
 export default Button;

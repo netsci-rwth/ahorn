@@ -101,7 +101,13 @@ export function citeToApa(citations: Cite): [string, string][] {
  * @returns BibTeX representation of the citations.
  */
 export function citeToBibtex(citations: Cite): string {
-  return citations.format("bibtex");
+  const formatted = citations.format("bibtex");
+
+  if (typeof formatted === "string") {
+    return formatted;
+  }
+
+  return formatted.map(([, entry]) => entry).join("\n");
 }
 
 /**
