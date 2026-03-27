@@ -26,6 +26,7 @@ dataset_file = (
     root_dir / "public" / "datasets" / "semantic-scholar-coauth-sample.txt.gz"
 )
 datasheet_file = root_dir / "src" / "datasets" / "semantic-scholar-coauth-sample.mdx"
+revision = 1
 
 # Load dataset
 dataset = tnx.SimplicialComplex()
@@ -39,7 +40,7 @@ for simplex_dim, cochain_dim in zip(simplices_data, cochains_data, strict=True):
 
 # write dataset file
 with gzip.open(dataset_file, "wt") as f:
-    write_dataset_metadata(f, datasheet_file.stem, revision=1)
+    write_dataset_metadata(f, datasheet_file.stem, revision)
 
     for node in track(dataset.nodes, description="Writing nodes"):
         write_node(f, first(node), **dataset.nodes[node])
@@ -85,10 +86,7 @@ update_frontmatter(
             "maximal-simplex-sizes": dict(sorted(maximal_simplex_size_hist.items())),
         },
         "attachments": {
-            "dataset": {
-                "url": dataset_file.name,
-                "size": dataset_file.stat().st_size,
-            }
+            f"revision-{revision}": dataset_file.name,
         },
     },
 )

@@ -31,6 +31,7 @@ patch_dumper()
 
 root_dir = Path(__file__).parent.parent
 data_dir = root_dir / "data" / "MANTRA"
+revision = 1
 
 
 def boxplot_stats(values: list[float | int]) -> dict[str, float | int]:
@@ -95,7 +96,7 @@ for dimension in [2, 3]:
         write_dataset_metadata(
             f,
             f"MANTRA-{dimension}-manifolds",
-            revision=1,
+            revision,
             dataset_version="0.0.16",
             _num_networks=len(manifolds),
         )
@@ -153,10 +154,7 @@ for dimension in [2, 3]:
                 "avg-degree": avg_degrees,
             },
             "attachments": {
-                "dataset": {
-                    "url": dataset_file.name,
-                    "size": dataset_file.stat().st_size,
-                }
+                f"revision-{revision}": dataset_file.name,
             },
         },
     )

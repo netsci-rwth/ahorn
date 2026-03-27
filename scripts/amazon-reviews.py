@@ -27,6 +27,7 @@ patch_dumper()
 root_dir = Path(__file__).parent.parent
 dataset_file = root_dir / "public" / "datasets" / "amazon-reviews.txt.gz"
 datasheet_file = root_dir / "src" / "datasets" / "amazon-reviews.mdx"
+revision = 1
 
 nodes, hyperedges = load_benson_hyperedges(root_dir / "data" / "amazon-reviews")
 
@@ -35,7 +36,7 @@ edge_degree_counts = defaultdict(int)
 
 # write dataset file
 with gzip.open(dataset_file, "wt") as f:
-    write_dataset_metadata(f, datasheet_file.stem, revision=1)
+    write_dataset_metadata(f, datasheet_file.stem, revision)
     for node in track(nodes, description="Writing nodes"):
         write_node(f, first(node), category=node["label"])
     for hyperedge in track(hyperedges, description="Writing hyperedges"):
@@ -60,10 +61,7 @@ update_frontmatter(
     datasheet_file,
     {
         "attachments": {
-            "dataset": {
-                "url": dataset_file.name,
-                "size": dataset_file.stat().st_size,
-            }
+            f"revision-{revision}": dataset_file.name,
         },
         "statistics": {
             "num-nodes": len(nodes),

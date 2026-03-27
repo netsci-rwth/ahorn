@@ -27,6 +27,7 @@ patch_dumper()
 root_dir = Path(__file__).parent.parent
 dataset_file = root_dir / "public" / "datasets" / "music-blues-reviews.txt"
 datasheet_file = root_dir / "src" / "datasets" / "music-blues-reviews.mdx"
+revision = 1
 
 nodes, hyperedges = load_benson_hyperedges(
     root_dir / "data" / "cat-edge-music-blues-reviews"
@@ -38,7 +39,7 @@ edge_degree_counts = defaultdict(int)
 # write dataset file
 covered_nodes = set(chain.from_iterable(hyperedge.elements for hyperedge in hyperedges))
 with dataset_file.open("w") as f:
-    write_dataset_metadata(f, datasheet_file.stem, revision=1)
+    write_dataset_metadata(f, datasheet_file.stem, revision)
     for node in track(map(first, nodes), description="Writing nodes"):
         if node in covered_nodes:
             continue
@@ -65,10 +66,7 @@ update_frontmatter(
     datasheet_file,
     {
         "attachments": {
-            "dataset": {
-                "url": dataset_file.name,
-                "size": dataset_file.stat().st_size,
-            }
+            f"revision-{revision}": dataset_file.name,
         },
         "statistics": {
             "num-nodes": len(nodes),

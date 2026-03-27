@@ -25,12 +25,13 @@ patch_dumper()
 root_dir = Path(__file__).parent.parent
 dataset_file = root_dir / "public" / "datasets" / "congress-bills.txt.gz"
 datasheet_file = root_dir / "src" / "datasets" / "congress-bills.mdx"
+revision = 1
 
 simplices = tnx.datasets.load_benson_simplices(root_dir / "data" / "congress-bills")
 
 # write dataset file
 with gzip.open(dataset_file, "wt") as f:
-    write_dataset_metadata(f, datasheet_file.stem, revision=1)
+    write_dataset_metadata(f, datasheet_file.stem, revision)
     for simplex in simplices:
         write_edge(f, simplex, time=datetime.fromtimestamp(simplex["time"], tz=UTC))
 
@@ -56,10 +57,7 @@ update_frontmatter(
     datasheet_file,
     {
         "attachments": {
-            "dataset": {
-                "url": dataset_file.name,
-                "size": dataset_file.stat().st_size,
-            }
+            f"revision-{revision}": dataset_file.name,
         },
         "shape": {
             datetime.strptime(hour, "%Y-%m-%d %H")

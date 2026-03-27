@@ -126,10 +126,7 @@ update_frontmatter(
     datasheet_file,
     {
         "attachments": {
-            f"revision-{revision}": {
-                "url": dataset_file.name,
-                "size": dataset_file.stat().st_size,
-            }
+            f"revision-{revision}": dataset_file.name,
         },
         "statistics": {
             "num-nodes": len(nodes),

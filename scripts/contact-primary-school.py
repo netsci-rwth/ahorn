@@ -23,13 +23,14 @@ patch_dumper()
 root_dir = Path(__file__).parent.parent
 dataset_file = root_dir / "public" / "datasets" / "contact-primary-school.txt"
 datasheet_file = root_dir / "src" / "datasets" / "contact-primary-school.mdx"
+revision = 1
 
 simplices = load_benson_simplices(root_dir / "data" / "contact-primary-school")
 nodes = set(chain.from_iterable(simplex.elements for simplex in simplices))
 
 # write dataset file
 with dataset_file.open("w") as f:
-    write_dataset_metadata(f, datasheet_file.stem, revision=1)
+    write_dataset_metadata(f, datasheet_file.stem, revision)
     for simplex in track(simplices, description="Writing simplices"):
         write_edge(f, simplex, time=datetime.fromtimestamp(simplex["time"], tz=UTC))
 
@@ -55,10 +56,7 @@ update_frontmatter(
     datasheet_file,
     {
         "attachments": {
-            "dataset": {
-                "url": dataset_file.name,
-                "size": dataset_file.stat().st_size,
-            }
+            f"revision-{revision}": dataset_file.name,
         },
         "statistics": {
             "num-nodes": len(nodes),

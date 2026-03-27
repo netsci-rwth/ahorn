@@ -32,6 +32,7 @@ root_dir = Path(__file__).parent.parent
 data_dir = root_dir / "data" / "cocitation_pubmed"
 dataset_file = root_dir / "public" / "datasets" / "pubmed-cocitation.txt.gz"
 datasheet_file = root_dir / "src" / "datasets" / "pubmed-cocitation.mdx"
+revision = 1
 
 # Load dataset from pickle files
 with (data_dir / "hypergraph.pickle").open("rb") as f:
@@ -66,7 +67,7 @@ edge_degree_counts = defaultdict(int)
 
 # Write dataset file
 with gzip.open(dataset_file, "wt") as f:
-    write_dataset_metadata(f, datasheet_file.stem, revision=1)
+    write_dataset_metadata(f, datasheet_file.stem, revision)
 
     for i, node in track(
         enumerate(nodes), description="Writing nodes", total=len(nodes)
@@ -96,10 +97,7 @@ update_frontmatter(
     datasheet_file,
     {
         "attachments": {
-            "dataset": {
-                "url": dataset_file.name,
-                "size": dataset_file.stat().st_size,
-            }
+            f"revision-{revision}": dataset_file.name,
         },
         "statistics": {
             "num-nodes": len(nodes),

@@ -27,6 +27,7 @@ patch_dumper()
 root_dir = Path(__file__).parent.parent
 dataset_file = root_dir / "public" / "datasets" / "coauth-DBLP.txt.gz"
 datasheet_file = root_dir / "src" / "datasets" / "coauth-DBLP.mdx"
+revision = 1
 
 nodes = load_benson_sc_nodes(root_dir / "data" / "coauth-DBLP-full")
 hyperedges = load_benson_simplices(root_dir / "data" / "coauth-DBLP-full")
@@ -35,7 +36,7 @@ hyperedges = load_benson_simplices(root_dir / "data" / "coauth-DBLP-full")
 yearly_hyperedges = defaultdict(list)
 degrees = defaultdict(int)
 with gzip.open(dataset_file, "wt") as f:
-    write_dataset_metadata(f, datasheet_file.stem, revision=1)
+    write_dataset_metadata(f, datasheet_file.stem, revision)
 
     for node in track(nodes, description="Writing nodes"):
         write_node(f, first(node.elements), substance=node["label"])
@@ -63,10 +64,7 @@ update_frontmatter(
             "node-degrees": dict(sorted(degree_histogram.items())),
         },
         "attachments": {
-            "dataset": {
-                "url": dataset_file.name,
-                "size": dataset_file.stat().st_size,
-            }
+            f"revision-{revision}": dataset_file.name,
         },
         "shape": {str(year): shape for year, shape in num_hyperedges.items()},
     },
