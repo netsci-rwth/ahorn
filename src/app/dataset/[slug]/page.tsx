@@ -15,11 +15,13 @@ import {
 
 import Tag from "@/components/tag";
 import Badge from "@/components/badge";
-import Card from "@/components/card";
 import CitationCopyButton from "@/components/CitationCopyButton";
+import CopyTextButton from "@/components/CopyTextButton";
+import PageHeader from "@/components/page-header";
 
 import { citeToApa, citeToBibtex, toCite } from "@/utils/citation";
 import { formatAttachmentTag, formatFileSize } from "@/utils/format";
+import { tooltipArrowClassName, tooltipClassName } from "@/utils/tooltip";
 import { resolveAttachmentSizes } from "@/utils/zenodo";
 
 const lowlight = createLowlight({ bash });
@@ -91,6 +93,7 @@ export default async function DatasetPage({
     : null;
   const apaCitations = citations ? citeToApa(citations) : [];
   const bibtex = citations ? citeToBibtex(citations) : "";
+  const usageCommand = `uvx ahorn-loader download ${slug}`;
 
   const licenseDisplay = (() => {
     const license = frontmatter.license;
@@ -120,23 +123,24 @@ export default async function DatasetPage({
 
   return (
     <div
-      className="lg:flex lg:items-start lg:justify-between"
+      className="lg:flex lg:items-start lg:justify-between lg:gap-8"
       data-pagefind-body
     >
       <div className="min-w-0 flex-1">
-        <header>
-          <h1 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight dark:text-gray-100">
-            {frontmatter.title}
-          </h1>
-          <div className="mt-4 flex flex-col space-y-6 sm:flex-row sm:flex-wrap sm:space-y-0 sm:space-x-6">
+        <PageHeader
+          eyebrow="Dataset"
+          title={frontmatter.title}
+          className="border-b border-slate-200"
+        >
+          <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:flex-wrap sm:gap-8">
             <div className="group relative">
-              <h3 className="mb-2 flex items-center gap-2 text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400">
+              <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold tracking-wide text-slate-500 uppercase">
                 <FontAwesomeIcon icon={faHexagonNodes} className="size-4" />
                 Network Type
-                <span className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 hidden w-48 -translate-x-1/2 rounded-md bg-gray-900 px-3 py-2 text-xs font-normal text-white normal-case shadow-lg group-hover:block dark:bg-gray-700">
+                <span className={tooltipClassName}>
                   These network types are suggested interpretations and do not
                   claim to be complete.
-                  <span className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900 dark:border-t-gray-700"></span>
+                  <span className={tooltipArrowClassName}></span>
                 </span>
               </h3>
               <div className="flex flex-wrap gap-2">
@@ -159,7 +163,7 @@ export default async function DatasetPage({
             </div>
             {frontmatter.tags.length > 0 && (
               <div>
-                <h3 className="mb-2 flex items-center gap-2 text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400">
+                <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold tracking-wide text-slate-500 uppercase">
                   <FontAwesomeIcon icon={faTag} className="size-4" />
                   Tags
                 </h3>
@@ -175,136 +179,151 @@ export default async function DatasetPage({
               </div>
             )}
           </div>
-        </header>
+        </PageHeader>
 
-        <div className="prose mt-6 max-w-none dark:prose-invert">
+        <div className="prose mt-8 max-w-none">
           <Dataset />
         </div>
       </div>
 
-      <aside className="mt-8 flex w-full shrink-0 flex-col gap-y-7 lg:mt-0 lg:ml-8 lg:w-sm">
-        <section>
-          <h2 className="mb-4 text-2xl font-bold text-gray-900 sm:hidden dark:text-gray-100">
-            Usage
-          </h2>
-          <pre className="overflow-x-auto rounded bg-gray-900 p-4 text-sm text-gray-100">
-            <code>
-              {toJsxRuntime(
-                lowlight.highlight("bash", `uvx ahorn-loader download ${slug}`),
-                { Fragment, jsx, jsxs },
-              )}
-            </code>
-          </pre>
-        </section>
-
-        <Card title="Source Information">
-          <dl className="divide-y divide-gray-200 dark:divide-gray-700">
-            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                Source
-              </dt>
-              <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-300">
-                <a href={frontmatter.source} target="_blank">
-                  {frontmatter.source}
-                </a>
-              </dd>
+      <aside className="mt-8 w-full shrink-0 lg:mt-0 lg:w-80">
+        <div className="flex flex-col gap-y-7 lg:sticky lg:top-24">
+          <section className="border-slate-200 max-lg:border-t max-lg:pt-5">
+            <div className="mb-3 flex items-center justify-between gap-4">
+              <h2 className="text-xs font-semibold tracking-wide text-slate-500 uppercase">
+                Usage
+              </h2>
+              <CopyTextButton
+                text={usageCommand}
+                label="Copy"
+                successMessage="Command copied to clipboard."
+                errorMessage="Could not copy command."
+              />
             </div>
-            {licenseDisplay && (
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                  License
-                </dt>
-                <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-300">
-                  {licenseDisplay}
-                </dd>
-              </div>
-            )}
-            {attachments && (
-              <div className="px-4 py-6 sm:grid sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                  Attachments
-                </dt>
-                <dd className="mt-2 text-sm text-gray-900 sm:mt-0 dark:text-gray-100">
-                  <ul
-                    role="list"
-                    className="divide-y divide-gray-100 rounded-md border border-gray-200 dark:divide-gray-700 dark:border-gray-700"
-                  >
-                    {Object.entries(attachments).map(([key, attachment]) => {
-                      const url = new URL(
-                        attachment.url,
-                        "https://ahorn.rwth-aachen.de/",
-                      );
-                      return (
-                        <li key={key} className="flex text-sm">
-                          <a
-                            href={url.href}
-                            download
-                            className="flex w-0 flex-1 items-center p-4 hover:bg-gray-50 dark:hover:bg-gray-800"
-                          >
-                            <FontAwesomeIcon
-                              icon={faPaperclip}
-                              className="size-5 shrink-0 text-gray-400 dark:text-gray-500"
-                            />
-                            <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                              <span className="truncate font-medium">
-                                {formatAttachmentTag(key)}
-                              </span>
-                              {typeof attachment.size === "number" && (
-                                <span className="shrink-0 text-gray-400 dark:text-gray-500">
-                                  {formatFileSize(attachment.size)}
-                                </span>
-                              )}
-                            </div>
-                          </a>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </dd>
-              </div>
-            )}
-          </dl>
-        </Card>
+            <pre className="overflow-x-auto rounded-2xl bg-slate-950 p-4 text-sm text-slate-100 shadow-inner">
+              <code>
+                {toJsxRuntime(lowlight.highlight("bash", usageCommand), {
+                  Fragment,
+                  jsx,
+                  jsxs,
+                })}
+              </code>
+            </pre>
+          </section>
 
-        {frontmatter.related &&
-          Array.isArray(frontmatter.related) &&
-          frontmatter.related.length > 0 && (
-            <Card title="Related Datasets" data-pagefind-ignore>
-              <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-                {related_datasets.map(({ slug, title }) => (
-                  <li key={slug} className="px-6 py-3">
-                    <Link
-                      href={`/dataset/${slug}`}
-                      className="text-primary hover:underline"
-                    >
-                      {title}
-                    </Link>
-                  </li>
-                ))}
+          <section className="border-t border-slate-200 pt-5">
+            <h2 className="mb-3 text-xs font-semibold tracking-wide text-slate-500 uppercase">
+              Source Information
+            </h2>
+            <dl>
+              <div className="pt-0 pb-4">
+                <dt className="text-sm font-medium text-slate-900">Source</dt>
+                <dd className="mt-1 text-sm text-slate-600">
+                  <a href={frontmatter.source} target="_blank">
+                    {frontmatter.source}
+                  </a>
+                </dd>
+              </div>
+              <div className="pt-1">
+                <dt className="text-sm font-medium text-slate-900">License</dt>
+                <dd className="mt-1 text-sm text-slate-600">
+                  {licenseDisplay ?? "Unknown"}
+                </dd>
+              </div>
+            </dl>
+          </section>
+
+          {attachments && (
+            <section className="border-t border-slate-200 pt-5">
+              <h2 className="mb-3 text-xs font-semibold tracking-wide text-slate-500 uppercase">
+                Attachments
+              </h2>
+              <ul className="space-y-2" role="list">
+                {Object.entries(attachments).map(([key, attachment]) => {
+                  const url = new URL(
+                    attachment.url,
+                    "https://ahorn.rwth-aachen.de/",
+                  );
+                  return (
+                    <li key={key}>
+                      <a
+                        href={url.href}
+                        download
+                        className="group flex items-center py-2 text-sm text-slate-700 hover:text-primary"
+                      >
+                        <FontAwesomeIcon
+                          icon={faPaperclip}
+                          className="size-4 shrink-0 text-slate-400 group-hover:text-primary"
+                        />
+                        <div className="ml-3 flex min-w-0 flex-1 gap-2">
+                          <span className="truncate font-semibold">
+                            {formatAttachmentTag(key)}
+                          </span>
+                          {typeof attachment.size === "number" && (
+                            <span className="shrink-0 text-slate-400">
+                              {formatFileSize(attachment.size)}
+                            </span>
+                          )}
+                        </div>
+                      </a>
+                    </li>
+                  );
+                })}
               </ul>
-            </Card>
+            </section>
           )}
 
-        {frontmatter.citation && (
-          <Card
-            title="Cite this Dataset"
-            button={<CitationCopyButton bibtex={bibtex} />}
-          >
-            <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-              {apaCitations.map((citation) => (
-                <li
-                  key={citation[0]}
-                  className="prose px-6 py-4 dark:prose-invert"
-                  dangerouslySetInnerHTML={{ __html: citation[1] }}
-                />
-              ))}
-            </ul>
-            <div className="rounded-b-md border-t border-gray-200 bg-gray-50 px-6 py-3 text-xs text-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400">
-              If you use this dataset, please ensure you cite it appropriately
-              in your work.
-            </div>
-          </Card>
-        )}
+          {frontmatter.related &&
+            Array.isArray(frontmatter.related) &&
+            frontmatter.related.length > 0 && (
+              <section
+                className="border-t border-slate-200 pt-5"
+                data-pagefind-ignore
+              >
+                <h2 className="mb-3 text-xs font-semibold tracking-wide text-slate-500 uppercase">
+                  Related Datasets
+                </h2>
+                <ul className="space-y-2">
+                  {related_datasets.map(({ slug, title }) => (
+                    <li key={slug}>
+                      <Link
+                        href={`/dataset/${slug}`}
+                        className="group flex py-2 text-sm font-semibold text-slate-700 hover:text-primary"
+                      >
+                        {title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+          {frontmatter.citation && (
+            <section className="border-t border-slate-200 pt-5">
+              <div className="mb-3 flex items-center justify-between gap-4">
+                <h2 className="text-xs font-semibold tracking-wide text-slate-500 uppercase">
+                  Citation
+                </h2>
+                <CitationCopyButton bibtex={bibtex} />
+              </div>
+              <div>
+                <ul className="space-y-4">
+                  {apaCitations.map((citation) => (
+                    <li
+                      key={citation[0]}
+                      className="prose text-sm"
+                      dangerouslySetInnerHTML={{ __html: citation[1] }}
+                    />
+                  ))}
+                </ul>
+                <div className="mt-4 text-xs text-slate-500">
+                  If you use this dataset, please ensure you cite it
+                  appropriately in your work.
+                </div>
+              </div>
+            </section>
+          )}
+        </div>
       </aside>
     </div>
   );

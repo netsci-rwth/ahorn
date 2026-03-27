@@ -14,6 +14,8 @@ import {
   Legend,
   Colors,
 } from "chart.js";
+import StatisticsBlock from "@/components/statistics-block";
+import { getChartTooltipOptions } from "@/utils/tooltip";
 
 ChartJS.register(
   CategoryScale,
@@ -78,6 +80,10 @@ export default function DegreeLineChart({
         label: "Nodes per degree",
         data: values,
         tension: 0.2,
+        borderColor: isDark ? "#60a5fa" : "#3b82f6",
+        backgroundColor: isDark ? "#60a5fa" : "#3b82f6",
+        pointRadius: 0,
+        borderWidth: 2,
       },
     ],
   };
@@ -86,9 +92,13 @@ export default function DegreeLineChart({
     ? "logarithmic"
     : "linear";
 
-  const gridColor = isDark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)";
-  const tickColor = isDark ? "rgba(255,255,255,0.75)" : "rgba(0,0,0,0.7)";
-  const borderColor = isDark ? "rgba(255,255,255,0.25)" : "rgba(0,0,0,0.25)";
+  const gridColor = isDark
+    ? "rgba(148,163,184,0.16)"
+    : "rgba(148,163,184,0.22)";
+  const tickColor = isDark ? "rgba(255,255,255,0.78)" : "rgba(51,65,85,0.82)";
+  const borderColor = isDark
+    ? "rgba(148,163,184,0.25)"
+    : "rgba(148,163,184,0.3)";
 
   const options = {
     responsive: true,
@@ -114,8 +124,11 @@ export default function DegreeLineChart({
       },
     },
     plugins: {
-      legend: { position: "top" as const, labels: { color: tickColor } },
-      title: { display: true, text: title, color: tickColor },
+      legend: { display: false },
+      title: { display: false, text: title, color: tickColor },
+      tooltip: {
+        ...getChartTooltipOptions(isDark),
+      },
       datalabels: {
         display: false,
       },
@@ -123,18 +136,21 @@ export default function DegreeLineChart({
   };
 
   return (
-    <div style={{ height: 360 }}>
-      <div style={{ marginBottom: 12 }}>
-        <label style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+    <StatisticsBlock title={title}>
+      <div className="mb-4">
+        <label className="inline-flex items-center gap-2 text-sm text-slate-700">
           <input
             type="checkbox"
             checked={useLogScale}
             onChange={(e) => setUseLogScale(e.target.checked)}
+            className="rounded border-slate-300 text-primary focus:ring-primary"
           />
           Use log scale (y-axis)
         </label>
       </div>
-      <Line data={data} options={options} />
-    </div>
+      <div style={{ height: 320 }}>
+        <Line data={data} options={options} />
+      </div>
+    </StatisticsBlock>
   );
 }

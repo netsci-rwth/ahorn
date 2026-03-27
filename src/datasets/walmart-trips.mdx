@@ -314,7 +314,7 @@ label-count:
 ---
 
 import { ComputedBoxPlot } from "@/components/chart/box-plot";
-import NodeLabelsChart from "@/components/chart/node-labels";
+import LabelDistributionChart from "@/components/chart/label-distribution-chart";
 import Stat from "@/components/stat";
 import { formatNumber } from "@/utils/format";
 
@@ -324,12 +324,18 @@ Products not assigned to any of these departments are grouped into an "Other" ca
 
 ## Dataset Statistics
 
+### Nodes
+
 <dl className="not-prose grid gap-5 sm:grid-cols-3">
   <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
   <Stat title="Node Type" value="Product" />
   <Stat title="Node Label" value="Product Department" />
   <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-3" />
 </dl>
+<LabelDistributionChart title="Node Label Distribution" labels={frontmatter["label-count"]} />
+
+### Hyperedges
+
 <dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
   <Stat
     title="Hyperedges"
@@ -338,7 +344,3 @@ Products not assigned to any of these departments are grouped into an "Other" ca
   <Stat title="Hyperedge Type" value="Co-purchased Products" />
   <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />
 </dl>
-
-### Node Labels
-
-<NodeLabelsChart labels={frontmatter["label-count"]} />

@@ -1,13 +1,16 @@
 import Badge from "@/components/badge";
+import PageHeader from "@/components/page-header";
 
 export const metadata = {
   title: "Dataset Format | AHORN - Aachen Higher-Order Repository of Networks",
 };
 
-<h1 className="flex items-center justify-between gap-4">
-  <span>Dataset Format</span>
-  <Badge color="info">Version 0.3</Badge>
-</h1>
+<PageHeader
+  eyebrow="About"
+  title="Dataset Format"
+  description="Specification of the standardized AHORN dataset format, including structure, metadata, and design goals."
+  actions={<Badge color="info">Version 0.3</Badge>}
+/>
 
 All datasets distributed in this project follow a standardized format to ensure consistency and ease of use.
 If you use [TopoNetX](https://github.com/pyt-team/TopoNetX), you can load all datasets in this repository directly using the provided functions.

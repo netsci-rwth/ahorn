@@ -1808,7 +1808,7 @@ label-count:
 ---
 
 import { ComputedBoxPlot } from "@/components/chart/box-plot";
-import NodeLabelsChart from "@/components/chart/node-labels";
+import LabelDistributionChart from "@/components/chart/label-distribution-chart";
 import Stat from "@/components/stat";
 import { formatNumber } from "@/utils/format";
 
@@ -1816,12 +1816,18 @@ The mathoverflow-answers network is a hypergraph where hyperedges are sets of qu
 
 ## Dataset Statistics
 
-<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-3">
+### Nodes
+
+<dl className="not-prose grid gap-5 sm:grid-cols-3">
   <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
   <Stat title="Node Type" value="Question" />
   <Stat title="Node Label" value="Category" />
   <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-3" />
 </dl>
+<LabelDistributionChart title="Node Label Distribution" labels={frontmatter["label-count"]} />
+
+### Hyperedges
+
 <dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
   <Stat
     title="Hyperedges"
@@ -1830,7 +1836,3 @@ The mathoverflow-answers network is a hypergraph where hyperedges are sets of qu
   <Stat title="Hyperedge Type" value="Co-answered Questions" />
   <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />
 </dl>
-
-### Node Labels
-
-<NodeLabelsChart labels={frontmatter["label-count"]} />

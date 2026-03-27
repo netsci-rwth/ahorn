@@ -11,10 +11,10 @@ interface BadgeProps {
 }
 
 const schemeClasses: Record<string, string> = {
-  default: "bg-yellow-50 text-yellow-800 ring-yellow-600/20",
-  info: "bg-primary/10 text-primary ring-primary/30",
-  warning: "bg-orange-50 text-orange-800 ring-orange-600/20",
-  success: "bg-green-50 text-green-800 ring-green-600/20",
+  default: "bg-amber-50/90 text-amber-900 ring-amber-600/20",
+  info: "bg-primary/10 text-primary ring-primary/15",
+  warning: "bg-orange-50/90 text-orange-900 ring-orange-600/20",
+  success: "bg-emerald-50/90 text-emerald-900 ring-emerald-600/20",
   none: "",
 };
 
@@ -27,7 +27,7 @@ const Badge = ({
 }: BadgeProps) => {
   const computedColor = schemeClasses[color];
   const badgeClass = classNames(
-    "inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset",
+    "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset transition-colors duration-150",
     computedColor,
     className,
   );

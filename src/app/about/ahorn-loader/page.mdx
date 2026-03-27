@@ -1,8 +1,25 @@
+import Button from "@/components/button";
+import PageHeader from "@/components/page-header";
+
 export const metadata = {
   title: "ahorn-loader | AHORN - Aachen Higher-Order Repository of Networks",
 };
 
-# `ahorn-loader`
+<PageHeader
+  eyebrow="About"
+  title="ahorn-loader"
+  description="Command-line and Python tooling for downloading, reading, and validating datasets from AHORN."
+  actions={
+    <Button
+      as="a"
+      href="https://pypi.org/project/ahorn-loader/"
+      target="_blank"
+      variant="secondary"
+    >
+      View on PyPI
+    </Button>
+  }
+/>
 
 `ahorn-loader` is both a command-line tool and a Python package designed to interact with the AHORN dataset repository.
 It allows users to easily download datasets and loading them into Python for analysis and experimentation.

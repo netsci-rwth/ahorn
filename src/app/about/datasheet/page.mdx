@@ -1,8 +1,14 @@
+import PageHeader from "@/components/page-header";
+
 export const metadata = {
   title: "Datasheet Page | AHORN - Aachen Higher-Order Repository of Networks",
 };
 
-# Datasheet Page
+<PageHeader
+  eyebrow="About"
+  title="Datasheet Page"
+  description="Guidance for writing dataset pages, organizing frontmatter, and presenting metadata and statistics consistently."
+/>
 
 Each dataset is represented by a `.mdx` file in the `src/datasets` directory.
 This page should list all details about the dataset, including its description, usage, and statistics.
@@ -10,7 +16,7 @@ Think of this page as a datasheet as outlined in the [Datasheets for Datasets](h
 
 ## Computed Data
 
-In general, inferred data should be stored in the frontmatter of the document, where is can be easily written and read by different components of the project.
+In general, inferred data should be stored in the frontmatter of the document, where it can be easily written and read by different components of the project.
 Inside the text, the frontmatter is accessible via the `frontmatter` variable.
 
 ## Frontmatter
@@ -23,9 +29,12 @@ Required fields in the frontmatter:
 
 Optional fields that are automatically used when present:
 
-- `license`: The license of the dataset. This can be either a string or an object with `spdx` and `link` fields. Prefer the later for standard licenses for an easier presentation.
+- `license`: The license of the dataset. This can be either a string or an object with `spdx` and `link` fields. Prefer the latter for standard licenses for easier presentation.
 - `citation`: List of DOIs or BibTeX entries that should be cited when using the dataset. DOIs are automatically resolved.
 - `tags`: List of tags that describe the dataset. These are used for filtering datasets in the UI.
+
+To improve consistency, we enforce various rules on the frontmatter fields, such as required fields, field types, and field ordering.
+The provided [`datasheet_linter`](https://github.com/netsci-rwth/ahorn/blob/main/tools/datasheet_linter.py) tool checks these rules and provides feedback on how to fix any issue found in the frontmatter.
 
 ## Attributes
 
@@ -41,13 +50,14 @@ Optional fields that are automatically used when present:
 For datasets with labeled nodes, we provide a chart that shows the distribution of labels.
 
 ```javascript
-import NodeLabelsChart from "@/components/chart/node-labels";
-<NodeLabelsChart labels={frontmatter["label-count"]} />;
+import LabelDistributionChart from "@/components/chart/label-distribution-chart";
+<LabelDistributionChart title="Node Label Distribution" labels={frontmatter["label-count"]} />;
 ```
 
-import NodeLabelsChart from "@/components/chart/node-labels";
+import LabelDistributionChart from "@/components/chart/label-distribution-chart";
 
-<NodeLabelsChart
+<LabelDistributionChart
+  title="Label Distribution"
   labels={{
     "Label A": 10,
     "Label B": 14,

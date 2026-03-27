@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
   turbopack: {
     rules: {
       "*.css": {
-        loaders: ['@tailwindcss/webpack'],
+        loaders: ["@tailwindcss/webpack"],
       },
       "*.svg": {
         loaders: ["@svgr/webpack"],

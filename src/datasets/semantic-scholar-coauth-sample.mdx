@@ -140,10 +140,17 @@ Similarly, node C has value 104 since C co-authored Paper 1 (100 citations) and 
 
 ## Dataset Statistics
 
+### Nodes
+
 <dl className="not-prose grid gap-5 sm:grid-cols-2">
   <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
   <Stat title="Node Type" value="Author" />
   <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-2" />
+</dl>
+
+### Hyperedges
+
+<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
   <Stat
     title="Simplices"
     value={formatNumber(frontmatter["statistics"]["num-edges"])}

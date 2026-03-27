@@ -1,9 +1,15 @@
+import PageHeader from "@/components/page-header";
+
 export const metadata = {
   title:
     "Contributing Guidelines | AHORN - Aachen Higher-Order Repository of Networks",
 };
 
-# Contributing Guidelines
+<PageHeader
+  eyebrow="About"
+  title="Contributing Guidelines"
+  description="How to propose, prepare, and submit datasets and related code to the AHORN repository."
+/>
 
 ## Open an issue
 
@@ -23,16 +29,16 @@ To add a dataset, please follow these steps:
    - Known issues or limitations.
    - Recommended citation.
 3. Ensure your dataset and code comply with all relevant licenses and ethical guidelines.
-4. Open a pull request with:
+4. Open a submission request to the [AHORN community on Zenodo](https://zenodo.org/communities/ahorn/) for the dataset file.
+5. Open a pull request with:
    - The converter code
    - The datasheet
-   - The dataset (or a script to download/process it, if redistribution is not allowed)
    - Any relevant documentation or usage examples
-5. Respond to code review and feedback from maintainers.
+6. Respond to code review and feedback from maintainers.
 
 ## Code Style
 
-- Python: ruff, black (PEP8 compliant)
+- Python: ruff
 - JavaScript/TypeScript, CSS, MDX: prettier
 - Use descriptive variable and function names
 - Add comments and docstrings where appropriate

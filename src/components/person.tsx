@@ -17,7 +17,7 @@ export default function Person({ avatar, name, role, className }: PersonProps) {
         width={64}
         height={64}
         alt=""
-        className="rounded-full"
+        className="rounded-full shadow-md ring-4 ring-white"
         role="presentation"
       />
     );
@@ -29,17 +29,17 @@ export default function Person({ avatar, name, role, className }: PersonProps) {
         .map((n) => n[0]?.toUpperCase())
         .join("") || "?";
     avatar_element = (
-      <span className="inline-flex size-16 items-center justify-center rounded-full bg-gray-500 dark:bg-gray-600">
+      <span className="inline-flex size-16 items-center justify-center rounded-full bg-slate-500 ring-4 ring-white dark:bg-gray-600">
         <span className="font-medium text-white">{initials}</span>
       </span>
     );
   }
 
   return (
-    <div className={classnames("flex items-center gap-x-6", className)}>
+    <div className={classnames("flex items-center gap-x-5", className)}>
       {avatar_element}
       <div>
-        <h3 className="text-base/7 font-semibold tracking-tight text-gray-900 dark:text-gray-100">
+        <h3 className="text-base/7 font-semibold tracking-tight text-slate-900 dark:text-gray-100">
           {name}
         </h3>
         <p className="text-sm/6 font-semibold text-primary">{role}</p>

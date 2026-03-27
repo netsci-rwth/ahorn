@@ -15,6 +15,7 @@ import {
 } from "chart.js";
 import "chartjs-adapter-date-fns";
 import { Bar } from "react-chartjs-2";
+import StatisticsBlock from "@/components/statistics-block";
 
 import {
   parse,
@@ -26,6 +27,7 @@ import {
   startOfYear,
   startOfHour,
 } from "date-fns";
+import { getChartTooltipOptions } from "@/utils/tooltip";
 
 ChartJS.register(
   TimeScale,
@@ -150,9 +152,13 @@ const TemporalShapeChart = ({
     }
   });
 
-  const gridColor = isDark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)";
-  const tickColor = isDark ? "rgba(255,255,255,0.75)" : "rgba(0,0,0,0.7)";
-  const borderColor = isDark ? "rgba(255,255,255,0.25)" : "rgba(0,0,0,0.25)";
+  const gridColor = isDark
+    ? "rgba(148,163,184,0.16)"
+    : "rgba(148,163,184,0.22)";
+  const tickColor = isDark ? "rgba(255,255,255,0.78)" : "rgba(51,65,85,0.82)";
+  const borderColor = isDark
+    ? "rgba(148,163,184,0.25)"
+    : "rgba(148,163,184,0.3)";
 
   const chart_options = {
     responsive: true,
@@ -179,9 +185,12 @@ const TemporalShapeChart = ({
         labels: { color: tickColor },
       },
       title: {
-        display: true,
-        text: "Dataset Shape",
+        display: false,
+        text: "Dataset Shape Over Time",
         color: tickColor,
+      },
+      tooltip: {
+        ...getChartTooltipOptions(isDark),
       },
       datalabels: {
         display: false,
@@ -201,14 +210,16 @@ const TemporalShapeChart = ({
   };
 
   return (
-    <div style={{ height: 360 }}>
-      <div style={{ marginBottom: "20px" }}>
-        <label htmlFor="time-unit">Aggregate by: </label>
+    <StatisticsBlock title="Dataset Shape Over Time">
+      <div className="mb-4 flex items-center gap-3">
+        <label htmlFor="time-unit" className="text-sm text-slate-700">
+          Aggregate by:
+        </label>
         <select
           id="time-unit"
           value={timeUnit}
           onChange={(e) => setTimeUnit(e.target.value as TimeUnit)}
-          style={{ padding: "5px", marginLeft: "10px" }}
+          className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
         >
           {selectableUnits.map((unit) => (
             <option key={unit} value={unit}>
@@ -217,9 +228,10 @@ const TemporalShapeChart = ({
           ))}
         </select>
       </div>
-
-      <Bar options={chart_options} data={chart_data} />
-    </div>
+      <div style={{ height: 320 }}>
+        <Bar options={chart_options} data={chart_data} />
+      </div>
+    </StatisticsBlock>
   );
 };
 

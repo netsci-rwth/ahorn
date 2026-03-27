@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
+import StatisticsBlock from "@/components/statistics-block";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,6 +12,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { getChartTooltipOptions } from "@/utils/tooltip";
 
 ChartJS.register(
   CategoryScale,
@@ -57,8 +59,10 @@ export default function ShapeChart({ shape }: ShapeChartProps) {
     };
   }, []);
 
-  const tickColor = isDark ? "rgba(255,255,255,0.75)" : "rgba(0,0,0,0.7)";
-  const gridColor = isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)";
+  const tickColor = isDark ? "rgba(255,255,255,0.78)" : "rgba(51,65,85,0.82)";
+  const gridColor = isDark
+    ? "rgba(148,163,184,0.16)"
+    : "rgba(148,163,184,0.22)";
 
   // Create dimension labels
   const dimensionLabels = shape.map((_, i) => {
@@ -75,9 +79,9 @@ export default function ShapeChart({ shape }: ShapeChartProps) {
       {
         label: "Count",
         data: shape,
-        backgroundColor: "#60a5fa",
-        borderColor: "#1e40af",
-        borderWidth: 1,
+        backgroundColor: "#3b82f6",
+        borderColor: "#2563eb",
+        borderWidth: 0,
       },
     ],
   };
@@ -87,11 +91,12 @@ export default function ShapeChart({ shape }: ShapeChartProps) {
     responsive: true,
     maintainAspectRatio: true,
     plugins: {
-      legend: {
-        labels: { color: tickColor },
-      },
+      legend: { display: false },
       title: {
         display: false,
+      },
+      tooltip: {
+        ...getChartTooltipOptions(isDark),
       },
       datalabels: {
         display: false,
@@ -110,8 +115,10 @@ export default function ShapeChart({ shape }: ShapeChartProps) {
   } as const;
 
   return (
-    <div style={{ height: 320 }}>
-      <Bar data={data} options={options} />
-    </div>
+    <StatisticsBlock title="Dataset Shape">
+      <div style={{ height: 320 }}>
+        <Bar data={data} options={options} />
+      </div>
+    </StatisticsBlock>
   );
 }

@@ -150,7 +150,7 @@ edge-label-count:
 ---
 
 import { ComputedBoxPlot } from "@/components/chart/box-plot";
-import NodeLabelsChart from "@/components/chart/node-labels";
+import LabelDistributionChart from "@/components/chart/label-distribution-chart";
 import Stat from "@/components/stat";
 import { formatNumber } from "@/utils/format";
 
@@ -169,11 +169,16 @@ Non-maximal simplices get the category of all maximal simplices they are contain
 
 ## Dataset Statistics
 
+### Nodes
+
 <dl className="not-prose grid gap-5 sm:grid-cols-2">
   <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
   <Stat title="Node Type" value="Reviewer" />
   <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-2" />
 </dl>
+
+### Hyperedges
+
 <dl className="not-prose grid mt-5 gap-5 sm:grid-cols-3">
   <Stat
     title="Hyperedges"
@@ -183,7 +188,4 @@ Non-maximal simplices get the category of all maximal simplices they are contain
   <Stat title="Hyperedge Label" value="Genre of Blues Music" />
   <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-3" />
 </dl>
-
-### Edge Labels
-
-<NodeLabelsChart labels={frontmatter["edge-label-count"]} />
+<LabelDistributionChart title="Hyperedge Label Distribution" labels={frontmatter["edge-label-count"]} />

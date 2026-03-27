@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 
+import PageHeader from "@/components/page-header";
 import Person from "@/components/person";
 import Stat from "@/components/stat";
 import NetworkTypeChart from "@/components/chart/network-type";
@@ -49,7 +50,11 @@ export async function getDatasetStatistics() {
 export const { datasetCount, uniqueTagCount, networkTypeCount } =
   await getDatasetStatistics();
 
-# About
+<PageHeader
+  eyebrow="About"
+  title="About the Project"
+  description="Background on AHORN, its goals, persistence strategy, and the people behind the project."
+/>
 
 The Aachen Higher-Order Repository of Networks (AHORN) aims to provide a comprehensive collection of higher-order network datasets, particularly focusing on simplicial complexes, cell complexes and hypergraphs.
 This repository is designed to facilitate research and development in the field of higher-order networks by offering a variety of datasets that can be used for benchmarking, testing algorithms, and exploring new concepts in network science.

@@ -9,11 +9,11 @@ export type ButtonProps = {
 } & React.ComponentPropsWithoutRef<"button">;
 
 const variantStyles: Record<string, string> = {
-  primary: "bg-primary text-white hover:bg-primary-dark shadow-sm",
+  primary: "bg-primary text-white shadow-[0_12px_30px_rgb(35_93_156_/_0.22)]",
   secondary:
-    "bg-white text-gray-900 border border-gray-300 hover:bg-gray-50 shadow-sm",
-  danger: "bg-red-600 text-white hover:bg-red-700 shadow-sm",
-  text: "text-gray-900",
+    "border border-[color:var(--color-border)] bg-white/80 text-slate-900 shadow-sm hover:bg-white",
+  danger: "bg-red-600 text-white shadow-sm hover:bg-red-700",
+  text: "text-slate-700 hover:text-slate-950",
 };
 
 const Button: React.FC<ButtonProps> = ({
@@ -25,7 +25,7 @@ const Button: React.FC<ButtonProps> = ({
 }) => (
   <Component
     className={classNames(
-      "inline-flex items-center rounded-md px-4 py-2 text-sm font-medium transition-colors",
+      "inline-flex items-center rounded-xl px-4 py-2.5 text-sm font-semibold",
       variantStyles[variant],
       className,
     )}

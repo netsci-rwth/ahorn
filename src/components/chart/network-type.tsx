@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import classNames from "classnames";
 import { useRouter } from "next/navigation";
+import StatisticsBlock from "@/components/statistics-block";
 
 import {
   Chart as ChartJS,
@@ -140,18 +141,13 @@ export default function NetworkTypeChart({
   };
 
   return (
-    <div
-      className={classNames(
-        "rounded-lg bg-white px-4 py-5 shadow sm:p-6 dark:bg-gray-900",
-        className,
-      )}
+    <StatisticsBlock
+      title="Datasets per Network Type"
+      className={classNames(className)}
     >
-      <dt className="truncate text-sm font-medium text-gray-500 dark:text-gray-400">
-        Datasets per Network Type
-      </dt>
-      <div className="mt-4">
+      <div>
         <Bar data={chartData} options={chartOptions} />
       </div>
-    </div>
+    </StatisticsBlock>
   );
 }

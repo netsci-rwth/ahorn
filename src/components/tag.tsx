@@ -48,7 +48,7 @@ export default function Tag({
     <Badge
       href={href}
       onClick={onClick}
-      className={classNames(color, className)}
+      className={classNames("hover:brightness-[0.98]", color, className)}
       color="none"
     >
       {name}

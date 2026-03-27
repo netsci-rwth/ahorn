@@ -1,9 +1,15 @@
+import PageHeader from "@/components/page-header";
+
 export const metadata = {
   title:
     "Dataset Converter | AHORN - Aachen Higher-Order Repository of Networks",
 };
 
-# Dataset Converter
+<PageHeader
+  eyebrow="About"
+  title="Dataset Converter"
+  description="Requirements and recommendations for writing parsers that convert raw data into the AHORN format."
+/>
 
 Each dataset in this project is accompanied by a parser that takes the raw dataset and converts it into our [dataset format](/about/format).
 The parsers are implemented in Python.

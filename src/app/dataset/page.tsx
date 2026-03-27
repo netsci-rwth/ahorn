@@ -3,6 +3,7 @@ import path from "path";
 import { Metadata } from "next";
 
 import DatasetTable from "@/components/dataset-table";
+import PageHeader from "@/components/page-header";
 
 export const metadata: Metadata = {
   title: "Datasets | AHORN - Aachen Higher-Order Repository of Networks",
@@ -38,9 +39,12 @@ export default async function DatasetList() {
 
   return (
     <>
-      <h1 className="mb-6 text-3xl font-bold text-gray-900 dark:text-gray-100">
-        Datasets
-      </h1>
+      <PageHeader
+        eyebrow="Repository"
+        title="Datasets"
+        description="Browse the current AHORN collection, filter by topology and topic, and jump directly to dataset pages with citations, attachments, and source information."
+        className="mb-8"
+      />
       <DatasetTable datasets={datasets} />
     </>
   );

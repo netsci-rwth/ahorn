@@ -1,5 +1,6 @@
 import classNames from "classnames";
 
+import StatisticsBlock from "@/components/statistics-block";
 import { formatNumber } from "@/utils/format";
 
 export function computeBox(values: number[]): BoxPlotStats | null {
@@ -61,17 +62,7 @@ export default function BoxPlot({
   const boxWidth = Math.min(Math.max(boxEnd - boxStart, 0.5), 100 - boxStart);
 
   return (
-    <div
-      className={classNames(
-        "rounded-lg border border-slate-200 bg-white/50 p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900/70",
-        className,
-      )}
-    >
-      {title && (
-        <div className="mb-2 truncate text-sm font-semibold text-gray-500 dark:text-gray-400">
-          {title}
-        </div>
-      )}
+    <StatisticsBlock title={title} className={classNames(className)}>
       <div className="relative h-20">
         <div className="absolute top-1/2 right-0 left-0 h-px bg-slate-200 dark:bg-slate-700" />
 
@@ -112,7 +103,7 @@ export default function BoxPlot({
         <LabelValue label="Q3" value={q3} />
         <LabelValue label="Max" value={max} />
       </div>
-    </div>
+    </StatisticsBlock>
   );
 }
 

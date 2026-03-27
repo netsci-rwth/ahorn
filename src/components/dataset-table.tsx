@@ -170,132 +170,140 @@ function DatasetTableContent({ datasets }: DatasetTableProps) {
   return (
     <div className="flex flex-col gap-8 md:flex-row">
       {/* Sidebar */}
-      <aside className="mb-8 flex flex-col gap-y-8 md:mb-0 md:w-72 md:min-w-[18rem] md:pr-8">
-        <div>
-          <div className="mb-2 flex items-center justify-between text-sm font-semibold text-gray-700 dark:text-gray-300">
-            <span>Filter by name:</span>
-            {search.trim() !== "" && (
-              <button
-                type="button"
-                onClick={() => setSearch("")}
-                className="cursor-pointer text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
-              >
-                Reset
-              </button>
-            )}
-          </div>
-          <input
-            type="search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search datasets..."
-            className="block w-full rounded-md border border-gray-300 bg-white py-1.5 pr-3 pl-3 text-sm text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
-          />
-        </div>
-        <div>
-          <div className="mb-2 flex items-center justify-between text-sm font-semibold text-gray-700 dark:text-gray-300">
-            <span>Filter by node size (|V|):</span>
-            {(nodeRangeMin !== nodeExtremes.min ||
-              nodeRangeMax !== nodeExtremes.max) && (
-              <button
-                type="button"
-                onClick={() => {
-                  setNodeRangeMin(nodeExtremes.min);
-                  setNodeRangeMax(nodeExtremes.max);
-                }}
-                className="cursor-pointer text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
-              >
-                Reset
-              </button>
-            )}
-          </div>
-          <MultiRangeSlider
-            min={nodeExtremes.min}
-            max={nodeExtremes.max}
-            value={{ min: nodeRangeMin, max: nodeRangeMax }}
-            onChange={({ min, max }) => {
-              setNodeRangeMin(min);
-              setNodeRangeMax(max);
-            }}
-          />
-        </div>
-        <div>
-          <div className="mb-2 flex items-center justify-between text-sm font-semibold text-gray-700 dark:text-gray-300">
-            <span>Filter by network type:</span>
-            {selectedNetworkTypes.length > 0 && (
-              <button
-                type="button"
-                onClick={() => setSelectedNetworkTypes([])}
-                className="cursor-pointer text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
-              >
-                Reset
-              </button>
-            )}
-          </div>
-          <ul className="grid gap-3">
-            {Object.values(NetworkType).map((type) => (
-              <li key={type} className="flex items-center gap-1">
-                <input
-                  id={`network-type-${type}`}
-                  type="checkbox"
-                  checked={selectedNetworkTypes.includes(type)}
-                  onChange={() => handleNetworkTypeChange(type)}
-                  className="rounded border-gray-300 bg-white text-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:focus:ring-primary"
-                />
-                <label
-                  htmlFor={`network-type-${type}`}
-                  className="cursor-pointer text-xs capitalize"
+      <aside className="mb-8 sm:w-64 sm:shrink-0 md:mb-0 md:w-72 md:min-w-[18rem]">
+        <ul className="sticky top-24 flex flex-1 flex-col gap-y-7">
+          <li>
+            <div className="flex items-center justify-between text-xs font-semibold tracking-wide text-slate-500 uppercase">
+              <span>Filter by name:</span>
+              {search.trim() !== "" && (
+                <button
+                  type="button"
+                  onClick={() => setSearch("")}
+                  className="cursor-pointer text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
                 >
-                  {type === NetworkType.simplicialComplex
-                    ? "Simplicial Complex"
-                    : "Hypergraph"}
-                </label>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <div className="mb-2 flex items-center justify-between text-sm font-semibold text-gray-700 dark:text-gray-300">
-            <span>Filter by tag:</span>
-            {selectedTags.length > 0 && (
-              <button
-                type="button"
-                onClick={() => setSelectedTags([])}
-                className="cursor-pointer text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
-              >
-                Reset
-              </button>
-            )}
-          </div>
-          <ul className="flex flex-wrap gap-3">
-            {allTags.map((tag) => (
-              <li key={tag} className="flex items-center gap-1">
-                <input
-                  id={`tag-${tag}`}
-                  type="checkbox"
-                  checked={selectedTags.includes(tag)}
-                  onChange={() => handleTagChange(tag)}
-                  className="rounded border-gray-300 bg-white text-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:focus:ring-primary"
-                />
-                <label
-                  htmlFor={`tag-${tag}`}
-                  className="cursor-pointer text-xs"
+                  Reset
+                </button>
+              )}
+            </div>
+            <div className="mt-2">
+              <input
+                type="search"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search datasets..."
+                className="block w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
+              />
+            </div>
+          </li>
+          <li>
+            <div className="flex items-center justify-between text-xs font-semibold tracking-wide text-slate-500 uppercase">
+              <span>Filter by node size (|V|):</span>
+              {(nodeRangeMin !== nodeExtremes.min ||
+                nodeRangeMax !== nodeExtremes.max) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setNodeRangeMin(nodeExtremes.min);
+                    setNodeRangeMax(nodeExtremes.max);
+                  }}
+                  className="cursor-pointer text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
                 >
-                  <Tag name={tag} />
-                </label>
-              </li>
-            ))}
-          </ul>
-        </div>
+                  Reset
+                </button>
+              )}
+            </div>
+            <div className="mt-2">
+              <div>
+                <MultiRangeSlider
+                  min={nodeExtremes.min}
+                  max={nodeExtremes.max}
+                  value={{ min: nodeRangeMin, max: nodeRangeMax }}
+                  onChange={({ min, max }) => {
+                    setNodeRangeMin(min);
+                    setNodeRangeMax(max);
+                  }}
+                />
+              </div>
+            </div>
+          </li>
+          <li>
+            <div className="flex items-center justify-between text-xs font-semibold tracking-wide text-slate-500 uppercase">
+              <span>Filter by network type:</span>
+              {selectedNetworkTypes.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setSelectedNetworkTypes([])}
+                  className="cursor-pointer text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
+                >
+                  Reset
+                </button>
+              )}
+            </div>
+            <ul className="mt-2 grid gap-2">
+              {Object.values(NetworkType).map((type) => (
+                <li key={type} className="flex items-center gap-2">
+                  <input
+                    id={`network-type-${type}`}
+                    type="checkbox"
+                    checked={selectedNetworkTypes.includes(type)}
+                    onChange={() => handleNetworkTypeChange(type)}
+                    className="rounded border-gray-300 bg-white text-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:focus:ring-primary"
+                  />
+                  <label
+                    htmlFor={`network-type-${type}`}
+                    className="cursor-pointer text-xs font-medium text-slate-700 capitalize"
+                  >
+                    {type === NetworkType.simplicialComplex
+                      ? "Simplicial Complex"
+                      : "Hypergraph"}
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </li>
+          <li>
+            <div className="flex items-center justify-between text-xs font-semibold tracking-wide text-slate-500 uppercase">
+              <span>Filter by tag:</span>
+              {selectedTags.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setSelectedTags([])}
+                  className="cursor-pointer text-xs font-normal text-gray-500 hover:underline dark:text-gray-400"
+                >
+                  Reset
+                </button>
+              )}
+            </div>
+            <ul className="mt-2 flex flex-wrap gap-3">
+              {allTags.map((tag) => (
+                <li key={tag} className="flex items-center gap-2">
+                  <input
+                    id={`tag-${tag}`}
+                    type="checkbox"
+                    checked={selectedTags.includes(tag)}
+                    onChange={() => handleTagChange(tag)}
+                    className="rounded border-gray-300 bg-white text-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:focus:ring-primary"
+                  />
+                  <label
+                    htmlFor={`tag-${tag}`}
+                    className="cursor-pointer text-xs"
+                  >
+                    <Tag name={tag} />
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </li>
+        </ul>
       </aside>
 
       {/* Table */}
-      <div className="w-full flex-1 overflow-x-auto">
-        <table className="w-full divide-y divide-gray-300 dark:divide-gray-700">
+      <div className="min-w-0 flex-1">
+        <table className="w-full min-w-2xl divide-y divide-slate-200">
           <thead>
             <tr>
               <th
-                className="cursor-pointer px-3 py-3 text-left text-sm font-semibold text-gray-900 hover:bg-gray-50 sm:pl-0 dark:text-gray-100 dark:hover:bg-gray-800"
+                className="cursor-pointer px-5 py-4 text-left text-sm font-semibold text-slate-900"
                 onClick={() => handleSort("title")}
               >
                 <div className="flex items-center gap-1">
@@ -308,7 +316,7 @@ function DatasetTableContent({ datasets }: DatasetTableProps) {
                 </div>
               </th>
               <th
-                className="cursor-pointer px-3 py-3 text-right text-sm font-semibold text-gray-900 hover:bg-gray-50 dark:text-gray-100 dark:hover:bg-gray-800"
+                className="cursor-pointer px-5 py-4 text-right text-sm font-semibold text-slate-900"
                 onClick={() => handleSort("numNodes")}
               >
                 <div className="flex items-center justify-end gap-1">
@@ -320,17 +328,17 @@ function DatasetTableContent({ datasets }: DatasetTableProps) {
                   )}
                 </div>
               </th>
-              <th className="px-3 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100">
+              <th className="px-5 py-4 text-left text-sm font-semibold text-slate-900">
                 Tags
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
+          <tbody className="divide-y divide-slate-200">
             {sorted.length === 0 ? (
               <tr>
                 <td
                   colSpan={3}
-                  className="py-12 text-center text-sm text-gray-400 dark:text-gray-500"
+                  className="py-12 text-center text-sm text-slate-500"
                 >
                   No datasets found matching your search and filter.
                 </td>
@@ -338,15 +346,18 @@ function DatasetTableContent({ datasets }: DatasetTableProps) {
             ) : (
               sorted.map((dataset) => (
                 <tr key={dataset.slug}>
-                  <td className="py-4 pr-3 text-sm font-medium whitespace-nowrap text-gray-900 dark:text-gray-100">
-                    <Link href={`/dataset/${dataset.slug}`}>
+                  <td className="py-4 pr-3 pl-5 text-sm font-medium whitespace-nowrap text-slate-900">
+                    <Link
+                      href={`/dataset/${dataset.slug}`}
+                      className="hover:text-primary"
+                    >
                       {dataset.title}
                     </Link>
                   </td>
-                  <td className="px-3 py-4 text-right text-sm whitespace-nowrap text-gray-500 dark:text-gray-300">
+                  <td className="px-5 py-4 text-right text-sm whitespace-nowrap text-slate-600">
                     {formatNumber(dataset.statistics.numNodes)}
                   </td>
-                  <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-300">
+                  <td className="px-5 py-4 text-sm whitespace-nowrap text-slate-600">
                     <div className="flex flex-wrap gap-2">
                       {dataset.tags.map((tag: string) => (
                         <Tag
