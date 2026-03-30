@@ -30,7 +30,7 @@ export default function AboutSidebarNav({ links }: { links: NavGroups }) {
       <ul className="flex flex-1 flex-col gap-y-5">
         {Object.entries(links).map(([groupName, group]) => (
           <li key={groupName}>
-            <div className="text-xs font-semibold tracking-[0.2em] text-slate-500 uppercase">
+            <div className="text-xs font-semibold tracking-[0.2em] text-slate-500 uppercase dark:text-slate-400">
               {groupName}
             </div>
             <ul className="mt-2 space-y-0.5">
@@ -45,8 +45,8 @@ export default function AboutSidebarNav({ links }: { links: NavGroups }) {
                       className={classNames(
                         "group flex gap-x-2.5 rounded-lg px-3 py-2 text-sm font-semibold transition-colors",
                         active
-                          ? "bg-primary/8 text-primary"
-                          : "text-slate-700 hover:bg-slate-50 hover:text-primary",
+                          ? "bg-primary/10 text-primary dark:bg-primary/15"
+                          : "text-slate-700 hover:bg-slate-50 hover:text-primary dark:text-slate-300 dark:hover:bg-slate-900/70",
                       )}
                     >
                       <FontAwesomeIcon
@@ -55,7 +55,7 @@ export default function AboutSidebarNav({ links }: { links: NavGroups }) {
                           "mt-0.5 shrink-0 text-base",
                           active
                             ? "text-primary"
-                            : "text-slate-400 group-hover:text-primary",
+                            : "text-slate-400 group-hover:text-primary dark:text-slate-500",
                         )}
                       />
                       {link.label}

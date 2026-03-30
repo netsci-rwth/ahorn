@@ -157,7 +157,7 @@ const SearchBox = ({ onNavigate }: { onNavigate: () => void }) => {
         spellCheck={false}
         autoComplete="off"
         type="search"
-        className="block w-full rounded-full border border-white/70 bg-white/80 px-4 py-2 text-sm text-slate-900 placeholder-slate-400 shadow-sm focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
+        className="block w-full rounded-full border border-white/70 bg-white/80 px-4 py-2 text-sm text-slate-900 placeholder-slate-400 shadow-sm focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none dark:border-slate-700 dark:bg-slate-900/90 dark:text-slate-100 dark:placeholder-slate-500"
         placeholder="Search datasets..."
         value={query}
         onChange={(event) => {
@@ -175,12 +175,12 @@ const SearchBox = ({ onNavigate }: { onNavigate: () => void }) => {
       {showOptions && (
         <ComboboxOptions
           as="ul"
-          className="z-50 w-[22rem] max-w-[calc(100vw-2rem)] rounded-2xl border border-white/70 bg-white/95 p-1 shadow-[0_20px_50px_rgb(15_23_42_/_0.16)] backdrop-blur-md [--anchor-gap:10px]"
+          className="z-50 w-88 max-w-[calc(100vw-2rem)] rounded-2xl border border-white/70 bg-white/95 p-1 shadow-[0_20px_50px_rgb(15_23_42/0.16)] backdrop-blur-md [--anchor-gap:10px] dark:border-slate-700 dark:bg-slate-900/95 dark:shadow-[0_20px_50px_rgb(2_6_23/0.6)]"
           aria-busy={isLoading}
           anchor="bottom"
         >
           {isLoading && (
-            <li className="flex items-center gap-2 px-3 py-2 text-sm text-slate-500">
+            <li className="flex items-center gap-2 px-3 py-2 text-sm text-slate-500 dark:text-slate-400">
               <FontAwesomeIcon
                 icon={faSpinner}
                 className="h-4 w-4 animate-spin text-primary"
@@ -190,11 +190,15 @@ const SearchBox = ({ onNavigate }: { onNavigate: () => void }) => {
           )}
 
           {!isLoading && error && (
-            <li className="px-3 py-2 text-sm text-red-600">{error}</li>
+            <li className="px-3 py-2 text-sm text-red-600 dark:text-red-400">
+              {error}
+            </li>
           )}
 
           {!isLoading && !error && results.length === 0 && query && (
-            <li className="px-3 py-2 text-sm text-slate-500">No results</li>
+            <li className="px-3 py-2 text-sm text-slate-500 dark:text-slate-400">
+              No results
+            </li>
           )}
 
           {!isLoading &&
@@ -205,14 +209,14 @@ const SearchBox = ({ onNavigate }: { onNavigate: () => void }) => {
                   as={Link}
                   href={r.url}
                   value={r}
-                  className="block rounded-xl px-3 py-2 text-sm data-focus:bg-slate-100"
+                  className="block rounded-xl px-3 py-2 text-sm data-focus:bg-slate-100 dark:data-focus:bg-slate-800"
                 >
-                  <div className="line-clamp-1 font-semibold text-slate-900">
+                  <div className="line-clamp-1 font-semibold text-slate-900 dark:text-slate-100">
                     {r.meta?.title || r.url}
                   </div>
                   {r.excerpt && (
                     <div
-                      className="mt-0.5 line-clamp-2 text-xs text-slate-500"
+                      className="mt-0.5 line-clamp-2 text-xs text-slate-500 dark:text-slate-400"
                       dangerouslySetInnerHTML={{ __html: r.excerpt }}
                     />
                   )}
@@ -249,7 +253,7 @@ const Navbar: FC = () => {
   return (
     <Disclosure
       as="nav"
-      className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/70 backdrop-blur-sm"
+      className="sticky top-0 z-50 border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between gap-4 sm:px-1">
@@ -258,7 +262,7 @@ const Navbar: FC = () => {
             <DisclosureButton
               type="button"
               onClick={() => setMobileOpen((v) => !v)}
-              className="group relative inline-flex items-center justify-center rounded-xl p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus:outline-hidden"
+              className="group relative inline-flex items-center justify-center rounded-xl p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus:outline-hidden dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"
               aria-controls="mobile-menu"
               aria-expanded="false"
             >
@@ -295,7 +299,7 @@ const Navbar: FC = () => {
                       "inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold",
                       {
                         "bg-primary text-white shadow-sm": active,
-                        "text-slate-600 hover:bg-slate-100 hover:text-slate-950":
+                        "text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100":
                           !active,
                       },
                     )}
@@ -321,7 +325,7 @@ const Navbar: FC = () => {
       {/* Mobile menu, show/hide based on menu state. */}
       <DisclosurePanel className="sm:hidden">
         {({ close }) => (
-          <div className="space-y-2 border-t border-slate-200 py-3">
+          <div className="space-y-2 border-t border-slate-200 py-3 dark:border-slate-800">
             <div className="pb-2">
               <SearchBox
                 onNavigate={() => {
@@ -340,7 +344,7 @@ const Navbar: FC = () => {
                     "block rounded-xl px-3 py-2.5 text-base font-semibold",
                     {
                       "bg-primary text-white": active,
-                      "text-slate-700 hover:bg-slate-100 hover:text-slate-950":
+                      "text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100":
                         !active,
                     },
                   )}

@@ -45,7 +45,7 @@ export default function AboutLayout({
         <AboutSidebarNav links={links} />
       </aside>
       <main
-        className="prose max-w-none flex-1 max-sm:mt-8 sm:min-w-0"
+        className="prose max-w-none flex-1 max-sm:mt-8 sm:min-w-0 dark:prose-invert"
         data-pagefind-body
       >
         {children}

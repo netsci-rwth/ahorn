@@ -191,7 +191,7 @@ function DatasetTableContent({ datasets }: DatasetTableProps) {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search datasets..."
-                className="block w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
+                className="block w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500"
               />
             </div>
           </li>
@@ -247,11 +247,11 @@ function DatasetTableContent({ datasets }: DatasetTableProps) {
                     type="checkbox"
                     checked={selectedNetworkTypes.includes(type)}
                     onChange={() => handleNetworkTypeChange(type)}
-                    className="rounded border-gray-300 bg-white text-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:focus:ring-primary"
+                    className="rounded border-gray-300 bg-white text-primary focus:ring-primary dark:border-slate-600 dark:bg-slate-800 dark:focus:ring-primary"
                   />
                   <label
                     htmlFor={`network-type-${type}`}
-                    className="cursor-pointer text-xs font-medium text-slate-700 capitalize"
+                    className="cursor-pointer text-xs font-medium text-slate-700 capitalize dark:text-slate-300"
                   >
                     {type === NetworkType.simplicialComplex
                       ? "Simplicial Complex"
@@ -282,7 +282,7 @@ function DatasetTableContent({ datasets }: DatasetTableProps) {
                     type="checkbox"
                     checked={selectedTags.includes(tag)}
                     onChange={() => handleTagChange(tag)}
-                    className="rounded border-gray-300 bg-white text-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:focus:ring-primary"
+                    className="rounded border-gray-300 bg-white text-primary focus:ring-primary dark:border-slate-600 dark:bg-slate-800 dark:focus:ring-primary"
                   />
                   <label
                     htmlFor={`tag-${tag}`}
@@ -299,11 +299,11 @@ function DatasetTableContent({ datasets }: DatasetTableProps) {
 
       {/* Table */}
       <div className="min-w-0 flex-1">
-        <table className="w-full min-w-2xl divide-y divide-slate-200">
+        <table className="w-full min-w-2xl divide-y divide-slate-200 dark:divide-slate-700">
           <thead>
             <tr>
               <th
-                className="cursor-pointer px-5 py-4 text-left text-sm font-semibold text-slate-900"
+                className="cursor-pointer px-5 py-4 text-left text-sm font-semibold text-slate-900 dark:text-slate-100"
                 onClick={() => handleSort("title")}
               >
                 <div className="flex items-center gap-1">
@@ -316,7 +316,7 @@ function DatasetTableContent({ datasets }: DatasetTableProps) {
                 </div>
               </th>
               <th
-                className="cursor-pointer px-5 py-4 text-right text-sm font-semibold text-slate-900"
+                className="cursor-pointer px-5 py-4 text-right text-sm font-semibold text-slate-900 dark:text-slate-100"
                 onClick={() => handleSort("numNodes")}
               >
                 <div className="flex items-center justify-end gap-1">
@@ -328,17 +328,17 @@ function DatasetTableContent({ datasets }: DatasetTableProps) {
                   )}
                 </div>
               </th>
-              <th className="px-5 py-4 text-left text-sm font-semibold text-slate-900">
+              <th className="px-5 py-4 text-left text-sm font-semibold text-slate-900 dark:text-slate-100">
                 Tags
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-200">
+          <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
             {sorted.length === 0 ? (
               <tr>
                 <td
                   colSpan={3}
-                  className="py-12 text-center text-sm text-slate-500"
+                  className="py-12 text-center text-sm text-slate-500 dark:text-slate-400"
                 >
                   No datasets found matching your search and filter.
                 </td>
@@ -346,7 +346,7 @@ function DatasetTableContent({ datasets }: DatasetTableProps) {
             ) : (
               sorted.map((dataset) => (
                 <tr key={dataset.slug}>
-                  <td className="py-4 pr-3 pl-5 text-sm font-medium whitespace-nowrap text-slate-900">
+                  <td className="py-4 pr-3 pl-5 text-sm font-medium whitespace-nowrap text-slate-900 dark:text-slate-100">
                     <Link
                       href={`/dataset/${dataset.slug}`}
                       className="hover:text-primary"
@@ -354,10 +354,10 @@ function DatasetTableContent({ datasets }: DatasetTableProps) {
                       {dataset.title}
                     </Link>
                   </td>
-                  <td className="px-5 py-4 text-right text-sm whitespace-nowrap text-slate-600">
+                  <td className="px-5 py-4 text-right text-sm whitespace-nowrap text-slate-600 dark:text-slate-300">
                     {formatNumber(dataset.statistics.numNodes)}
                   </td>
-                  <td className="px-5 py-4 text-sm whitespace-nowrap text-slate-600">
+                  <td className="px-5 py-4 text-sm whitespace-nowrap text-slate-600 dark:text-slate-300">
                     <div className="flex flex-wrap gap-2">
                       {dataset.tags.map((tag: string) => (
                         <Tag

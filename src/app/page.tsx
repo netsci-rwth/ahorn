@@ -30,7 +30,7 @@ export default function Home() {
               <h1 className="max-w-4xl text-5xl font-semibold tracking-tight text-balance text-slate-950 sm:text-6xl lg:text-7xl dark:text-white">
                 Aachen Higher-Order Repository of Networks
               </h1>
-              <p className="mt-6 max-w-3xl text-lg leading-8 text-pretty text-slate-600 sm:text-xl">
+              <p className="mt-6 max-w-3xl text-lg leading-8 text-pretty text-slate-600 sm:text-xl dark:text-slate-300">
                 Research-quality simplicial complex, cell complex, and
                 hypergraph datasets for benchmarking, method development, and
                 reproducible higher-order network science.
@@ -70,7 +70,7 @@ export default function Home() {
                   <p className="text-sm font-semibold tracking-widest text-primary uppercase">
                     {title}
                   </p>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">
+                  <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
                     {copy}
                   </p>
                 </div>
@@ -82,7 +82,7 @@ export default function Home() {
 
       <section className="mt-16 grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
         <div>
-          <div className="prose max-w-none">
+          <div className="prose max-w-none dark:prose-invert">
             <h2>What is AHORN?</h2>
             <p>
               AHORN is a repository of higher-order network datasets, providing
@@ -100,7 +100,7 @@ export default function Home() {
           <p className="text-sm font-semibold tracking-widest text-primary uppercase">
             Work in Progress
           </p>
-          <p className="mt-4 text-sm leading-7 text-slate-600">
+          <p className="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">
             AHORN was introduced at the{" "}
             <a
               href="https://conf.netsci.rwth-aachen.de/"

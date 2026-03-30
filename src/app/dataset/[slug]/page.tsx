@@ -113,10 +113,12 @@ export default async function DatasetPage({
       .filter((entry) => !Number.isNaN(entry.revision))
       .sort((a, b) => b.revision - a.revision);
 
-    return (byRevision[0] ?? {
-      key: attachmentEntries[0][0],
-      attachment: attachmentEntries[0][1],
-    }).attachment;
+    return (
+      byRevision[0] ?? {
+        key: attachmentEntries[0][0],
+        attachment: attachmentEntries[0][1],
+      }
+    ).attachment;
   })();
 
   const licenseDisplay = (() => {
@@ -166,11 +168,11 @@ export default async function DatasetPage({
               </Button>
             ) : undefined
           }
-          className="border-b border-slate-200"
+          className="border-b border-slate-200 dark:border-slate-700"
         >
           <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:flex-wrap sm:gap-8">
             <div className="group relative">
-              <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold tracking-wide text-slate-500 uppercase">
+              <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
                 <FontAwesomeIcon icon={faHexagonNodes} className="size-4" />
                 Network Type
                 <span className={tooltipClassName}>
@@ -199,7 +201,7 @@ export default async function DatasetPage({
             </div>
             {frontmatter.tags.length > 0 && (
               <div>
-                <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold tracking-wide text-slate-500 uppercase">
+                <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
                   <FontAwesomeIcon icon={faTag} className="size-4" />
                   Tags
                 </h3>
@@ -217,16 +219,16 @@ export default async function DatasetPage({
           </div>
         </PageHeader>
 
-        <div className="prose mt-8 max-w-none">
+        <div className="prose mt-8 max-w-none dark:prose-invert">
           <Dataset />
         </div>
       </div>
 
       <aside className="mt-8 w-full shrink-0 lg:mt-0 lg:w-80">
         <div className="flex flex-col gap-y-7 lg:sticky lg:top-24">
-          <section className="border-slate-200 max-lg:border-t max-lg:pt-5">
+          <section className="border-slate-200 max-lg:border-t max-lg:pt-5 dark:border-slate-700">
             <div className="mb-3 flex items-center justify-between gap-4">
-              <h2 className="text-xs font-semibold tracking-wide text-slate-500 uppercase">
+              <h2 className="text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
                 Usage
               </h2>
               <CopyTextButton
@@ -247,22 +249,26 @@ export default async function DatasetPage({
             </pre>
           </section>
 
-          <section className="border-t border-slate-200 pt-5">
-            <h2 className="mb-3 text-xs font-semibold tracking-wide text-slate-500 uppercase">
+          <section className="border-t border-slate-200 pt-5 dark:border-slate-700">
+            <h2 className="mb-3 text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
               Source Information
             </h2>
             <dl>
               <div className="pt-0 pb-4">
-                <dt className="text-sm font-medium text-slate-900">Source</dt>
-                <dd className="mt-1 text-sm text-slate-600">
+                <dt className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                  Source
+                </dt>
+                <dd className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                   <a href={frontmatter.source} target="_blank">
                     {frontmatter.source}
                   </a>
                 </dd>
               </div>
               <div className="pt-1">
-                <dt className="text-sm font-medium text-slate-900">License</dt>
-                <dd className="mt-1 text-sm text-slate-600">
+                <dt className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                  License
+                </dt>
+                <dd className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                   {licenseDisplay ?? "Unknown"}
                 </dd>
               </div>
@@ -270,8 +276,8 @@ export default async function DatasetPage({
           </section>
 
           {attachments && (
-            <section className="border-t border-slate-200 pt-5">
-              <h2 className="mb-3 text-xs font-semibold tracking-wide text-slate-500 uppercase">
+            <section className="border-t border-slate-200 pt-5 dark:border-slate-700">
+              <h2 className="mb-3 text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
                 Attachments
               </h2>
               <ul className="space-y-2" role="list">
@@ -285,18 +291,18 @@ export default async function DatasetPage({
                       <a
                         href={url.href}
                         download
-                        className="group flex items-center py-2 text-sm text-slate-700 hover:text-primary"
+                        className="group flex items-center py-2 text-sm text-slate-700 hover:text-primary dark:text-slate-300"
                       >
                         <FontAwesomeIcon
                           icon={faPaperclip}
-                          className="size-4 shrink-0 text-slate-400 group-hover:text-primary"
+                          className="size-4 shrink-0 text-slate-400 group-hover:text-primary dark:text-slate-500"
                         />
                         <div className="ml-3 flex min-w-0 flex-1 gap-2">
                           <span className="truncate font-semibold">
                             {formatAttachmentTag(key)}
                           </span>
                           {typeof attachment.size === "number" && (
-                            <span className="shrink-0 text-slate-400">
+                            <span className="shrink-0 text-slate-400 dark:text-slate-500">
                               {formatFileSize(attachment.size)}
                             </span>
                           )}
@@ -313,10 +319,10 @@ export default async function DatasetPage({
             Array.isArray(frontmatter.related) &&
             frontmatter.related.length > 0 && (
               <section
-                className="border-t border-slate-200 pt-5"
+                className="border-t border-slate-200 pt-5 dark:border-slate-700"
                 data-pagefind-ignore
               >
-                <h2 className="mb-3 text-xs font-semibold tracking-wide text-slate-500 uppercase">
+                <h2 className="mb-3 text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
                   Related Datasets
                 </h2>
                 <ul className="space-y-2">
@@ -324,7 +330,7 @@ export default async function DatasetPage({
                     <li key={slug}>
                       <Link
                         href={`/dataset/${slug}`}
-                        className="group flex py-2 text-sm font-semibold text-slate-700 hover:text-primary"
+                        className="group flex py-2 text-sm font-semibold text-slate-700 hover:text-primary dark:text-slate-300"
                       >
                         {title}
                       </Link>
@@ -335,9 +341,9 @@ export default async function DatasetPage({
             )}
 
           {frontmatter.citation && (
-            <section className="border-t border-slate-200 pt-5">
+            <section className="border-t border-slate-200 pt-5 dark:border-slate-700">
               <div className="mb-3 flex items-center justify-between gap-4">
-                <h2 className="text-xs font-semibold tracking-wide text-slate-500 uppercase">
+                <h2 className="text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
                   Citation
                 </h2>
                 <CitationCopyButton bibtex={bibtex} />
@@ -347,12 +353,12 @@ export default async function DatasetPage({
                   {apaCitations.map((citation) => (
                     <li
                       key={citation[0]}
-                      className="prose text-sm"
+                      className="prose text-sm dark:prose-invert"
                       dangerouslySetInnerHTML={{ __html: citation[1] }}
                     />
                   ))}
                 </ul>
-                <div className="mt-4 text-xs text-slate-500">
+                <div className="mt-4 text-xs text-slate-500 dark:text-slate-400">
                   If you use this dataset, please ensure you cite it
                   appropriately in your work.
                 </div>

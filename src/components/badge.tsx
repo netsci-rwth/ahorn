@@ -11,10 +11,13 @@ interface BadgeProps {
 }
 
 const schemeClasses: Record<string, string> = {
-  default: "bg-amber-50/90 text-amber-900 ring-amber-600/20",
-  info: "bg-primary/10 text-primary ring-primary/15",
-  warning: "bg-orange-50/90 text-orange-900 ring-orange-600/20",
-  success: "bg-emerald-50/90 text-emerald-900 ring-emerald-600/20",
+  default:
+    "bg-amber-50/90 text-amber-900 ring-amber-600/20 dark:bg-amber-950/50 dark:text-amber-100 dark:ring-amber-400/25",
+  info: "bg-primary/10 text-primary ring-primary/15 dark:bg-primary/18 dark:text-sky-200 dark:ring-sky-300/20",
+  warning:
+    "bg-orange-50/90 text-orange-900 ring-orange-600/20 dark:bg-orange-950/50 dark:text-orange-100 dark:ring-orange-400/25",
+  success:
+    "bg-emerald-50/90 text-emerald-900 ring-emerald-600/20 dark:bg-emerald-950/50 dark:text-emerald-100 dark:ring-emerald-400/25",
   none: "",
 };
 

@@ -41,7 +41,7 @@ export default function MultiRangeSlider({
           min={min}
           max={max}
           value={value.min}
-          className="pointer-events-none absolute z-2 h-full w-full appearance-none bg-transparent [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-gray-100 [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-gray-100"
+          className="pointer-events-none absolute z-2 h-full w-full appearance-none bg-transparent [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-slate-100 dark:[&::-moz-range-thumb]:bg-slate-200 [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-slate-100 dark:[&::-webkit-slider-thumb]:bg-slate-200"
           onChange={(event) => {
             const newMin = Math.min(
               parseInt(event.target.value, 10),
@@ -55,7 +55,7 @@ export default function MultiRangeSlider({
           min={min}
           max={max}
           value={value.max}
-          className="pointer-events-none absolute z-2 h-full w-full appearance-none bg-transparent [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-gray-100 [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-gray-100"
+          className="pointer-events-none absolute z-2 h-full w-full appearance-none bg-transparent [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-slate-100 dark:[&::-moz-range-thumb]:bg-slate-200 [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-slate-100 dark:[&::-webkit-slider-thumb]:bg-slate-200"
           onChange={(event) => {
             const newMax = Math.max(
               parseInt(event.currentTarget.value, 10),
@@ -73,7 +73,7 @@ export default function MultiRangeSlider({
           ></div>
         </div>
       </div>
-      <div className="mt-3 flex justify-between gap-4 text-gray-600 dark:text-gray-400">
+      <div className="mt-3 flex justify-between gap-4 text-gray-600 dark:text-slate-400">
         <div className="flex flex-col gap-1">
           <label htmlFor="range-min" className="text-xs">
             Min:
@@ -92,7 +92,7 @@ export default function MultiRangeSlider({
                 e.currentTarget.blur();
               }
             }}
-            className="w-28 rounded border border-gray-300 bg-white px-2 py-1 text-sm text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+            className="w-28 rounded border border-gray-300 bg-white px-2 py-1 text-sm text-gray-900 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100"
           />
         </div>
         <div className="flex flex-col gap-1">
@@ -113,7 +113,7 @@ export default function MultiRangeSlider({
                 e.currentTarget.blur();
               }
             }}
-            className="w-28 rounded border border-gray-300 bg-white px-2 py-1 text-sm text-gray-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+            className="w-28 rounded border border-gray-300 bg-white px-2 py-1 text-sm text-gray-900 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none dark:border-slate-600 dark:bg-slate-800 dark:text-gray-100"
           />
         </div>
       </div>
