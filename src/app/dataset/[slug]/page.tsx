@@ -2,10 +2,6 @@ import fs from "fs";
 import path from "path";
 import Link from "next/link";
 
-import { createLowlight } from "lowlight";
-import { Fragment, jsx, jsxs } from "react/jsx-runtime";
-import bash from "highlight.js/lib/languages/bash";
-import { toJsxRuntime } from "hast-util-to-jsx-runtime";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPaperclip,
@@ -19,13 +15,12 @@ import Button from "@/components/button";
 import CitationCopyButton from "@/components/CitationCopyButton";
 import CopyTextButton from "@/components/CopyTextButton";
 import PageHeader from "@/components/page-header";
+import UsageCommand from "@/components/usage-command";
 
 import { citeToApa, citeToBibtex, toCite } from "@/utils/citation";
 import { formatAttachmentTag, formatFileSize } from "@/utils/format";
 import { tooltipArrowClassName, tooltipClassName } from "@/utils/tooltip";
 import { resolveAttachmentSizes } from "@/utils/zenodo";
-
-const lowlight = createLowlight({ bash });
 
 export async function generateMetadata({
   params,
@@ -94,7 +89,6 @@ export default async function DatasetPage({
     : null;
   const apaCitations = citations ? citeToApa(citations) : [];
   const bibtex = citations ? citeToBibtex(citations) : "";
-  const usageCommand = `uvx ahorn-loader download ${slug}`;
   const latestAttachment = (() => {
     const attachmentEntries = Object.entries(attachments);
     if (attachmentEntries.length === 0) {
@@ -227,26 +221,7 @@ export default async function DatasetPage({
       <aside className="mt-8 w-full shrink-0 lg:mt-0 lg:w-80">
         <div className="flex flex-col gap-y-7 lg:sticky lg:top-24">
           <section className="border-slate-200 max-lg:border-t max-lg:pt-5 dark:border-slate-700">
-            <div className="mb-3 flex items-center justify-between gap-4">
-              <h2 className="text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
-                Usage
-              </h2>
-              <CopyTextButton
-                text={usageCommand}
-                label="Copy"
-                successMessage="Command copied to clipboard."
-                errorMessage="Could not copy command."
-              />
-            </div>
-            <pre className="overflow-x-auto rounded-2xl bg-slate-950 p-4 text-sm text-slate-100 shadow-inner">
-              <code>
-                {toJsxRuntime(lowlight.highlight("bash", usageCommand), {
-                  Fragment,
-                  jsx,
-                  jsxs,
-                })}
-              </code>
-            </pre>
+            <UsageCommand slug={slug} />
           </section>
 
           <section className="border-t border-slate-200 pt-5 dark:border-slate-700">
