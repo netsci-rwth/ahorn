@@ -154,16 +154,41 @@ export default async function DatasetPage({
           eyebrow="Dataset"
           title={frontmatter.title}
           actions={
-            latestAttachment ? (
-              <Button
-                as="a"
-                href={latestAttachment.url}
-                download
-                target="_blank"
-              >
-                Download
-              </Button>
-            ) : undefined
+            <div className="flex w-full max-w-full items-stretch rounded-xl border border-slate-200 bg-white lg:max-w-120 dark:border-slate-700 dark:bg-slate-900">
+              <CopyTextButton
+                text={slug}
+                label={
+                  <span className="relative flex min-w-0 flex-col justify-center text-left">
+                    <span className="flex items-center gap-2">
+                      <span className="font-semibold tracking-widest text-slate-500 uppercase dark:text-slate-400">
+                        Slug
+                      </span>
+                    </span>
+                    <span className="mt-0.5 flex min-w-0 items-center">
+                      <code className="min-w-0 truncate rounded-md bg-slate-100/90 px-2 py-0.5 font-medium text-slate-700 dark:bg-slate-800/90 dark:text-slate-100">
+                        {slug}
+                      </code>
+                    </span>
+                  </span>
+                }
+                successMessage="Slug copied to clipboard."
+                errorMessage="Could not copy slug."
+                className="min-w-0 text-xs flex-1 cursor-pointer justify-start px-3 py-2 hover:text-primary dark:hover:text-sky-300"
+              />
+              {latestAttachment && (
+                <Button
+                  as="a"
+                  href={latestAttachment.url}
+                  download
+                  target="_blank"
+                  className="px-3 py-2 text-xs shadow-none rounded-none"
+                >
+                  <span className="max-w-16 text-center">
+                    Download Dataset
+                  </span>
+                </Button>
+              )}
+            </div>
           }
           className="border-b border-slate-200 dark:border-slate-700"
         >

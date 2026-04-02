@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 import Button from "@/components/button";
 import Toast from "@/components/toast";
@@ -13,7 +14,7 @@ export default function CopyTextButton({
   className = "cursor-pointer px-0 py-0 text-xs font-semibold text-primary hover:text-primary",
 }: {
   text: string;
-  label: string;
+  label: React.ReactNode;
   successMessage: string;
   errorMessage: string;
   className?: string;
@@ -65,13 +66,15 @@ export default function CopyTextButton({
       >
         {label}
       </Button>
-      {toast && (
-        <Toast
-          message={toast.message}
-          variant={toast.variant}
-          visible={toast.visible}
-        />
-      )}
+      {toast &&
+        createPortal(
+          <Toast
+            message={toast.message}
+            variant={toast.variant}
+            visible={toast.visible}
+          />,
+          document.body,
+        )}
     </>
   );
 }
