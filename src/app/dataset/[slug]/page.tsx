@@ -120,6 +120,9 @@ export default async function DatasetPage({
     if (!license) return null;
 
     if (typeof license === "string") {
+      if (license === "unprovided-reuse-encouraged") {
+        return "No license information provided by the source. Author encourages reuse.";
+      }
       return license;
     }
 
