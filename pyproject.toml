@@ -7,7 +7,7 @@ license = "AGPL-3.0-or-later"
 classifiers = [
     "Private :: Do Not Upload",
 ]
-requires-python = "==3.14.3"
+requires-python = "==3.14.4"
 dependencies = [
     "more-itertools==11.0.1",
     "pyyaml==6.0.3",
