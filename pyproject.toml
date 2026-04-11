@@ -11,7 +11,7 @@ requires-python = "==3.14.4"
 dependencies = [
     "more-itertools==11.0.2",
     "pyyaml==6.0.3",
-    "rich==14.3.3",
+    "rich==14.3.4",
     "toponetx==0.4.0",
     "networkx==3.6.1",
 ]
