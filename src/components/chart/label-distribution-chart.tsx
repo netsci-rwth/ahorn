@@ -4,9 +4,15 @@ import React, { useEffect, useState } from "react";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import StatisticsBlock from "@/components/statistics-block";
+import imbalanceDegree from "@/utils/imbalance-degree";
 import { getChartTooltipOptions } from "@/utils/tooltip";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
+
+const imbalanceFormatter = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 2,
+});
 
 export type LabelDistributionChartProps = {
   labels: Record<string, number>;
@@ -111,7 +117,8 @@ export default function LabelDistributionChart({
         <Pie data={data} options={options} />
       </div>
       <p className="mt-2 text-sm text-slate-500">
-        {uniqueLabelCount} unique labels
+        {uniqueLabelCount} unique {uniqueLabelCount === 1 ? "label" : "labels"}{" "}
+        · imbalance degree: {imbalanceFormatter.format(imbalanceDegree(labels))}
       </p>
     </StatisticsBlock>
   );
