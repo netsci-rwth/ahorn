@@ -40,6 +40,7 @@ export default function LabelDistributionChart({
   }, []);
 
   const tickColor = isDark ? "rgba(255,255,255,0.78)" : "rgba(51,65,85,0.82)";
+  const uniqueLabelCount = Object.keys(labels).length;
 
   const sortedEntries = Object.entries(labels).sort((a, b) => b[1] - a[1]);
 
@@ -109,6 +110,9 @@ export default function LabelDistributionChart({
       <div style={{ height: 320 }}>
         <Pie data={data} options={options} />
       </div>
+      <p className="mt-2 text-sm text-slate-500">
+        {uniqueLabelCount} unique labels
+      </p>
     </StatisticsBlock>
   );
 }
