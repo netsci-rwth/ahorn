@@ -9,7 +9,7 @@ classifiers = [
 ]
 requires-python = "==3.14.5"
 dependencies = [
-    "more-itertools==11.0.2",
+    "more-itertools==11.1.0",
     "pyyaml==6.0.3",
     "rich==15.0.0",
     "toponetx==0.4.0",
