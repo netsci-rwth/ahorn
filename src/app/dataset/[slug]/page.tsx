@@ -407,7 +407,7 @@ export default async function DatasetPage({
                       zenodoUrl = `https://zenodo.org${match[0]}`;
                     }
                   }
-                  
+
                   const additionalFormats = getResolvedAttachmentFormatEntries(
                     attachment,
                   ).filter(([format]) => format !== "ahorn");
@@ -489,10 +489,10 @@ export default async function DatasetPage({
                                     </span>
                                     {typeof formatAttachment.size ===
                                       "number" && (
-                                      <span className="shrink-0 text-slate-400 dark:text-slate-500">
-                                        {formatFileSize(formatAttachment.size)}
-                                      </span>
-                                    )}
+                                        <span className="shrink-0 text-slate-400 dark:text-slate-500">
+                                          {formatFileSize(formatAttachment.size)}
+                                        </span>
+                                      )}
                                   </a>
                                 );
                               },

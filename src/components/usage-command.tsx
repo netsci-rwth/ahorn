@@ -18,11 +18,7 @@ const packageManagers = [
   },
 ] as const;
 
-export default function UsageCommand({
-  slug,
-}: {
-  slug: string;
-}) {
+export default function UsageCommand({ slug }: { slug: string }) {
   const [selectedManager, setSelectedManager] = useState<
     (typeof packageManagers)[number]["id"]
   >(() => {
@@ -31,10 +27,7 @@ export default function UsageCommand({
     }
 
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (
-      stored &&
-      packageManagers.some((manager) => manager.id === stored)
-    ) {
+    if (stored && packageManagers.some((manager) => manager.id === stored)) {
       return stored as (typeof packageManagers)[number]["id"];
     }
 
@@ -85,7 +78,7 @@ export default function UsageCommand({
       </div>
 
       <pre className="overflow-x-auto rounded-xl bg-slate-950 p-4 text-sm text-slate-100 shadow-inner">
-        <code className="whitespace-pre-wrap break-all">{command}</code>
+        <code className="break-all whitespace-pre-wrap">{command}</code>
       </pre>
     </>
   );

@@ -6,7 +6,10 @@
  * @param uniform Expected probability for each class in a uniform distribution.
  * @returns Non-negative distance; `0` means perfectly uniform.
  */
-function euclideanDistanceToUniform(distribution: number[], uniform: number): number {
+function euclideanDistanceToUniform(
+  distribution: number[],
+  uniform: number,
+): number {
   return Math.sqrt(
     distribution.reduce(
       (sum, probability) => sum + Math.pow(probability - uniform, 2),
@@ -27,7 +30,9 @@ function euclideanDistanceToUniform(distribution: number[], uniform: number): nu
  * @param labels Mapping of class label to sample count.
  * @returns Imbalance degree where `0` indicates balanced distribution; larger values indicate stronger imbalance.
  */
-export default function imbalanceDegree(labels: Record<string, number>): number {
+export default function imbalanceDegree(
+  labels: Record<string, number>,
+): number {
   const counts = Object.values(labels).filter((count) => count > 0);
   const totalCount = counts.reduce((sum, count) => sum + count, 0);
 

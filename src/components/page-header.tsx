@@ -31,7 +31,7 @@ export default function PageHeader({
               {eyebrow}
             </p>
           )}
-          <h1 className="mt-3 wrap-break-word text-4xl font-semibold tracking-tight text-slate-950 dark:text-slate-50">
+          <h1 className="mt-3 text-4xl font-semibold tracking-tight wrap-break-word text-slate-950 dark:text-slate-50">
             {title}
           </h1>
         </div>
