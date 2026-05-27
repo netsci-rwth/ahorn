@@ -400,6 +400,14 @@ export default async function DatasetPage({
                     attachment.ahorn.url,
                     "https://ahorn.rwth-aachen.de/",
                   );
+                  let zenodoUrl: string | null = null;
+                  if (ahornUrl.hostname === "zenodo.org") {
+                    const match = ahornUrl.pathname.match(/^\/records\/\d+/);
+                    if (match) {
+                      zenodoUrl = `https://zenodo.org${match[0]}`;
+                    }
+                  }
+                  
                   const additionalFormats = getResolvedAttachmentFormatEntries(
                     attachment,
                   ).filter(([format]) => format !== "ahorn");
@@ -409,16 +417,28 @@ export default async function DatasetPage({
                       key={key}
                       className="rounded border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900"
                     >
-                      <div className="flex min-w-0 items-center gap-2">
-                        <span className="flex size-7 shrink-0 items-center justify-center rounded bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
-                          <FontAwesomeIcon
-                            icon={faPaperclip}
-                            className="size-3"
-                          />
-                        </span>
-                        <span className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">
-                          {formatAttachmentTag(key)}
-                        </span>
+                      <div className="flex min-w-0 items-center justify-between gap-2">
+                        <div className="flex min-w-0 items-center gap-2">
+                          <span className="flex size-7 shrink-0 items-center justify-center rounded bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                            <FontAwesomeIcon
+                              icon={faPaperclip}
+                              className="size-3"
+                            />
+                          </span>
+                          <span className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">
+                            {formatAttachmentTag(key)}
+                          </span>
+                        </div>
+                        {zenodoUrl && (
+                          <a
+                            href={zenodoUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-xs font-semibold text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-sky-300"
+                          >
+                            Zenodo
+                          </a>
+                        )}
                       </div>
 
                       <a
