@@ -27,7 +27,7 @@ patch_dumper()
 root_dir = Path(__file__).parent.parent
 dataset_file = root_dir / "public" / "datasets" / "music-blues-reviews.txt"
 datasheet_file = root_dir / "src" / "datasets" / "music-blues-reviews.mdx"
-revision = 1
+revision = 2
 
 nodes, hyperedges = load_benson_hyperedges(
     root_dir / "data" / "cat-edge-music-blues-reviews"
