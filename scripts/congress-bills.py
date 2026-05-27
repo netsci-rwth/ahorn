@@ -57,7 +57,7 @@ update_frontmatter(
     datasheet_file,
     {
         "attachments": {
-            f"revision-{revision}": dataset_file.name,
+            f"revision-{revision}": {"ahorn": dataset_file.name},
         },
         "shape": {
             datetime.strptime(hour, "%Y-%m-%d %H")

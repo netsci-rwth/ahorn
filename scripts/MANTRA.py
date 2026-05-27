@@ -154,7 +154,7 @@ for dimension in [2, 3]:
                 "avg-degree": avg_degrees,
             },
             "attachments": {
-                f"revision-{revision}": dataset_file.name,
+                f"revision-{revision}": {"ahorn": dataset_file.name},
             },
         },
     )

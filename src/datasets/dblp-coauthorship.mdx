@@ -10,8 +10,13 @@ tags:
 related:
   - cora-coauthorship
 attachments:
-  revision-1: https://zenodo.org/records/18632385/files/dblp-coauthorship.txt.gz?download=1
-  revision-2: https://zenodo.org/records/19232918/files/dblp-coauthorship.txt.gz?download=1
+  revision-1:
+    ahorn: https://zenodo.org/records/18632385/files/dblp-coauthorship.txt.gz?download=1
+  revision-2:
+    ahorn: https://zenodo.org/records/19232918/files/dblp-coauthorship.txt.gz?download=1
+    changelog:
+      - Updated the format version to 0.3.
+      - Dropped papers with only one author.
 statistics:
   num-nodes: 22363
   num-edges: 32304
@@ -144,13 +149,3 @@ This dataset is commonly used as a benchmark in hypergraph learning tasks for au
   <Stat title="Hyperedge Type" value="Publication" />
   <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />
 </dl>
-
-## Changelog
-
-<details className="mt-3 rounded border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
-  <summary className="cursor-pointer select-none">Revision 2</summary>
-  <div>
-    - Update to format version `0.3`.
-    - Drop papers with only one author.
-  </div>
-</details>

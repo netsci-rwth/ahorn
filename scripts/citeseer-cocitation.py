@@ -100,7 +100,7 @@ update_frontmatter(
     datasheet_file,
     {
         "attachments": {
-            f"revision-{revision}": dataset_file.name,
+            f"revision-{revision}": {"ahorn": dataset_file.name},
         },
         "statistics": {
             "num-nodes": len(nodes),

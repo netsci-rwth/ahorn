@@ -1,9 +1,26 @@
+export type RevisionFormat = `revision-${number}`;
+export type AttachmentFormat = "ahorn" | (string & {});
+
 export type ResolvedAttachment = {
   url: string;
   size?: number;
 };
 
-type AttachmentMap = Record<string, string>;
+export type AttachmentMetadata = {
+  ahorn: string;
+  hif?: string;
+  changelog?: string[];
+  [format: string]: string | string[] | undefined;
+};
+
+export type AttachmentMap = Record<RevisionFormat, AttachmentMetadata>;
+
+export type ResolvedRevisionAttachment = {
+  ahorn: ResolvedAttachment;
+  hif?: ResolvedAttachment;
+  changelog: string[];
+  [format: string]: ResolvedAttachment | string[] | undefined;
+};
 
 type ZenodoFile = {
   key?: string;
@@ -15,6 +32,32 @@ type ZenodoRecordResponse = {
 };
 
 const zenodoRecordCache = new Map<string, Promise<Map<string, number>>>();
+
+export function isAttachmentFormat(key: string): key is AttachmentFormat {
+  return key !== "changelog";
+}
+
+export function getAttachmentFormatEntries(
+  attachment: AttachmentMetadata,
+): [AttachmentFormat, string][] {
+  return Object.entries(attachment).filter(
+    (entry): entry is [AttachmentFormat, string] =>
+      isAttachmentFormat(entry[0]) && typeof entry[1] === "string",
+  );
+}
+
+export function getResolvedAttachmentFormatEntries(
+  attachment: ResolvedRevisionAttachment,
+): [AttachmentFormat, ResolvedAttachment][] {
+  return Object.entries(attachment).filter(
+    (entry): entry is [AttachmentFormat, ResolvedAttachment] =>
+      isAttachmentFormat(entry[0]) &&
+      typeof entry[1] === "object" &&
+      entry[1] !== null &&
+      !Array.isArray(entry[1]) &&
+      typeof entry[1].url === "string",
+  );
+}
 
 function isZenodoUrl(url: string): boolean {
   try {
@@ -83,28 +126,43 @@ async function getZenodoRecordFiles(
 
 export async function resolveAttachmentSizes(
   attachments: AttachmentMap,
-): Promise<Record<string, ResolvedAttachment>> {
+): Promise<Record<RevisionFormat, ResolvedRevisionAttachment>> {
   const resolvedEntries = await Promise.all(
     Object.entries(attachments).map(async ([key, attachment]) => {
-      const resolvedAttachment = { url: attachment };
-      if (!isZenodoUrl(attachment)) {
-        return [key, resolvedAttachment] as const;
-      }
+      const resolvedFormats = await Promise.all(
+        getAttachmentFormatEntries(attachment).map(async ([format, url]) => {
+          const resolvedAttachment = await resolveOneAttachment(url);
+          return [format, resolvedAttachment] as const;
+        }),
+      );
 
-      const zenodoFile = parseZenodoFileUrl(attachment);
-
-      try {
-        const files = await getZenodoRecordFiles(zenodoFile.recordId);
-        const size = files.get(zenodoFile.filename);
-
-        if (typeof size === "number") {
-          return [key, { ...resolvedAttachment, size }] as const;
-        }
-      } catch {}
-
-      return [key, resolvedAttachment] as const;
+      return [
+        key,
+        {
+          ...Object.fromEntries(resolvedFormats),
+          changelog: attachment.changelog ?? [],
+        } as ResolvedRevisionAttachment,
+      ] as const;
     }),
   );
 
   return Object.fromEntries(resolvedEntries);
+}
+
+async function resolveOneAttachment(url: string): Promise<ResolvedAttachment> {
+  const resolvedAttachment = { url };
+  if (!isZenodoUrl(url)) {
+    return resolvedAttachment;
+  }
+
+  const zenodoFile = parseZenodoFileUrl(url);
+
+  try {
+    const files = await getZenodoRecordFiles(zenodoFile.recordId);
+    const size = files.get(zenodoFile.filename);
+
+    return { url, size };
+  } catch {}
+
+  return { url, size: undefined };
 }

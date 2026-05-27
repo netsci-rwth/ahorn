@@ -18,8 +18,13 @@ tags:
   - 'metadata: edge classes'
   - 'source: benson'
 attachments:
-  revision-1: https://zenodo.org/records/17202762/files/madison-restaurant-reviews.txt?download=1
-  revision-2: https://zenodo.org/records/18771507/files/madison-restaurant-reviews.txt.gz?download=1
+  revision-1:
+    ahorn: https://zenodo.org/records/17202762/files/madison-restaurant-reviews.txt?download=1
+  revision-2:
+    ahorn: https://zenodo.org/records/18771507/files/madison-restaurant-reviews.txt.gz?download=1
+    changelog:
+      - Renamed the edge attribute from `genre` to `cuisine`.
+      - Provided the dataset in gzipped format to reduce file size.
 statistics:
   num-nodes: 565
   num-edges: 601
@@ -150,13 +155,3 @@ Non-maximal simplices get the category of all maximal simplices they are contain
   <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-3" />
 </dl>
 <LabelDistributionChart title="Hyperedge Label Distribution" labels={frontmatter["edge-label-count"]} />
-
-## Changelog
-
-<details className="mt-3 rounded border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
-  <summary className="cursor-pointer select-none">Revision 2</summary>
-  <div>
-    - The edge attribute was renamed from `genre` to `cuisine`.
-    - The dataset is now provided in gzipped format to reduce file size.
-  </div>
-</details>

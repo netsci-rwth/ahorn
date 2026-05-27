@@ -64,7 +64,7 @@ update_frontmatter(
             "node-degrees": dict(sorted(degree_histogram.items())),
         },
         "attachments": {
-            f"revision-{revision}": dataset_file.name,
+            f"revision-{revision}": {"ahorn": dataset_file.name},
         },
         "shape": {str(year): shape for year, shape in num_hyperedges.items()},
     },

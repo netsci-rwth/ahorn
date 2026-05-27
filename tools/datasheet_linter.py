@@ -7,6 +7,7 @@
 # ]
 # ///
 
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
@@ -176,6 +177,16 @@ def lint_file(path: Path) -> list[FrontmatterIssue]:
         parsed = urlparse(value)
         return parsed.scheme == "https" and bool(parsed.netloc)
 
+    def extract_attachment_formats(attachment: dict[Hashable, Any]) -> dict[str, str]:
+        """Return format URLs/paths for a supported attachment entry."""
+        formats: dict[str, str] = {}
+        for format_name, value in attachment.items():
+            if format_name == "changelog":
+                continue
+            if isinstance(value, str) and value.strip():
+                formats[str(format_name)] = value
+        return formats
+
     # Check field ordering
     order_map = {key: index for index, key in enumerate(FIELD_ORDER)}
     last_index = -1
@@ -191,9 +202,7 @@ def lint_file(path: Path) -> list[FrontmatterIssue]:
                 FrontmatterIssue(
                     path=path,
                     line=line,
-                    message=(
-                        f"Key '{key}' is out of order; expected before '{expected_after}'."
-                    ),
+                    message=f"Key '{key}' is out of order; expected before '{expected_after}'.",
                 )
             )
         else:
@@ -235,9 +244,7 @@ def lint_file(path: Path) -> list[FrontmatterIssue]:
                         FrontmatterIssue(
                             path=path,
                             line=line,
-                            message=(
-                                f"Invalid network-type '{value}'. Allowed values: {allowed}."
-                            ),
+                            message=f"Invalid network-type '{value}'. Allowed values: {allowed}.",
                         )
                     )
                     continue
@@ -273,27 +280,69 @@ def lint_file(path: Path) -> list[FrontmatterIssue]:
             )
         else:
             for attachment_key, attachment in attachments.items():
-                if not isinstance(attachment, str):
+                if not isinstance(attachment, dict):
                     issues.append(
                         FrontmatterIssue(
                             path=path,
                             line=attachments_line,
-                            message="Each attachments entry must be a full https URL string.",
+                            message="Each attachments entry must be a mapping with a non-empty ahorn field and optional format fields.",
                         )
                     )
                     continue
 
-                # Check that URL is valid for all attachments
-                if not is_full_url(attachment):
+                attachment_formats = extract_attachment_formats(attachment)
+
+                if "ahorn" not in attachment_formats:
                     issues.append(
                         FrontmatterIssue(
                             path=path,
                             line=attachments_line,
-                            message=(
-                                f"attachments.{attachment_key} must be a full https URL."
-                            ),
+                            message=f"attachments.{attachment_key} must define an ahorn attachment.",
                         )
                     )
+
+                changelog = attachment.get("changelog")
+                revision_match = re.fullmatch(r"revision-(\d+)", str(attachment_key))
+                if (
+                    revision_match is not None
+                    and int(revision_match.group(1)) > 1
+                    and "changelog" not in attachment
+                ):
+                    issues.append(
+                        FrontmatterIssue(
+                            path=path,
+                            line=attachments_line,
+                            message=f"attachments.{attachment_key} must define a changelog.",
+                        )
+                    )
+
+                if changelog is not None and (
+                    not isinstance(changelog, list)
+                    or any(
+                        not isinstance(entry, str) or not entry.strip()
+                        for entry in changelog
+                    )
+                ):
+                    issues.append(
+                        FrontmatterIssue(
+                            path=path,
+                            line=attachments_line,
+                            message="attachments changelog entries must be a list of non-empty strings.",
+                        )
+                    )
+
+                for format_name, attachment_value in attachment_formats.items():
+                    if not is_full_url(attachment_value):
+                        issues.append(
+                            FrontmatterIssue(
+                                path=path,
+                                line=attachments_line,
+                                message=(
+                                    "attachments."
+                                    f"{attachment_key}.{format_name} must be a full https URL."
+                                ),
+                            )
+                        )
 
             # Check for revision fields (revision-1, revision-2, etc.)
             revision_keys = [key for key in attachments if key.startswith("revision-")]
@@ -303,9 +352,7 @@ def lint_file(path: Path) -> list[FrontmatterIssue]:
                     FrontmatterIssue(
                         path=path,
                         line=attachments_line,
-                        message=(
-                            "Attachments must include at least one revision entry (e.g., revision-1)."
-                        ),
+                        message="Attachments must include at least one revision entry (e.g., revision-1).",
                     )
                 )
             else:
@@ -320,7 +367,10 @@ def lint_file(path: Path) -> list[FrontmatterIssue]:
                             FrontmatterIssue(
                                 path=path,
                                 line=attachments_line,
-                                message=f"Invalid revision key format: '{key}'. Expected format: revision-N where N is a number.",
+                                message=(
+                                    "Invalid revision key format: "
+                                    f"'{key}'. Expected format: revision-N where N is a number."
+                                ),
                             )
                         )
 
@@ -343,7 +393,10 @@ def lint_file(path: Path) -> list[FrontmatterIssue]:
                             FrontmatterIssue(
                                 path=path,
                                 line=attachments_line,
-                                message=f"Revisions must be consecutive. Found: {revision_numbers}, expected: {expected}.",
+                                message=(
+                                    "Revisions must be consecutive. "
+                                    f"Found: {revision_numbers}, expected: {expected}."
+                                ),
                             )
                         )
 

@@ -1,13 +1,17 @@
 import fs from "fs";
 import path from "path";
 
-import { resolveAttachmentSizes } from "@/utils/zenodo";
+import {
+  resolveAttachmentSizes,
+  type AttachmentMap,
+  type ResolvedRevisionAttachment,
+} from "@/utils/zenodo";
 
 export interface Dataset {
   slug: string;
   title: string;
   tags: string[];
-  attachments: Record<string, { url: string; size?: number }>;
+  attachments: Record<string, ResolvedRevisionAttachment>;
 }
 
 export const dynamic = "force-static";
@@ -29,7 +33,7 @@ export async function GET() {
               typeof frontmatter.title === "string" ? frontmatter.title : slug,
             tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],
             attachments: await resolveAttachmentSizes(
-              frontmatter.attachments || {},
+              (frontmatter.attachments || {}) as AttachmentMap,
             ),
           };
         }),

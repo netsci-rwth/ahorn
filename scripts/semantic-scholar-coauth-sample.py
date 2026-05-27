@@ -86,7 +86,7 @@ update_frontmatter(
             "maximal-simplex-sizes": dict(sorted(maximal_simplex_size_hist.items())),
         },
         "attachments": {
-            f"revision-{revision}": dataset_file.name,
+            f"revision-{revision}": {"ahorn": dataset_file.name},
         },
     },
 )
