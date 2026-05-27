@@ -360,10 +360,10 @@ export default async function DatasetPage({
 
           <section className="border-t border-slate-200 pt-5 dark:border-slate-700">
             <h2 className="mb-3 text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
-              Source Information
+              Provenance
             </h2>
-            <dl>
-              <div className="pt-0 pb-4">
+            <dl className="space-y-4">
+              <div>
                 <dt className="text-sm font-medium text-slate-900 dark:text-slate-100">
                   Source
                 </dt>
@@ -378,12 +378,27 @@ export default async function DatasetPage({
                   </a>
                 </dd>
               </div>
-              <div className="pt-1">
+              <div>
                 <dt className="text-sm font-medium text-slate-900 dark:text-slate-100">
                   License
                 </dt>
                 <dd className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                   {licenseDisplay ?? "Unknown"}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                  Reproducible Build
+                </dt>
+                <dd className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                  <a
+                    href={`https://github.com/netsci-rwth/ahorn/blob/main/scripts/${slug}.py`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-primary dark:hover:text-sky-300"
+                  >
+                    Converter Script
+                  </a>
                 </dd>
               </div>
             </dl>
