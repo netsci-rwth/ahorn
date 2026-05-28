@@ -161,12 +161,10 @@ export default function LineChart({
   }
 
   const gridColor = isDark
-    ? "rgba(148,163,184,0.16)"
-    : "rgba(148,163,184,0.22)";
+    ? "rgba(148,163,184,0.10)"
+    : "rgba(148,163,184,0.14)";
   const tickColor = isDark ? "rgba(255,255,255,0.78)" : "rgba(51,65,85,0.82)";
-  const borderColor = isDark
-    ? "rgba(148,163,184,0.25)"
-    : "rgba(148,163,184,0.3)";
+  const borderColor = "rgba(148,163,184,0)";
 
   const chart_options = {
     responsive: true,
@@ -178,12 +176,12 @@ export default function LineChart({
           unit: timeUnit,
         },
         stacked: true,
-        ticks: { color: tickColor },
+        ticks: { color: tickColor, padding: 8 },
         grid: { color: gridColor, borderColor },
       },
       y: {
         stacked: true,
-        ticks: { color: tickColor },
+        ticks: { color: tickColor, padding: 8 },
         grid: { color: gridColor, borderColor },
       },
     },
@@ -224,15 +222,18 @@ export default function LineChart({
   return (
     <StatisticsBlock title="Hyperedges Over Time">
       {selectableUnits.length > 1 && (
-        <div className="mb-4 flex items-center gap-3">
-          <label htmlFor="time-unit" className="text-sm text-slate-700">
+        <div className="mb-4 flex flex-wrap items-center gap-3">
+          <label
+            htmlFor="time-unit"
+            className="text-sm font-medium text-slate-600 dark:text-slate-300"
+          >
             Aggregate by:
           </label>
           <select
             id="time-unit"
             value={timeUnit}
             onChange={(e) => setTimeUnit(e.target.value as TimeUnit)}
-            className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none"
+            className="rounded-lg bg-white/85 px-3 py-1.5 text-sm font-medium text-slate-900 outline-none focus:ring-2 focus:ring-primary/25 dark:bg-slate-950/35 dark:text-slate-100"
           >
             {selectableUnits.map((unit) => (
               <option key={unit} value={unit}>
@@ -243,7 +244,7 @@ export default function LineChart({
         </div>
       )}
 
-      <div style={{ height: 320 }}>
+      <div className="h-80">
         <Line options={chart_options} data={chart_data} />
       </div>
     </StatisticsBlock>

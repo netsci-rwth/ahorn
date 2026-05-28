@@ -13,10 +13,13 @@ export default function StatisticsBlock({
 }) {
   return (
     <section
-      className={classNames("border-l-2 border-slate-200 pl-4", className)}
+      className={classNames(
+        "rounded-lg bg-slate-50/80 p-4 dark:bg-slate-900/65",
+        className,
+      )}
     >
       {title && (
-        <h3 className="truncate text-sm font-medium tracking-wide text-slate-500 uppercase">
+        <h3 className="text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
           {title}
         </h3>
       )}

@@ -93,12 +93,10 @@ export default function DegreeLineChart({
     : "linear";
 
   const gridColor = isDark
-    ? "rgba(148,163,184,0.16)"
-    : "rgba(148,163,184,0.22)";
+    ? "rgba(148,163,184,0.10)"
+    : "rgba(148,163,184,0.14)";
   const tickColor = isDark ? "rgba(255,255,255,0.78)" : "rgba(51,65,85,0.82)";
-  const borderColor = isDark
-    ? "rgba(148,163,184,0.25)"
-    : "rgba(148,163,184,0.3)";
+  const borderColor = "rgba(148,163,184,0)";
 
   const options = {
     responsive: true,
@@ -106,20 +104,21 @@ export default function DegreeLineChart({
     scales: {
       x: {
         type: "category" as const,
-        title: { display: true, text: "Degree" },
-        ticks: { color: tickColor },
+        title: { display: true, text: "Degree", color: tickColor },
+        ticks: { color: tickColor, padding: 8 },
         grid: { color: gridColor, borderColor },
       },
       y: {
         type: yType,
-        title: { display: true, text: "Count" },
+        title: { display: true, text: "Count", color: tickColor },
         suggestedMin: useLogScale ? 1 : undefined,
         ticks: useLogScale
           ? {
               color: tickColor,
+              padding: 8,
               callback: (value: unknown) => String(value),
             }
-          : { color: tickColor },
+          : { color: tickColor, padding: 8 },
         grid: { color: gridColor, borderColor },
       },
     },
@@ -138,17 +137,17 @@ export default function DegreeLineChart({
   return (
     <StatisticsBlock title={title}>
       <div className="mb-4">
-        <label className="inline-flex items-center gap-2 text-sm text-slate-700">
+        <label className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-300">
           <input
             type="checkbox"
             checked={useLogScale}
             onChange={(e) => setUseLogScale(e.target.checked)}
-            className="rounded border-slate-300 text-primary focus:ring-primary"
+            className="rounded bg-white text-primary focus:ring-primary/30 dark:bg-slate-950/35"
           />
           Use log scale (y-axis)
         </label>
       </div>
-      <div style={{ height: 320 }}>
+      <div className="h-80">
         <Line data={data} options={options} />
       </div>
     </StatisticsBlock>

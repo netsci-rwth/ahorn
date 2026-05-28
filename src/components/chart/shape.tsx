@@ -61,8 +61,9 @@ export default function ShapeChart({ shape }: ShapeChartProps) {
 
   const tickColor = isDark ? "rgba(255,255,255,0.78)" : "rgba(51,65,85,0.82)";
   const gridColor = isDark
-    ? "rgba(148,163,184,0.16)"
-    : "rgba(148,163,184,0.22)";
+    ? "rgba(148,163,184,0.10)"
+    : "rgba(148,163,184,0.14)";
+  const borderColor = "rgba(148,163,184,0)";
 
   // Create dimension labels
   const dimensionLabels = shape.map((_, i) => {
@@ -104,19 +105,19 @@ export default function ShapeChart({ shape }: ShapeChartProps) {
     },
     scales: {
       y: {
-        ticks: { color: tickColor },
-        grid: { color: gridColor },
+        ticks: { color: tickColor, padding: 8 },
+        grid: { color: gridColor, borderColor },
       },
       x: {
-        ticks: { color: tickColor },
-        grid: { color: gridColor },
+        ticks: { color: tickColor, padding: 8 },
+        grid: { color: gridColor, borderColor },
       },
     },
   } as const;
 
   return (
     <StatisticsBlock title="Dataset Shape">
-      <div style={{ height: 320 }}>
+      <div className="h-80">
         <Bar data={data} options={options} />
       </div>
     </StatisticsBlock>

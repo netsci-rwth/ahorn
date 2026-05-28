@@ -99,7 +99,14 @@ export default function LabelDistributionChart({
       legend: {
         position: "right" as const,
         align: "center" as const,
-        labels: { color: tickColor },
+        labels: {
+          color: tickColor,
+          boxWidth: 10,
+          boxHeight: 10,
+          padding: 14,
+          usePointStyle: true,
+          pointStyle: "circle" as const,
+        },
       },
       tooltip: {
         ...getChartTooltipOptions(isDark),
@@ -113,10 +120,10 @@ export default function LabelDistributionChart({
 
   return (
     <StatisticsBlock title={title}>
-      <div style={{ height: 320 }}>
+      <div className="h-80">
         <Pie data={data} options={options} />
       </div>
-      <p className="mt-2 text-sm text-slate-500">
+      <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">
         {uniqueLabelCount} unique {uniqueLabelCount === 1 ? "label" : "labels"}{" "}
         · imbalance degree: {imbalanceFormatter.format(imbalanceDegree(labels))}
       </p>

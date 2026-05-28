@@ -10,7 +10,7 @@ import {
   faSection,
 } from "@fortawesome/free-solid-svg-icons";
 
-import AboutSidebarNav from "@/components/about-sidebar-nav";
+import SidebarNav from "@/components/sidebar-nav";
 
 const links = {
   About: [
@@ -42,7 +42,7 @@ export default function AboutLayout({
   return (
     <div className="gap-8 sm:flex">
       <aside className="sm:sticky sm:top-24 sm:w-72 sm:shrink-0 sm:self-start">
-        <AboutSidebarNav links={links} />
+        <SidebarNav links={links} />
       </aside>
       <main
         className="prose max-w-none flex-1 max-sm:mt-8 sm:min-w-0 dark:prose-invert"

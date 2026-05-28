@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
-import Link from "next/link";
-import type { ReactNode } from "react";
+import type { ComponentPropsWithoutRef, ReactNode } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -17,6 +16,7 @@ import Button from "@/components/button";
 import CitationCopyButton from "@/components/CitationCopyButton";
 import CopyTextButton from "@/components/CopyTextButton";
 import PageHeader from "@/components/page-header";
+import SidebarNav from "@/components/sidebar-nav";
 import UsageCommand from "@/components/usage-command";
 
 import { citeToApa, citeToBibtex, toCite } from "@/utils/citation";
@@ -133,17 +133,20 @@ function getZenodoRecordUrl(url: string): string | null {
   return match ? `https://zenodo.org${match[0]}` : null;
 }
 
+type SidebarSectionProps = {
+  title: string;
+  children: ReactNode;
+  className?: string;
+} & ComponentPropsWithoutRef<"section">;
+
 function SidebarSection({
   title,
   children,
   className = "",
-}: {
-  title: string;
-  children: ReactNode;
-  className?: string;
-}) {
+  ...rest
+}: SidebarSectionProps) {
   return (
-    <section className={className}>
+    <section className={className} {...rest}>
       <h2 className="mb-3 text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
         {title}
       </h2>
@@ -542,21 +545,16 @@ export default async function DatasetPage({
             Array.isArray(frontmatter.related) &&
             frontmatter.related.length > 0 && (
               <section data-pagefind-ignore>
-                <h2 className="mb-3 text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
-                  Related Datasets
-                </h2>
-                <ul className="space-y-2">
-                  {related_datasets.map(({ slug, title }) => (
-                    <li key={slug}>
-                      <Link
-                        href={`/dataset/${slug}`}
-                        className="-mx-3 block rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-primary dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-sky-300"
-                      >
-                        {title}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                <SidebarNav
+                  links={{
+                    "Related Datasets": related_datasets.map(
+                      ({ slug, title }) => ({
+                        href: `/dataset/${slug}`,
+                        label: title,
+                      }),
+                    ),
+                  }}
+                />
               </section>
             )}
           {frontmatter.citation && (

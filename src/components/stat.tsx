@@ -9,7 +9,7 @@ export default function Stat({
 }) {
   return (
     <StatisticsBlock title={title}>
-      <p className="text-3xl font-semibold tracking-tight text-slate-900 dark:text-gray-100">
+      <p className="text-2xl leading-tight font-semibold tracking-tight wrap-break-word text-slate-950 dark:text-slate-50">
         {value}
       </p>
     </StatisticsBlock>
