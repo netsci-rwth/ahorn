@@ -15,8 +15,8 @@ import Badge from "@/components/badge";
 import Button from "@/components/button";
 import CitationCopyButton from "@/components/CitationCopyButton";
 import CopyTextButton from "@/components/CopyTextButton";
+import DatasetCardList from "@/components/dataset-card-list";
 import PageHeader from "@/components/page-header";
-import SidebarNav from "@/components/sidebar-nav";
 import UsageCommand from "@/components/usage-command";
 
 import { citeToApa, citeToBibtex, toCite } from "@/utils/citation";
@@ -191,31 +191,12 @@ export default async function DatasetPage({
   const { default: Dataset, frontmatter } = await import(
     `@/datasets/${slug}.mdx`
   );
-
-  // fetch related datasets
-  let related_datasets;
-  if (frontmatter.related && Array.isArray(frontmatter.related)) {
-    related_datasets = await Promise.all(
-      frontmatter.related.map(async (relatedSlug: string) => {
-        try {
-          const { frontmatter: relatedFrontmatter } = await import(
-            `@/datasets/${relatedSlug}.mdx`
-          );
-          return {
-            slug: relatedSlug,
-            title: relatedFrontmatter.title || relatedSlug,
-          };
-        } catch {
-          return {
-            slug: relatedSlug,
-            title: relatedSlug,
-          };
-        }
-      }),
-    );
-  } else {
-    related_datasets = [];
-  }
+  const relatedDatasetSlugs = Array.isArray(frontmatter.related)
+    ? frontmatter.related.filter(
+        (relatedSlug: unknown): relatedSlug is string =>
+          typeof relatedSlug === "string",
+      )
+    : [];
 
   const attachmentMetadata = (frontmatter.attachments || {}) as AttachmentMap;
   const attachments = await resolveAttachmentSizes(attachmentMetadata);
@@ -540,22 +521,11 @@ export default async function DatasetPage({
             </dl>
           </SidebarSection>
 
-          {frontmatter.related &&
-            Array.isArray(frontmatter.related) &&
-            frontmatter.related.length > 0 && (
-              <section data-pagefind-ignore>
-                <SidebarNav
-                  links={{
-                    "Related Datasets": related_datasets.map(
-                      ({ slug, title }) => ({
-                        href: `/dataset/${slug}`,
-                        label: title,
-                      }),
-                    ),
-                  }}
-                />
-              </section>
-            )}
+          {relatedDatasetSlugs.length > 0 && (
+            <SidebarSection title="Related Datasets" data-pagefind-ignore>
+              <DatasetCardList slugs={relatedDatasetSlugs} columns="single" />
+            </SidebarSection>
+          )}
           {frontmatter.citation && (
             <section id="citation">
               <div className="mb-3 flex items-center justify-between gap-4">
