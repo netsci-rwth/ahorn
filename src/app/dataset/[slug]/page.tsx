@@ -20,7 +20,11 @@ import SidebarNav from "@/components/sidebar-nav";
 import UsageCommand from "@/components/usage-command";
 
 import { citeToApa, citeToBibtex, toCite } from "@/utils/citation";
-import { formatAttachmentTag, formatFileSize } from "@/utils/format";
+import {
+  formatAttachmentTag,
+  formatFileSize,
+  formatNetworkType,
+} from "@/utils/format";
 import { tooltipArrowClassName, tooltipClassName } from "@/utils/tooltip";
 import {
   getResolvedAttachmentFormatEntries,
@@ -29,7 +33,6 @@ import {
   type AttachmentMap,
   type ResolvedRevisionAttachment,
 } from "@/utils/zenodo";
-
 
 type ChangelogRevision = {
   key: string;
@@ -334,11 +337,7 @@ export default async function DatasetPage({
                       href={`/dataset?types=${encodeURIComponent(type)}`}
                       color="info"
                     >
-                      {type === "simplicial-complex"
-                        ? "Simplicial Complex"
-                        : type === "hypergraph"
-                          ? "Hypergraph"
-                          : type}
+                      {formatNetworkType(type)}
                     </Badge>
                   ),
                 )}
@@ -380,7 +379,7 @@ export default async function DatasetPage({
             <SidebarSection title="Files">
               <ul className="space-y-3" role="list">
                 {attachmentEntries.map(({ key, label, attachment }) => {
-                  const primaryAttachment = attachment[("ahorn")];
+                  const primaryAttachment = attachment["ahorn"];
                   const primaryUrl = new URL(
                     primaryAttachment.url,
                     "https://ahorn.rwth-aachen.de/",
@@ -480,10 +479,10 @@ export default async function DatasetPage({
                                     </span>
                                     {typeof formatAttachment.size ===
                                       "number" && (
-                                        <span className="shrink-0 text-slate-400 dark:text-slate-500">
-                                          {formatFileSize(formatAttachment.size)}
-                                        </span>
-                                      )}
+                                      <span className="shrink-0 text-slate-400 dark:text-slate-500">
+                                        {formatFileSize(formatAttachment.size)}
+                                      </span>
+                                    )}
                                   </a>
                                 );
                               },

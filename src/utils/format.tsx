@@ -16,6 +16,13 @@ export function formatNumber(number: number): string {
   return formatter.format(number);
 }
 
+export function formatNetworkType(type: string): string {
+  return type
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
 /**
  * Converts a file size in bytes to a human-readable string with appropriate units.
  *
