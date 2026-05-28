@@ -161,20 +161,24 @@ import LabelDistributionChart from "@/components/chart/label-distribution-chart"
 import Stat from "@/components/stat";
 import { formatNumber } from "@/utils/format";
 
-Hypergraph where nodes are Amazon reviewers and hyperedges are reviewers who reviewed a certain product category (different types of blues music) within a month timeframe.
+## Overview
+
+This hypergraph has Amazon reviewers as nodes and monthly co-review groups for blues music categories as hyperedges.
 The dataset was derived from the product reviews collected by Jianmo Ni, Jiacheng Li, and Julian McAuley.
 
 > [!IMPORTANT]
-> The original dataset is temporal, which this version does not capture, yet.
+> The original dataset is temporal, which this version does not capture yet.
 
 ## Attributes
 
 - `genre : string`: The genre of blues music that the reviewers co-reviewed.
 
-For simplicial complexes, the suggested construction to satisfy simplicial closure is to interpret the category label as a set.
-Non-maximal simplices get the category of all maximal simplices they are contained in.
+## Simplicial Interpretation
 
-## Dataset Statistics
+For simplicial complexes, the suggested construction to satisfy simplicial closure is to interpret the edge label as a set.
+Non-maximal simplices get the edge label of all maximal simplices they are contained in.
+
+## Statistics
 
 ### Nodes
 

@@ -73,6 +73,8 @@ import { ComputedBoxPlot } from "@/components/chart/box-plot";
 import Stat from "@/components/stat";
 import { formatNumber } from "@/utils/format";
 
+## Overview
+
 Constructed from a subsample of the Semantic Scholar Open Research Corpus, this dataset is a simplicial complex where nodes are authors and simplices are sets of co-authors on papers.
 Values on every simplex indicate the sum of citations of all papers co-authored at least by the corresponding set of authors.
 
@@ -82,7 +84,7 @@ This dataset has the following simplex attributes:
 
 - `citations : int`: The sum of citations of all papers co-authored at least by the corresponding set of authors.
 
-## Example
+## Citation Weight Example
 
 <div className="grid gap-4 md:grid-cols-2">
 
@@ -100,7 +102,7 @@ This dataset has the following simplex attributes:
   </div>
 
   <div className="flex items-center justify-center">
-    <svg viewBox="0 0 260 160" className="h-full w-full max-w-[300px]">
+    <svg viewBox="0 0 260 160" className="h-full w-full max-w-75">
       {/* Triangle ABC */}
       <path d="M 30 120 L 130 120 L 80 40 Z" className="fill-blue-100 stroke-black stroke-2" />
       
@@ -139,7 +141,7 @@ This dataset has the following simplex attributes:
 Take note that edge (A, B) has value 150 since both Paper 1 and Paper 2 were co-authored by at least A and B.
 Similarly, node C has value 104 since C co-authored Paper 1 (100 citations) and Paper 4 (4 citations).
 
-## Dataset Statistics
+## Statistics
 
 ### Nodes
 

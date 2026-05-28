@@ -125,13 +125,18 @@ shape:
 import TemporalShapeChart from "@/components/chart/temporal-shape";
 import Stat from "@/components/stat";
 
-This is a temporal higher-order network dataset, which here means a sequence of timestamped simplices where each simplex is a set of nodes. The dataset is constructed from interactions recorded by wearable sensors by people at a primary school. The sensors record interactions at a resolution of 20 seconds (recording all interactions from the previous 20 seconds).
+## Overview
+
+This temporal higher-order network records close-proximity interactions among people at a primary school.
+Wearable sensors captured contacts in 20-second windows; each timestamped simplex is a group of students interacting during one window.
+
+## Structure
 
 <dl className="not-prose grid gap-5 sm:grid-cols-2">
   <Stat title="Node Type" value="Student" />
   <Stat title="Edge Type" value="Group of Interacting Students" />
 </dl>
 
-## Dataset Statistics
+## Statistics
 
 <TemporalShapeChart shape={frontmatter.shape} minUnit="hour" maxUnit="week" />

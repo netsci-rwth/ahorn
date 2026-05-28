@@ -224,14 +224,22 @@ shape:
 import TemporalShapeChart from "@/components/chart/temporal-shape";
 import Stat from "@/components/stat";
 
-Temporal higher-order network of high-school students and their interactions.
-The temporal interactions have been recorded by wearable sensors worn by students at a resolution of 20 seconds (recording all interactions from the previous 20 seconds).
+## Overview
+
+This temporal higher-order network records close-proximity interactions among high-school students.
+Wearable sensors captured contacts in 20-second windows; each timestamped simplex is a group of students interacting during one window.
+
+## Structure
 
 <dl className="not-prose grid gap-5 sm:grid-cols-2">
   <Stat title="Node Type" value="Student" />
   <Stat title="Edge Type" value="Group of Interacting Students" />
 </dl>
 
-## Dataset Statistics
+## Statistics
 
-<TemporalShapeChart shape={frontmatter.shape} minUnit="hour" maxUnit="week" />
+<TemporalShapeChart
+  shape={frontmatter.shape}
+  minUnit="hour"
+  maxUnit="week"
+/>

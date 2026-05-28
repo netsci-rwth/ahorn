@@ -17,12 +17,13 @@ related:
   - senate-bills
 ---
 
+## Overview
+
 > [!CAUTION]
 > Dataset is not yet available.
 
-This is a temporal higher-order network dataset, which here means a sequence of timestamped simplices where each simplex is a set of nodes.
-In this dataset, nodes are US Congresspersons and simplices are comprised of the sponsor and co-sponsors of legislative bills put forth in both the House of Representatives and the Senate.
-Timestamps are in days and represent when the bill was introduced.
-The dataset was derived from James Fowler's data.
-The projected graph is a weighted undirected graph representing how many times each pair of nodes co-appears in a simplex.
-We restricted to simplices that consist of at most 25 nodes.
+This temporal higher-order network represents legislative bill sponsorship in both the House of Representatives and the Senate.
+Nodes are US Congresspersons, and each simplex contains the sponsor and co-sponsors of one bill.
+
+Timestamps are measured in days and record when each bill was introduced.
+The dataset was derived from James Fowler's data and restricted to simplices with at most 25 nodes.

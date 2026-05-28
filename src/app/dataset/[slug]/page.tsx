@@ -27,13 +27,20 @@ import {
   resolveAttachmentSizes,
   type AttachmentFormat,
   type AttachmentMap,
+  type ResolvedRevisionAttachment,
 } from "@/utils/zenodo";
+
 
 type ChangelogRevision = {
   key: string;
   label: string;
-  revision: number;
   changelog: string[];
+};
+
+type AttachmentRevision = {
+  key: string;
+  label: string;
+  attachment: ResolvedRevisionAttachment;
 };
 
 function isSafeMarkdownUrl(url: string): boolean {
@@ -116,6 +123,35 @@ function formatDownloadFormat(format: AttachmentFormat): string {
   return format.toUpperCase();
 }
 
+function getZenodoRecordUrl(url: string): string | null {
+  const parsedUrl = new URL(url, "https://ahorn.rwth-aachen.de/");
+  if (parsedUrl.hostname !== "zenodo.org") {
+    return null;
+  }
+
+  const match = parsedUrl.pathname.match(/^\/records\/\d+/);
+  return match ? `https://zenodo.org${match[0]}` : null;
+}
+
+function SidebarSection({
+  title,
+  children,
+  className = "",
+}: {
+  title: string;
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <section className={className}>
+      <h2 className="mb-3 text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
+        {title}
+      </h2>
+      {children}
+    </section>
+  );
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -184,43 +220,22 @@ export default async function DatasetPage({
   const bibtex = citations ? citeToBibtex(citations) : "";
   const changelogRevisions = Object.entries(attachmentMetadata)
     .map(([key, attachment]) => {
-      const match = key.match(/^revision-(\d+)$/);
       return {
         key,
         label: formatAttachmentTag(key),
-        revision: match
-          ? Number.parseInt(match[1], 10)
-          : Number.NEGATIVE_INFINITY,
         changelog: attachment.changelog ?? [],
       };
     })
-    .filter((entry) => entry.changelog.length > 0)
-    .sort((a, b) => b.revision - a.revision);
-  const latestAttachment = (() => {
-    const attachmentEntries = Object.entries(attachments);
-    if (attachmentEntries.length === 0) {
-      return null;
-    }
-
-    const byRevision = attachmentEntries
-      .map(([key, attachment]) => {
-        const match = key.match(/^revision-(\d+)$/);
-        return {
-          key,
-          attachment,
-          revision: match ? Number.parseInt(match[1], 10) : Number.NaN,
-        };
-      })
-      .filter((entry) => !Number.isNaN(entry.revision))
-      .sort((a, b) => b.revision - a.revision);
-
-    return (
-      byRevision[0] ?? {
-        key: attachmentEntries[0][0],
-        attachment: attachmentEntries[0][1],
-      }
-    ).attachment.ahorn;
-  })();
+    .filter((entry) => entry.changelog.length > 0);
+  const attachmentEntries: AttachmentRevision[] = Object.entries(
+    attachments,
+  ).map(([key, attachment]) => ({
+    key,
+    label: formatAttachmentTag(key),
+    attachment,
+  }));
+  const latestAttachmentEntry = attachmentEntries.at(-1) ?? null;
+  const latestAttachment = latestAttachmentEntry?.attachment["ahorn"];
 
   const licenseDisplay = (() => {
     const license = frontmatter.license;
@@ -253,7 +268,7 @@ export default async function DatasetPage({
 
   return (
     <div
-      className="lg:flex lg:items-start lg:justify-between lg:gap-8"
+      className="lg:flex lg:items-start lg:justify-between lg:gap-10 xl:gap-12"
       data-pagefind-body
     >
       <div className="min-w-0 flex-1">
@@ -352,77 +367,23 @@ export default async function DatasetPage({
         </div>
       </div>
 
-      <aside className="mt-8 w-full shrink-0 lg:mt-0 lg:w-80">
-        <div className="flex flex-col gap-y-7 lg:sticky lg:top-24">
-          <section className="border-slate-200 max-lg:border-t max-lg:pt-5 dark:border-slate-700">
+      <aside className="mt-10 w-full shrink-0 lg:mt-0 lg:w-88">
+        <div className="flex flex-col gap-y-8 lg:sticky lg:top-24">
+          <section>
             <UsageCommand slug={slug} />
           </section>
 
-          <section className="border-t border-slate-200 pt-5 dark:border-slate-700">
-            <h2 className="mb-3 text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
-              Provenance
-            </h2>
-            <dl className="space-y-4">
-              <div>
-                <dt className="text-sm font-medium text-slate-900 dark:text-slate-100">
-                  Source
-                </dt>
-                <dd className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                  <a
-                    href={frontmatter.source}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="break-all hover:text-primary dark:hover:text-sky-300"
-                  >
-                    {frontmatter.source}
-                  </a>
-                </dd>
-              </div>
-              <div>
-                <dt className="text-sm font-medium text-slate-900 dark:text-slate-100">
-                  License
-                </dt>
-                <dd className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                  {licenseDisplay ?? "Unknown"}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-sm font-medium text-slate-900 dark:text-slate-100">
-                  Reproducible Build
-                </dt>
-                <dd className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                  <a
-                    href={`https://github.com/netsci-rwth/ahorn/blob/main/scripts/${slug}.py`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-primary dark:hover:text-sky-300"
-                  >
-                    Converter Script
-                  </a>
-                </dd>
-              </div>
-            </dl>
-          </section>
-
-          {attachments && (
-            <section className="border-t border-slate-200 pt-5 dark:border-slate-700">
-              <h2 className="mb-3 text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
-                Attachments
-              </h2>
+          {attachmentEntries.length > 0 && (
+            <SidebarSection title="Files">
               <ul className="space-y-3" role="list">
-                {Object.entries(attachments).map(([key, attachment]) => {
-                  const ahornUrl = new URL(
-                    attachment.ahorn.url,
+                {attachmentEntries.map(({ key, label, attachment }) => {
+                  const primaryAttachment = attachment[("ahorn")];
+                  const primaryUrl = new URL(
+                    primaryAttachment.url,
                     "https://ahorn.rwth-aachen.de/",
                   );
-                  let zenodoUrl: string | null = null;
-                  if (ahornUrl.hostname === "zenodo.org") {
-                    const match = ahornUrl.pathname.match(/^\/records\/\d+/);
-                    if (match) {
-                      zenodoUrl = `https://zenodo.org${match[0]}`;
-                    }
-                  }
-
+                  const zenodoUrl = getZenodoRecordUrl(primaryAttachment.url);
+                  const isLatest = latestAttachmentEntry?.key === key;
                   const additionalFormats = getResolvedAttachmentFormatEntries(
                     attachment,
                   ).filter(([format]) => format !== "ahorn");
@@ -430,26 +391,38 @@ export default async function DatasetPage({
                   return (
                     <li
                       key={key}
-                      className="rounded border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900"
+                      className="rounded-xl bg-slate-50/85 p-3 dark:bg-slate-900/70"
                     >
-                      <div className="flex min-w-0 items-center justify-between gap-2">
+                      <div className="flex min-w-0 items-center justify-between gap-3">
                         <div className="flex min-w-0 items-center gap-2">
-                          <span className="flex size-7 shrink-0 items-center justify-center rounded bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                          <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
                             <FontAwesomeIcon
                               icon={faPaperclip}
                               className="size-3"
                             />
                           </span>
-                          <span className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">
-                            {formatAttachmentTag(key)}
-                          </span>
+                          <div className="min-w-0">
+                            <div className="flex min-w-0 flex-wrap items-center gap-2">
+                              <span className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">
+                                {label}
+                              </span>
+                              {isLatest && (
+                                <Badge
+                                  color="success"
+                                  className="px-2 py-0.5 text-[11px]"
+                                >
+                                  Latest
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
                         </div>
                         {zenodoUrl && (
                           <a
                             href={zenodoUrl}
                             target="_blank"
                             rel="noreferrer"
-                            className="text-xs font-semibold text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-sky-300"
+                            className="shrink-0 text-xs font-semibold text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-sky-300"
                           >
                             Zenodo
                           </a>
@@ -457,28 +430,28 @@ export default async function DatasetPage({
                       </div>
 
                       <a
-                        href={ahornUrl.href}
+                        href={primaryUrl.href}
                         download
-                        className="mt-3 flex min-h-10 items-center justify-between gap-3 rounded bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-700 dark:bg-sky-500 dark:text-slate-950 dark:hover:bg-sky-400"
+                        className="mt-3 flex min-h-12 items-center justify-between gap-3 rounded-lg bg-primary px-3 py-2.5 text-white shadow-sm transition-colors hover:bg-sky-700 dark:bg-sky-500 dark:text-slate-950 dark:hover:bg-sky-400"
                       >
-                        <span className="flex min-w-0 items-center gap-2">
+                        <span className="flex min-w-0 items-center gap-2 text-sm font-semibold">
                           <FontAwesomeIcon
                             icon={faDownload}
                             className="size-3.5 shrink-0"
                           />
                           <span>Download</span>
                         </span>
-                        {typeof attachment.ahorn.size === "number" && (
+                        {typeof primaryAttachment.size === "number" && (
                           <span className="shrink-0 text-xs font-medium text-sky-100 dark:text-slate-800">
-                            {formatFileSize(attachment.ahorn.size)}
+                            {formatFileSize(primaryAttachment.size)}
                           </span>
                         )}
                       </a>
 
                       {additionalFormats.length > 0 && (
-                        <div className="mt-3 border-t border-slate-200 pt-3 dark:border-slate-700">
+                        <div className="mt-3">
                           <div className="mb-2 text-[11px] font-semibold tracking-wide text-slate-400 uppercase dark:text-slate-500">
-                            Other formats
+                            Additional formats
                           </div>
                           <div className="flex flex-wrap gap-2">
                             {additionalFormats.map(
@@ -493,7 +466,7 @@ export default async function DatasetPage({
                                     key={format}
                                     href={url.href}
                                     download
-                                    className="inline-flex min-h-8 max-w-full items-center gap-1.5 rounded border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600 hover:border-slate-300 hover:text-primary dark:border-slate-700 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-sky-300"
+                                    className="inline-flex min-h-8 max-w-full items-center gap-1.5 rounded-lg bg-white/80 px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-white hover:text-primary dark:bg-slate-800/75 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-sky-300"
                                   >
                                     <FontAwesomeIcon
                                       icon={faDownload}
@@ -519,16 +492,56 @@ export default async function DatasetPage({
                   );
                 })}
               </ul>
-            </section>
+            </SidebarSection>
           )}
+
+          <SidebarSection title="Provenance">
+            <dl className="space-y-4">
+              <div>
+                <dt className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                  Source
+                </dt>
+                <dd className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                  <a
+                    href={frontmatter.source}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="break-all hover:text-primary dark:hover:text-sky-300"
+                  >
+                    {frontmatter.source}
+                  </a>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                  License
+                </dt>
+                <dd className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                  {licenseDisplay ?? "Unknown"}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                  Build script
+                </dt>
+                <dd className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                  <a
+                    href={`https://github.com/netsci-rwth/ahorn/blob/main/scripts/${slug}.py`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="font-medium hover:text-primary dark:hover:text-sky-300"
+                  >
+                    Converter script
+                  </a>
+                </dd>
+              </div>
+            </dl>
+          </SidebarSection>
 
           {frontmatter.related &&
             Array.isArray(frontmatter.related) &&
             frontmatter.related.length > 0 && (
-              <section
-                className="border-t border-slate-200 pt-5 dark:border-slate-700"
-                data-pagefind-ignore
-              >
+              <section data-pagefind-ignore>
                 <h2 className="mb-3 text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
                   Related Datasets
                 </h2>
@@ -537,7 +550,7 @@ export default async function DatasetPage({
                     <li key={slug}>
                       <Link
                         href={`/dataset/${slug}`}
-                        className="group flex py-2 text-sm font-semibold text-slate-700 hover:text-primary dark:text-slate-300"
+                        className="-mx-3 block rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-primary dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-sky-300"
                       >
                         {title}
                       </Link>
@@ -547,10 +560,7 @@ export default async function DatasetPage({
               </section>
             )}
           {frontmatter.citation && (
-            <section
-              id="citation"
-              className="border-t border-slate-200 pt-5 dark:border-slate-700"
-            >
+            <section id="citation">
               <div className="mb-3 flex items-center justify-between gap-4">
                 <h2 className="text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
                   Citation
@@ -562,7 +572,7 @@ export default async function DatasetPage({
                   {apaCitations.map((citation) => (
                     <li
                       key={citation[0]}
-                      className="prose text-sm dark:prose-invert"
+                      className="prose max-w-none text-sm prose-slate dark:prose-invert"
                       dangerouslySetInnerHTML={{ __html: citation[1] }}
                     />
                   ))}

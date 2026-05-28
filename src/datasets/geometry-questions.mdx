@@ -225,17 +225,22 @@ import LabelDistributionChart from "@/components/chart/label-distribution-chart"
 import Stat from "@/components/stat";
 import { formatNumber } from "@/utils/format";
 
-Hypergraph where nodes are users on [MathOverflow](https://mathoverflow.net/) and hyperedges are sets of users who answered a certain question category (derived from different tags involving geometry).
+## Overview
+
+This hypergraph has [MathOverflow](https://mathoverflow.net/) users as nodes and question-category co-answer groups as hyperedges.
+The categories are derived from tags involving geometry.
 The dataset was derived from the [Stack Exchange data dump](https://archive.org/details/stackexchange).
 
 ## Attributes
 
 - `category : string`: The category of the question that the users co-answered, derived from the question tags.
 
+## Simplicial Interpretation
+
 For simplicial complexes, the suggested construction to satisfy simplicial closure is to interpret the category label as a set.
 Non-maximal simplices get the category of all maximal simplices they are contained in.
 
-## Dataset Statistics
+## Statistics
 
 ### Nodes
 
