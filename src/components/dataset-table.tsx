@@ -18,6 +18,7 @@ type Dataset = {
   title: string;
   networkType: NetworkType[];
   tags: string[];
+  license: unknown;
   statistics: {
     numNodes: number;
   };
@@ -31,6 +32,23 @@ function getAllTags(datasets: Dataset[]): string[] {
   const tagSet = new Set<string>();
   datasets.forEach((d) => d.tags.forEach((tag) => tagSet.add(tag)));
   return Array.from(tagSet).sort();
+}
+
+function getLicenseLabel(license: unknown): string {
+  if (typeof license === "object") {
+    const spdx = (license as { spdx?: unknown }).spdx;
+    return typeof spdx === "string" ? spdx : "Custom";
+  }
+
+  return "Unknown";
+}
+
+function getAllLicenses(datasets: Dataset[]): string[] {
+  const licenseSet = new Set<string>();
+  datasets.forEach((dataset) => {
+    licenseSet.add(getLicenseLabel(dataset.license));
+  });
+  return Array.from(licenseSet).sort();
 }
 
 function DatasetTableContent({ datasets }: DatasetTableProps) {
@@ -62,6 +80,10 @@ function DatasetTableContent({ datasets }: DatasetTableProps) {
     const types = searchParams.get("types");
     return types ? (types.split(",").filter(Boolean) as NetworkType[]) : [];
   });
+  const [selectedLicenses, setSelectedLicenses] = useState<string[]>(() => {
+    const licenses = searchParams.get("licenses");
+    return licenses ? licenses.split(",").filter(Boolean) : [];
+  });
   const [sortField, setSortField] = useState<"title" | "numNodes">(
     () => (searchParams.get("sort") as "title" | "numNodes") || "title",
   );
@@ -78,6 +100,7 @@ function DatasetTableContent({ datasets }: DatasetTableProps) {
   });
 
   const allTags = getAllTags(datasets);
+  const allLicenses = getAllLicenses(datasets);
 
   // Reset node range when extremes change
   useMemo(() => {
@@ -93,6 +116,8 @@ function DatasetTableContent({ datasets }: DatasetTableProps) {
     if (selectedTags.length > 0) params.set("tags", selectedTags.join(","));
     if (selectedNetworkTypes.length > 0)
       params.set("types", selectedNetworkTypes.join(","));
+    if (selectedLicenses.length > 0)
+      params.set("licenses", selectedLicenses.join(","));
     if (sortField !== "title") params.set("sort", sortField);
     if (sortDirection !== "asc") params.set("dir", sortDirection);
     if (nodeRangeMin !== nodeExtremes.min)
@@ -112,6 +137,7 @@ function DatasetTableContent({ datasets }: DatasetTableProps) {
     search,
     selectedTags,
     selectedNetworkTypes,
+    selectedLicenses,
     sortField,
     sortDirection,
     nodeRangeMin,
@@ -133,6 +159,14 @@ function DatasetTableContent({ datasets }: DatasetTableProps) {
     );
   };
 
+  const handleLicenseChange = (license: string) => {
+    setSelectedLicenses((prev) =>
+      prev.includes(license)
+        ? prev.filter((value) => value !== license)
+        : [...prev, license],
+    );
+  };
+
   const handleSort = (field: "title" | "numNodes") => {
     if (sortField === field) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
@@ -150,10 +184,19 @@ function DatasetTableContent({ datasets }: DatasetTableProps) {
     const matchesNetworkType =
       selectedNetworkTypes.length === 0 ||
       selectedNetworkTypes.every((type) => d.networkType.includes(type));
+    const matchesLicense =
+      selectedLicenses.length === 0 ||
+      selectedLicenses.includes(getLicenseLabel(d.license));
     const matchesRange =
       d.statistics.numNodes >= nodeRangeMin &&
       d.statistics.numNodes <= nodeRangeMax;
-    return matchesSearch && matchesTags && matchesNetworkType && matchesRange;
+    return (
+      matchesSearch &&
+      matchesTags &&
+      matchesNetworkType &&
+      matchesLicense &&
+      matchesRange
+    );
   });
 
   const sorted = [...filtered].sort((a, b) => {
@@ -289,6 +332,39 @@ function DatasetTableContent({ datasets }: DatasetTableProps) {
                     className="cursor-pointer text-xs"
                   >
                     <Tag name={tag} />
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </li>
+          <li>
+            <div className="flex items-center justify-between text-xs font-semibold tracking-wide text-black-50 uppercase">
+              <span>Filter by license:</span>
+              {selectedLicenses.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setSelectedLicenses([])}
+                  className="cursor-pointer text-xs font-normal text-black-50 hover:underline dark:text-black-50"
+                >
+                  Reset
+                </button>
+              )}
+            </div>
+            <ul className="mt-2 grid gap-2">
+              {allLicenses.map((license) => (
+                <li key={license} className="flex items-center gap-2">
+                  <input
+                    id={`license-${license}`}
+                    type="checkbox"
+                    checked={selectedLicenses.includes(license)}
+                    onChange={() => handleLicenseChange(license)}
+                    className="rounded border-black-25 bg-white text-blue-100 focus:ring-blue-100 dark:border-black-75 dark:bg-black-100 dark:focus:ring-blue-100"
+                  />
+                  <label
+                    htmlFor={`license-${license}`}
+                    className="cursor-pointer text-xs font-medium text-black-75 dark:text-black-25"
+                  >
+                    {license}
                   </label>
                 </li>
               ))}
