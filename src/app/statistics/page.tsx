@@ -415,6 +415,10 @@ function tagFilterHref(tag: string): string {
   return `/dataset?tags=${encodeURIComponent(tag)}`;
 }
 
+function networkTypeFilterHref(type: string): string {
+  return `/dataset?types=${encodeURIComponent(type)}`;
+}
+
 function tagFamilyFilterHref(prefix: string) {
   return (value: string) => tagFilterHref(`${prefix}: ${value}`);
 }
@@ -616,6 +620,7 @@ export default async function StatisticsPage() {
                 statistics.networkTypeCounts,
                 undefined,
                 formatNetworkType,
+                networkTypeFilterHref,
               )}
             />
           </StatisticsBlock>
