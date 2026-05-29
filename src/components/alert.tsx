@@ -16,53 +16,53 @@ export type AlertProps = {
 };
 
 const styles = {
-  note: "border-l-blue-500 bg-blue-50/50 text-gray-800 dark:border-l-blue-400 dark:bg-blue-950/20 dark:text-gray-100",
-  tip: "border-l-green-500 bg-green-50/50 text-gray-800 dark:border-l-green-400 dark:bg-green-950/20 dark:text-gray-100",
+  note: "border-l-blue-100 bg-blue-10 text-black-100 dark:border-l-blue-75 dark:bg-blue-100/20 dark:text-white",
+  tip: "border-l-green-100 bg-green-50/50 text-black-100 dark:border-l-green-75 dark:bg-green-100/20 dark:text-white",
   important:
-    "border-l-purple-500 bg-purple-50/50 text-gray-800 dark:border-l-purple-400 dark:bg-purple-950/20 dark:text-gray-100",
+    "border-l-purple-100 bg-purple-50/50 text-black-100 dark:border-l-purple-75 dark:bg-purple-100/20 dark:text-white",
   warning:
-    "border-l-yellow-500 bg-yellow-50/50 text-gray-800 dark:border-l-yellow-400 dark:bg-yellow-950/20 dark:text-gray-100",
+    "border-l-yellow-100 bg-yellow-50/50 text-black-100 dark:border-l-yellow-75 dark:bg-yellow-100/20 dark:text-white",
   caution:
-    "border-l-red-500 bg-red-50/50 text-gray-800 dark:border-l-red-400 dark:bg-red-950/20 dark:text-gray-100",
+    "border-l-red-100 bg-red-50/50 text-black-100 dark:border-l-red-75 dark:bg-red-100/20 dark:text-white",
 };
 
 const headlineStyles = {
-  note: "text-blue-700 dark:text-blue-300",
-  tip: "text-green-700 dark:text-green-300",
-  important: "text-purple-700 dark:text-purple-300",
-  warning: "text-yellow-700 dark:text-yellow-300",
-  caution: "text-red-700 dark:text-red-300",
+  note: "text-blue-100 dark:text-blue-50",
+  tip: "text-green-100 dark:text-green-50",
+  important: "text-purple-100 dark:text-purple-50",
+  warning: "text-yellow-100 dark:text-yellow-50",
+  caution: "text-red-100 dark:text-red-50",
 };
 
 const icons = {
   note: (
     <FontAwesomeIcon
       icon={faInfoCircle}
-      className="size-4 shrink-0 text-blue-600 dark:text-blue-300"
+      className="size-4 shrink-0 text-blue-100 dark:text-blue-50"
     />
   ),
   tip: (
     <FontAwesomeIcon
       icon={faCheckCircle}
-      className="size-4 shrink-0 text-green-600 dark:text-green-300"
+      className="size-4 shrink-0 text-green-100 dark:text-green-50"
     />
   ),
   important: (
     <FontAwesomeIcon
       icon={faExclamationTriangle}
-      className="size-4 shrink-0 text-purple-600 dark:text-purple-300"
+      className="size-4 shrink-0 text-purple-100 dark:text-purple-50"
     />
   ),
   warning: (
     <FontAwesomeIcon
       icon={faExclamationTriangle}
-      className="size-4 shrink-0 text-yellow-600 dark:text-yellow-300"
+      className="size-4 shrink-0 text-yellow-100 dark:text-yellow-50"
     />
   ),
   caution: (
     <FontAwesomeIcon
       icon={faTimesCircle}
-      className="size-4 shrink-0 text-red-600 dark:text-red-300"
+      className="size-4 shrink-0 text-red-100 dark:text-red-50"
     />
   ),
 };
@@ -98,7 +98,7 @@ export default function Alert({
   return (
     <div
       className={classnames(
-        "mb-4 rounded-md border border-l-4 border-gray-200 px-4 py-4 dark:border-gray-800",
+        "mb-4 rounded-md border border-l-4 border-black-10 px-4 py-4 dark:border-black-100",
         styles[type],
         className,
       )}
@@ -113,7 +113,7 @@ export default function Alert({
         {icons[type]}
         <span>{headline ?? defaultHeadlines[type]}</span>
       </div>
-      <div className="mt-2 text-gray-700 dark:text-gray-300 [&_ol]:my-0 [&_ol]:pl-6 [&_p]:my-0 [&_p+p]:mt-3 [&_ul]:my-0 [&_ul]:pl-6">
+      <div className="mt-2 text-black-75 dark:text-black-25 [&_ol]:my-0 [&_ol]:pl-6 [&_p]:my-0 [&_p+p]:mt-3 [&_ul]:my-0 [&_ul]:pl-6">
         {children}
       </div>
     </div>

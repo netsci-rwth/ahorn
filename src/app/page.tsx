@@ -46,16 +46,16 @@ export default function Home() {
               clipPath:
                 "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
             }}
-            className="relative left-[calc(50%-11rem)] aspect-1155/678 w-144.5 -translate-x-1/2 rotate-30 bg-linear-to-tr from-sky-300 to-primary opacity-30 sm:left-[calc(50%-30rem)] sm:w-288.75"
+            className="relative left-[calc(50%-11rem)] aspect-1155/678 w-144.5 -translate-x-1/2 rotate-30 bg-linear-to-tr from-blue-50 to-blue-100 opacity-30 sm:left-[calc(50%-30rem)] sm:w-288.75"
           />
         </div>
         <div className="w-full py-14 sm:py-18">
           <div className="grid gap-12 lg:grid-cols-[minmax(0,1.15fr)_20rem] lg:items-end">
             <div>
-              <h1 className="max-w-4xl text-5xl font-semibold tracking-tight text-balance text-slate-950 sm:text-6xl lg:text-7xl dark:text-white">
+              <h1 className="max-w-4xl text-5xl font-semibold tracking-tight text-balance text-black-100 sm:text-6xl lg:text-7xl dark:text-white">
                 Aachen Higher-Order Repository of Networks
               </h1>
-              <p className="mt-6 max-w-3xl text-lg leading-8 text-pretty text-slate-600 sm:text-xl dark:text-slate-300">
+              <p className="mt-6 max-w-3xl text-lg leading-8 text-pretty text-black-75 sm:text-xl dark:text-black-25">
                 Research-quality simplicial complex, cell complex, and
                 hypergraph datasets for benchmarking, method development, and
                 reproducible higher-order network science.
@@ -91,11 +91,11 @@ export default function Home() {
                   "Source attribution and BibTeX-ready references. Datasets indefinitely available on Zenodo.",
                 ],
               ].map(([title, copy]) => (
-                <div key={title} className="border-l-2 border-primary/20 pl-5">
-                  <p className="text-sm font-semibold tracking-widest text-primary uppercase">
+                <div key={title} className="border-l-2 border-blue-75 pl-5">
+                  <p className="text-sm font-semibold tracking-widest text-blue-100 uppercase">
                     {title}
                   </p>
-                  <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                  <p className="mt-2 text-sm leading-6 text-black-75 dark:text-black-25">
                     {copy}
                   </p>
                 </div>
@@ -108,7 +108,7 @@ export default function Home() {
       <section className="mt-16 sm:mt-20" aria-labelledby="popular-datasets">
         <h2
           id="popular-datasets"
-          className="mb-7 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white"
+          className="mb-7 text-3xl font-semibold tracking-tight text-black-100 dark:text-white"
         >
           Popular Datasets
         </h2>
@@ -136,14 +136,14 @@ export default function Home() {
           </div>
         </div>
         <div>
-          <p className="text-sm font-semibold tracking-widest text-primary uppercase">
+          <p className="text-sm font-semibold tracking-widest text-blue-100 uppercase">
             Work in Progress
           </p>
-          <p className="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">
+          <p className="mt-4 text-sm leading-7 text-black-75 dark:text-black-25">
             AHORN was introduced at the{" "}
             <a
               href="https://conf.netsci.rwth-aachen.de/"
-              className="font-semibold text-primary"
+              className="font-semibold text-blue-100"
             >
               Higher Order Opportunities and Challenges
             </a>{" "}

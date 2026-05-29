@@ -9,14 +9,14 @@ type ToastVariant = "success" | "error";
 
 const variantStyles: Record<ToastVariant, string> = {
   success:
-    "border-green-200/80 bg-white/92 text-slate-900 dark:border-green-800 dark:bg-gray-900 dark:text-gray-100",
+    "border-green-25 bg-white text-black-100 dark:border-green-100 dark:bg-black-100 dark:text-white",
   error:
-    "border-red-200/80 bg-white/92 text-slate-900 dark:border-red-800 dark:bg-gray-900 dark:text-gray-100",
+    "border-red-25 bg-white text-black-100 dark:border-red-100 dark:bg-black-100 dark:text-white",
 };
 
 const iconStyles: Record<ToastVariant, string> = {
-  success: "text-green-600 dark:text-green-400",
-  error: "text-red-600 dark:text-red-400",
+  success: "text-green-100 dark:text-green-75",
+  error: "text-red-100 dark:text-red-75",
 };
 
 const icons: Record<ToastVariant, typeof faCheckCircle> = {

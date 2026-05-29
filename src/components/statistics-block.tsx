@@ -14,12 +14,12 @@ export default function StatisticsBlock({
   return (
     <section
       className={classNames(
-        "rounded-lg bg-slate-50/80 p-4 dark:bg-slate-900/65",
+        "rounded-xl bg-blue-10/70 p-4 ring-1 ring-blue-25/70 transition dark:bg-blue-100/15 dark:ring-blue-75/25",
         className,
       )}
     >
       {title && (
-        <h3 className="text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
+        <h3 className="text-xs font-semibold tracking-wide text-black-75 uppercase dark:text-black-25">
           {title}
         </h3>
       )}

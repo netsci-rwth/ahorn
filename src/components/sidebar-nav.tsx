@@ -38,7 +38,7 @@ export default function SidebarNav({ links, className = "" }: SidebarNavProps) {
         {Object.entries(links).map(([groupTitle, items]) => (
           <li key={groupTitle}>
             {groupTitle && (
-              <div className="text-xs font-semibold tracking-[0.2em] text-slate-500 uppercase dark:text-slate-400">
+              <div className="text-xs font-semibold tracking-widest text-black-50 uppercase dark:text-black-50">
                 {groupTitle}
               </div>
             )}
@@ -55,8 +55,8 @@ export default function SidebarNav({ links, className = "" }: SidebarNavProps) {
                         "group flex items-center rounded-lg px-3 py-2 text-sm font-semibold transition-colors",
                         item.icon ? "gap-x-2.5" : "gap-x-0",
                         active
-                          ? "bg-primary/10 text-primary dark:bg-primary/15"
-                          : "text-slate-700 hover:bg-slate-50 hover:text-primary dark:text-slate-300 dark:hover:bg-slate-900/70",
+                          ? "bg-blue-100/10 text-blue-100 dark:bg-blue-100/15 dark:text-blue-75"
+                          : "text-black-75 hover:bg-white hover:text-blue-100 dark:text-black-25 dark:hover:bg-black-100/70",
                       )}
                     >
                       {item.icon && (
@@ -65,8 +65,8 @@ export default function SidebarNav({ links, className = "" }: SidebarNavProps) {
                           className={classNames(
                             "shrink-0 text-base",
                             active
-                              ? "text-primary"
-                              : "text-slate-400 group-hover:text-primary dark:text-slate-500",
+                              ? "text-blue-75"
+                              : "text-black-50 group-hover:text-blue-100 dark:text-black-50",
                           )}
                         />
                       )}

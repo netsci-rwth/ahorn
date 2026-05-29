@@ -42,11 +42,11 @@ export default function UsageCommand({ slug }: { slug: string }) {
   return (
     <>
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
+        <h2 className="text-xs font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">
           Usage
         </h2>
         <div
-          className="inline-flex rounded-xl border border-slate-200 bg-slate-50 p-1 dark:border-slate-700 dark:bg-slate-900"
+          className="inline-flex rounded-xl border border-black-25 bg-white p-1 dark:border-black-75 dark:bg-black-100"
           role="tablist"
           aria-label="Package manager"
         >
@@ -62,8 +62,8 @@ export default function UsageCommand({ slug }: { slug: string }) {
                 className={classNames(
                   "cursor-pointer rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-colors",
                   isSelected
-                    ? "bg-white text-slate-900 shadow-sm dark:bg-slate-800 dark:text-slate-100"
-                    : "text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-sky-300",
+                    ? "bg-white text-black-100 shadow-sm dark:bg-black-100 dark:text-white"
+                    : "text-black-50 hover:text-blue-100 dark:text-black-50 dark:hover:text-blue-50",
                 )}
                 onClick={() => {
                   setSelectedManager(manager.id);
@@ -77,7 +77,7 @@ export default function UsageCommand({ slug }: { slug: string }) {
         </div>
       </div>
 
-      <pre className="overflow-x-auto rounded-xl bg-slate-950 p-4 text-sm text-slate-100 shadow-inner">
+      <pre className="overflow-x-auto rounded-xl bg-black-100 p-4 text-sm text-white shadow-inner">
         <code className="break-all whitespace-pre-wrap">{command}</code>
       </pre>
     </>

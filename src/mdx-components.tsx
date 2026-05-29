@@ -127,7 +127,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       }
 
       return (
-        <blockquote className="border-l-4 border-gray-300 pl-4 italic dark:border-gray-700">
+        <blockquote className="border-l-4 border-black-25 pl-4 italic dark:border-black-75">
           {children}
         </blockquote>
       );

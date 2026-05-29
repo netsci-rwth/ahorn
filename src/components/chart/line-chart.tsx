@@ -225,7 +225,7 @@ export default function LineChart({
         <div className="mb-4 flex flex-wrap items-center gap-3">
           <label
             htmlFor="time-unit"
-            className="text-sm font-medium text-slate-600 dark:text-slate-300"
+            className="text-sm font-medium text-black-75 dark:text-black-25"
           >
             Aggregate by:
           </label>
@@ -233,7 +233,7 @@ export default function LineChart({
             id="time-unit"
             value={timeUnit}
             onChange={(e) => setTimeUnit(e.target.value as TimeUnit)}
-            className="rounded-lg bg-white/85 px-3 py-1.5 text-sm font-medium text-slate-900 outline-none focus:ring-2 focus:ring-primary/25 dark:bg-slate-950/35 dark:text-slate-100"
+            className="rounded-lg bg-white/85 px-3 py-1.5 text-sm font-medium text-black-100 outline-none focus:ring-2 focus:ring-blue-100/25 dark:bg-black-100/35 dark:text-white"
           >
             {selectableUnits.map((unit) => (
               <option key={unit} value={unit}>

@@ -64,22 +64,22 @@ export default function BoxPlot({
   return (
     <StatisticsBlock title={title} className={classNames(className)}>
       <div className="relative h-16">
-        <div className="absolute top-1/2 right-0 left-0 h-px bg-slate-300/60 dark:bg-slate-700/70" />
+        <div className="absolute top-1/2 right-0 left-0 h-px bg-black-25/60 dark:bg-black-75/70" />
 
         <div
-          className="absolute top-[30%] h-[40%] rounded-sm bg-primary/18 dark:bg-sky-400/24"
+          className="absolute top-[30%] h-[40%] rounded-sm bg-blue-100/18 dark:bg-blue-75/24"
           style={{ left: `${boxStart}%`, width: `${boxWidth}%` }}
         />
 
         <div
-          className="absolute top-[24%] h-[52%] w-0.5 rounded-full bg-primary dark:bg-sky-300"
+          className="absolute top-[24%] h-[52%] w-0.5 rounded-full bg-blue-100 dark:bg-blue-50"
           style={{ left: `${toPercent(median)}%` }}
         />
 
         {[min, max].map((value) => (
           <div
             key={`whisker-${value}`}
-            className="absolute top-[34%] h-[32%] w-px bg-slate-500/80 dark:bg-slate-300/80"
+            className="absolute top-[34%] h-[32%] w-px bg-black-50/80 dark:bg-black-25/80"
             style={{ left: `${toPercent(value)}%` }}
           />
         ))}
@@ -89,14 +89,14 @@ export default function BoxPlot({
           return (
             <div
               key={`box-edge-${label}`}
-              className="absolute top-[26%] h-[48%] w-px bg-primary/70 dark:bg-sky-300/70"
+              className="absolute top-[26%] h-[48%] w-px bg-blue-100/70 dark:bg-blue-50/70"
               style={{ left: `${toPercent(value)}%` }}
             />
           );
         })}
       </div>
 
-      <div className="mt-3 grid grid-cols-2 gap-2 text-[11px] text-slate-700 sm:grid-cols-5 dark:text-slate-200">
+      <div className="mt-3 grid grid-cols-2 gap-2 text-[11px] text-black-75 sm:grid-cols-5 dark:text-black-25">
         <LabelValue label="Min" value={min} />
         <LabelValue label="Q1" value={q1} />
         <LabelValue label="Median" value={median} />
@@ -109,11 +109,11 @@ export default function BoxPlot({
 
 function LabelValue({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-md bg-white/65 px-2 py-1.5 dark:bg-slate-950/25">
-      <span className="text-[10px] tracking-wide text-slate-500 uppercase dark:text-slate-400">
+    <div className="rounded-md bg-white/65 px-2 py-1.5 dark:bg-black-100/25">
+      <span className="text-[10px] tracking-wide text-black-50 uppercase dark:text-black-50">
         {label}
       </span>
-      <span className="mt-0.5 block font-semibold text-slate-900 dark:text-white">
+      <span className="mt-0.5 block font-semibold text-black-100 dark:text-white">
         {formatNumber(value)}
       </span>
     </div>
@@ -193,7 +193,7 @@ export function ComputedBoxPlot({
 
   if (!stats) {
     return (
-      <div className="text-sm text-slate-600 dark:text-slate-300">
+      <div className="text-sm text-black-75 dark:text-black-25">
         No average degree data available.
       </div>
     );

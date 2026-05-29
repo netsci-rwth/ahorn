@@ -28,6 +28,7 @@ export default async function DatasetList() {
           disable: frontmatter.disable === true,
           networkType: frontmatter["network-type"],
           tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],
+          license: frontmatter.license,
           statistics: {
             numNodes: frontmatter.statistics?.["num-nodes"] ?? 0,
           },

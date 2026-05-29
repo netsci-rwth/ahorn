@@ -91,39 +91,100 @@ export default async function DatasetCardList({
   );
 
   return (
-    <div className={classNames("grid gap-4", { "md:grid-cols-2 xl:grid-cols-3": columns !== "single" })}>
-      {datasets.map((dataset) => (
-        <article key={dataset.slug} className="h-full">
-          <Link href={`/dataset/${dataset.slug}`} className={classNames("group flex h-full rounded-xl transition bg-slate-50/85 hover:bg-white dark:bg-slate-900/70 dark:hover:bg-slate-900", { "flex-col p-3": columns === "single", "min-h-60 flex-col p-4": columns !== "single" })}>
-            <div className="min-w-0">
-              <h3 className={classNames("font-semibold tracking-tight text-slate-950 transition group-hover:text-primary dark:text-white dark:group-hover:text-sky-300", { "text-base": columns === "single", "text-lg": columns !== "single" })}>
-                {dataset.title}
-              </h3>
-              {dataset.networkTypes.length > 0 && (
-                <p className="mt-1 text-xs font-semibold tracking-wide text-primary uppercase dark:text-sky-300">
-                  {dataset.networkTypes.map(formatNetworkType).join(" / ")}
+    <div
+      className={classNames({
+        "grid gap-x-8 gap-y-9 md:grid-cols-2 xl:grid-cols-3":
+          columns !== "single",
+        grid: columns === "single",
+      })}
+    >
+      {datasets.map((dataset) => {
+        const isSingleColumn = columns === "single";
+
+        return (
+          <article key={dataset.slug} className="h-full">
+            <Link
+              href={`/dataset/${dataset.slug}`}
+              className={classNames(
+                "relative flex h-full min-w-0 transition",
+                "before:absolute before:left-0 before:w-0.5 before:bg-blue-75 before:transition hover:bg-blue-10/35 hover:before:bg-blue-100 dark:before:bg-blue-50 dark:hover:bg-blue-100/10",
+                {
+                  "flex-col py-4 pr-3 pl-4 before:top-4 before:h-9":
+                    isSingleColumn,
+                  "min-h-60 flex-col py-5 pr-4 pl-5 before:top-5 before:h-12":
+                    !isSingleColumn,
+                },
+              )}
+            >
+              <div className="min-w-0">
+                {dataset.networkTypes.length > 0 && (
+                  <p
+                    className={classNames(
+                      "font-semibold tracking-wide text-blue-100 uppercase dark:text-blue-50",
+                      {
+                        "text-[0.68rem]": isSingleColumn,
+                        "text-xs": !isSingleColumn,
+                      },
+                    )}
+                  >
+                    {dataset.networkTypes.map(formatNetworkType).join(" / ")}
+                  </p>
+                )}
+                <h3
+                  className={classNames(
+                    "mt-1 font-semibold tracking-tight text-black-100 transition dark:text-white",
+                    {
+                      "text-base leading-6": isSingleColumn,
+                      "text-xl leading-7": !isSingleColumn,
+                    },
+                  )}
+                >
+                  {dataset.title}
+                </h3>
+              </div>
+
+              {dataset.summary && (
+                <p
+                  className={classNames(
+                    "text-sm text-black-75 dark:text-black-25",
+                    {
+                      "mt-2 line-clamp-3 leading-6": isSingleColumn,
+                      "mt-4 leading-6": !isSingleColumn,
+                    },
+                  )}
+                >
+                  {dataset.summary}
                 </p>
               )}
-            </div>
 
-            {dataset.summary && (
-              <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
-                {dataset.summary}
+              {dataset.tags.length > 0 && (
+                <div
+                  className={classNames("flex flex-wrap gap-2", {
+                    "mt-3": isSingleColumn,
+                    "mt-5": !isSingleColumn,
+                  })}
+                >
+                  {dataset.tags.map((tag) => (
+                    <Tag key={tag} name={tag} />
+                  ))}
+                </div>
+              )}
+
+              <p
+                className={classNames(
+                  "mt-auto text-xs font-semibold tracking-wide text-black-50 dark:text-black-50",
+                  {
+                    "pt-3": isSingleColumn,
+                    "pt-5": !isSingleColumn,
+                  },
+                )}
+              >
+                {formatScale(dataset)}
               </p>
-            )}
-
-            <div className="mt-4 flex flex-wrap gap-2">
-              {dataset.tags.map((tag) => (
-                <Tag key={tag} name={tag} />
-              ))}
-            </div>
-
-            <p className="mt-auto pt-4 text-xs font-semibold text-slate-500 dark:text-slate-400">
-              {formatScale(dataset)}
-            </p>
-          </Link>
-        </article>
-      ))}
+            </Link>
+          </article>
+        );
+      })}
     </div>
   );
 }

@@ -13,12 +13,12 @@ export type ButtonProps<C extends React.ElementType = "button"> =
   } & Omit<React.ComponentPropsWithoutRef<C>, keyof ButtonOwnProps | "as">;
 
 const variantStyles: Record<string, string> = {
-  primary: "bg-primary text-white shadow-[0_12px_30px_rgb(35_93_156_/_0.22)]",
+  primary: "bg-blue-100 text-white shadow-[0_12px_30px_rgb(35_93_156_/_0.22)]",
   secondary:
-    "border border-[color:var(--color-border)] bg-white/80 text-slate-900 shadow-sm hover:bg-white dark:bg-slate-900/80 dark:text-slate-100 dark:hover:bg-slate-800",
+    "border border-[color:var(--color-border)] bg-white/80 text-black-100 shadow-sm hover:bg-white dark:bg-black-100/80 dark:text-white dark:hover:bg-black-100",
   danger:
-    "bg-red-600 text-white shadow-sm hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-400",
-  text: "text-slate-700 hover:text-slate-950 dark:text-slate-300 dark:hover:text-white",
+    "bg-red-100 text-white shadow-sm hover:bg-red-100 dark:bg-red-100 dark:hover:bg-red-75",
+  text: "text-black-75 hover:text-black-100 dark:text-black-25 dark:hover:text-white",
 };
 
 const Button = <C extends React.ElementType = "button">({

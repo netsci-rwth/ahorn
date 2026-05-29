@@ -11,7 +11,7 @@ export default function CopyTextButton({
   label,
   successMessage,
   errorMessage,
-  className = "cursor-pointer px-0 py-0 text-xs font-semibold text-primary hover:text-primary",
+  className = "cursor-pointer px-0 py-0 text-xs font-semibold text-blue-100",
 }: {
   text: string;
   label: React.ReactNode;

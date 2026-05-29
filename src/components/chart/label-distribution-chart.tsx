@@ -123,7 +123,7 @@ export default function LabelDistributionChart({
       <div className="h-80">
         <Pie data={data} options={options} />
       </div>
-      <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">
+      <p className="mt-3 text-sm text-black-50 dark:text-black-50">
         {uniqueLabelCount} unique {uniqueLabelCount === 1 ? "label" : "labels"}{" "}
         · imbalance degree: {imbalanceFormatter.format(imbalanceDegree(labels))}
       </p>

@@ -25,7 +25,7 @@ export default function NetworkViewTabs({
     <TabBar label="Domain Type" tabs={["Graph", "Simplicial Complex"]}>
       <div className="space-y-6">
         <div>
-          <h3 className="mb-4 text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+          <h3 className="mb-4 text-lg font-semibold tracking-tight text-black-100 dark:text-white">
             Graph Statistics
           </h3>
           <dl className="not-prose grid gap-5 sm:grid-cols-2">
@@ -43,7 +43,7 @@ export default function NetworkViewTabs({
           </dl>
         </div>
         <div>
-          <h3 className="mb-4 text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+          <h3 className="mb-4 text-lg font-semibold tracking-tight text-black-100 dark:text-white">
             Graph Properties
           </h3>
           <dl className="not-prose grid gap-5 sm:grid-cols-2">
@@ -57,7 +57,7 @@ export default function NetworkViewTabs({
       {shape && (
         <div className="space-y-6">
           <div>
-            <h3 className="mb-4 text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+            <h3 className="mb-4 text-lg font-semibold tracking-tight text-black-100 dark:text-white">
               Simplicial Complex Statistics
             </h3>
             <dl className="not-prose grid gap-5 sm:grid-cols-2">
@@ -73,7 +73,7 @@ export default function NetworkViewTabs({
             </dl>
           </div>
           <div>
-            <h3 className="mb-4 text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+            <h3 className="mb-4 text-lg font-semibold tracking-tight text-black-100 dark:text-white">
               Shape by Dimension
             </h3>
             <ShapeChart shape={shape} />

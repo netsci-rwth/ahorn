@@ -97,11 +97,11 @@ function QuickLink({
 }) {
   const content = (
     <>
-      <span className="inline-flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-slate-100">
-        <FontAwesomeIcon icon={icon} className="size-4 text-primary" />
+      <span className="inline-flex items-center gap-2 text-base font-semibold text-black-100 dark:text-white">
+        <FontAwesomeIcon icon={icon} className="size-4 text-blue-100" />
         {title}
       </span>
-      <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">
+      <p className="mt-1 text-sm leading-6 text-black-75 dark:text-black-25">
         {description}
       </p>
     </>
@@ -112,7 +112,7 @@ function QuickLink({
       <Link
         href={href}
         className={
-          "block rounded-2xl border border-slate-200/80 bg-white/75 px-4 py-4 shadow-sm transition-colors hover:border-primary/20 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/55 dark:hover:border-slate-700 dark:hover:bg-slate-900/80"
+          "block rounded-2xl border border-black-25/80 bg-white/75 px-4 py-4 shadow-sm transition-colors hover:border-blue-100/20 hover:bg-white dark:border-black-100 dark:bg-black-100/55 dark:hover:border-black-75 dark:hover:bg-black-100/80"
         }
       >
         {content}
@@ -126,7 +126,7 @@ function QuickLink({
       target="_blank"
       rel="noopener noreferrer"
       className={
-        "block rounded-2xl border border-slate-200/80 bg-white/75 px-4 py-4 shadow-sm transition-colors hover:border-primary/20 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/55 dark:hover:border-slate-700 dark:hover:bg-slate-900/80"
+        "block rounded-2xl border border-black-25/80 bg-white/75 px-4 py-4 shadow-sm transition-colors hover:border-blue-100/20 hover:bg-white dark:border-black-100 dark:bg-black-100/55 dark:hover:border-black-75 dark:hover:bg-black-100/80"
       }
     >
       {content}
@@ -143,7 +143,7 @@ function ToolList({ tools }: { tools: Tool[] }) {
             href={tool.link}
             target="_blank"
             className={
-              "flex items-start gap-6 rounded-3xl bg-white/75 px-5 py-5 transition-colors hover:border-primary/20 hover:bg-slate-50 dark:bg-slate-950/45 dark:hover:bg-slate-900/75"
+              "flex items-start gap-6 rounded-3xl bg-white/75 px-5 py-5 transition-colors hover:border-blue-100/20 hover:bg-white dark:bg-black-100/45 dark:hover:bg-black-100/75"
             }
           >
             <div className="flex size-24 shrink-0 items-center justify-center">
@@ -157,16 +157,16 @@ function ToolList({ tools }: { tools: Tool[] }) {
                   role="presentation"
                 />
               ) : (
-                <span className="inline-flex size-16 items-center justify-center rounded-full bg-slate-100 text-sm font-semibold tracking-[0.2em] text-slate-700 uppercase ring-1 ring-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:ring-slate-700">
+                <span className="inline-flex size-16 items-center justify-center rounded-full bg-white text-sm font-semibold tracking-[0.2em] text-black-75 uppercase ring-1 ring-black-25 dark:bg-black-100 dark:text-black-25 dark:ring-black-75">
                   {tool.name.slice(0, 3)}
                 </span>
               )}
             </div>
             <div>
-              <h4 className="text-xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+              <h4 className="text-xl font-semibold tracking-tight text-black-100 dark:text-white">
                 {tool.name}
               </h4>
-              <p className="mt-2 max-w-md text-base leading-7 text-slate-600 dark:text-slate-300">
+              <p className="mt-2 max-w-md text-base leading-7 text-black-75 dark:text-black-25">
                 {tool.description}
               </p>
             </div>
@@ -209,8 +209,8 @@ export default function ToolsPage() {
           </p>
         </div>
 
-        <div className="border-l-2 border-primary/20 pl-7 dark:border-slate-800">
-          <p className="text-sm font-semibold tracking-[0.22em] text-primary uppercase dark:text-sky-300">
+        <div className="border-l-2 border-blue-100/20 pl-7 dark:border-black-100">
+          <p className="text-sm font-semibold tracking-[0.22em] text-blue-100 uppercase dark:text-blue-50">
             Quick Access
           </p>
           <ul className="mt-4 space-y-4">
@@ -223,10 +223,10 @@ export default function ToolsPage() {
         </div>
       </section>
 
-      <section className="border-t border-slate-200 py-8 dark:border-slate-800">
+      <section className="border-t border-black-10 py-8 dark:border-black-100">
         <div className="prose max-w-full dark:prose-invert">
           <h2>Libraries Integrating with AHORN</h2>
-          <p className="mt-4 text-base leading-7 text-slate-600 dark:text-slate-300">
+          <p className="mt-4 text-base leading-7 text-black-75 dark:text-black-25">
             These libraries complement AHORN and are useful for analyzing,
             transforming, and visualizing higher-order network data in practice.
           </p>
@@ -236,10 +236,10 @@ export default function ToolsPage() {
         </div>
       </section>
 
-      <section className="border-t border-slate-200 py-8 dark:border-slate-800">
+      <section className="border-t border-black-10 py-8 dark:border-black-100">
         <div className="prose max-w-full dark:prose-invert">
           <h2>Related Tools in the Ecosystem</h2>
-          <p className="mt-4 text-base leading-7 text-slate-600 dark:text-slate-300">
+          <p className="mt-4 text-base leading-7 text-black-75 dark:text-black-25">
             These libraries are part of the broader higher-order network
             ecosystem and can be useful for working with AHORN datasets, even
             without direct integration.

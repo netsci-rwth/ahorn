@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
@@ -19,7 +20,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="flex min-h-screen flex-col dark:bg-neutral-900 dark:text-neutral-100">
+      <head>
+        <link href="/_pagefind/pagefind-component-ui.css" rel="stylesheet" />
+      </head>
+      <body className="flex min-h-screen flex-col dark:bg-black-100 dark:text-white">
+        <Script
+          src="/_pagefind/pagefind-component-ui.js"
+          strategy="afterInteractive"
+          type="module"
+        />
         <Navbar />
         <main className="mx-auto w-full max-w-7xl grow px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
           {children}

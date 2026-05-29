@@ -104,7 +104,7 @@ function Changelog({ revisions }: { revisions: ChangelogRevision[] }) {
       {revisions.map((revision) => (
         <details
           key={revision.key}
-          className="mt-3 rounded border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800"
+          className="mt-3 rounded border border-black-25 bg-white p-4 dark:border-black-75 dark:bg-black-100"
         >
           <summary className="cursor-pointer select-none">
             {revision.label}
@@ -150,7 +150,7 @@ function SidebarSection({
 }: SidebarSectionProps) {
   return (
     <section className={className} {...rest}>
-      <h2 className="mb-3 text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
+      <h2 className="mb-3 text-xs font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">
         {title}
       </h2>
       {children}
@@ -263,18 +263,18 @@ export default async function DatasetPage({
           eyebrow="Dataset"
           title={frontmatter.title}
           actions={
-            <div className="flex w-full max-w-full items-stretch rounded-xl border border-slate-200 bg-white lg:max-w-120 dark:border-slate-700 dark:bg-slate-900">
+            <div className="flex w-full max-w-full items-stretch rounded-xl border border-black-25 bg-white lg:max-w-120 dark:border-black-75 dark:bg-black-100">
               <CopyTextButton
                 text={slug}
                 label={
                   <span className="relative flex min-w-0 flex-col justify-center text-left">
                     <span className="flex items-center gap-2">
-                      <span className="font-semibold tracking-widest text-slate-500 uppercase dark:text-slate-400">
+                      <span className="font-semibold tracking-widest text-black-50 uppercase dark:text-black-50">
                         Slug
                       </span>
                     </span>
                     <span className="mt-0.5 flex min-w-0 items-center">
-                      <code className="min-w-0 truncate rounded-md bg-slate-100/90 px-2 py-0.5 font-medium text-slate-700 dark:bg-slate-800/90 dark:text-slate-100">
+                      <code className="min-w-0 truncate font-medium text-black-75 dark:text-white">
                         {slug}
                       </code>
                     </span>
@@ -282,7 +282,7 @@ export default async function DatasetPage({
                 }
                 successMessage="Slug copied to clipboard."
                 errorMessage="Could not copy slug."
-                className="min-w-0 flex-1 cursor-pointer justify-start px-3 py-2 text-xs hover:text-primary dark:hover:text-sky-300"
+                className="min-w-0 flex-1 cursor-pointer justify-start px-3 py-2 text-xs hover:text-blue-100 dark:hover:text-blue-50"
               />
               {latestAttachment && (
                 <Button
@@ -297,11 +297,11 @@ export default async function DatasetPage({
               )}
             </div>
           }
-          className="border-b border-slate-200 dark:border-slate-700"
+          className="border-b border-black-25 dark:border-black-75"
         >
           <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:flex-wrap sm:gap-8">
             <div className="group relative">
-              <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
+              <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">
                 <FontAwesomeIcon icon={faHexagonNodes} className="size-4" />
                 Network Type
                 <span className={tooltipClassName}>
@@ -326,7 +326,7 @@ export default async function DatasetPage({
             </div>
             {frontmatter.tags.length > 0 && (
               <div>
-                <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
+                <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">
                   <FontAwesomeIcon icon={faTag} className="size-4" />
                   Tags
                 </h3>
@@ -374,11 +374,11 @@ export default async function DatasetPage({
                   return (
                     <li
                       key={key}
-                      className="rounded-xl bg-slate-50/85 p-3 dark:bg-slate-900/70"
+                      className="rounded-xl bg-blue-10/70 p-3 dark:bg-black-100/70"
                     >
                       <div className="flex min-w-0 items-center justify-between gap-3">
                         <div className="flex min-w-0 items-center gap-2">
-                          <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                          <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-white text-black-50 dark:bg-black-100 dark:text-black-50">
                             <FontAwesomeIcon
                               icon={faPaperclip}
                               className="size-3"
@@ -386,7 +386,7 @@ export default async function DatasetPage({
                           </span>
                           <div className="min-w-0">
                             <div className="flex min-w-0 flex-wrap items-center gap-2">
-                              <span className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">
+                              <span className="truncate text-sm font-semibold text-black-100 dark:text-white">
                                 {label}
                               </span>
                               {isLatest && (
@@ -405,7 +405,7 @@ export default async function DatasetPage({
                             href={zenodoUrl}
                             target="_blank"
                             rel="noreferrer"
-                            className="shrink-0 text-xs font-semibold text-slate-500 hover:text-primary dark:text-slate-400 dark:hover:text-sky-300"
+                            className="shrink-0 text-xs font-semibold text-black-50 hover:text-blue-100 dark:text-black-50 dark:hover:text-blue-50"
                           >
                             Zenodo
                           </a>
@@ -415,7 +415,7 @@ export default async function DatasetPage({
                       <a
                         href={primaryUrl.href}
                         download
-                        className="mt-3 flex min-h-12 items-center justify-between gap-3 rounded-lg bg-primary px-3 py-2.5 text-white shadow-sm transition-colors hover:bg-sky-700 dark:bg-sky-500 dark:text-slate-950 dark:hover:bg-sky-400"
+                        className="mt-3 flex min-h-12 items-center justify-between gap-3 rounded-lg bg-blue-100 px-3 py-2.5 text-white shadow-sm transition-colors hover:bg-blue-100 dark:bg-blue-100 dark:hover:bg-blue-75"
                       >
                         <span className="flex min-w-0 items-center gap-2 text-sm font-semibold">
                           <FontAwesomeIcon
@@ -425,7 +425,7 @@ export default async function DatasetPage({
                           <span>Download</span>
                         </span>
                         {typeof primaryAttachment.size === "number" && (
-                          <span className="shrink-0 text-xs font-medium text-sky-100 dark:text-slate-800">
+                          <span className="shrink-0 text-xs font-medium text-white/80">
                             {formatFileSize(primaryAttachment.size)}
                           </span>
                         )}
@@ -433,7 +433,7 @@ export default async function DatasetPage({
 
                       {additionalFormats.length > 0 && (
                         <div className="mt-3">
-                          <div className="mb-2 text-[11px] font-semibold tracking-wide text-slate-400 uppercase dark:text-slate-500">
+                          <div className="mb-2 text-[11px] font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">
                             Additional formats
                           </div>
                           <div className="flex flex-wrap gap-2">
@@ -449,18 +449,18 @@ export default async function DatasetPage({
                                     key={format}
                                     href={url.href}
                                     download
-                                    className="inline-flex min-h-8 max-w-full items-center gap-1.5 rounded-lg bg-white/80 px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-white hover:text-primary dark:bg-slate-800/75 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-sky-300"
+                                    className="inline-flex min-h-8 max-w-full items-center gap-1.5 rounded-lg bg-white/80 px-2.5 py-1 text-xs font-medium text-black-75 hover:bg-white hover:text-blue-100 dark:bg-black-100/75 dark:text-black-25 dark:hover:bg-black-100 dark:hover:text-blue-50"
                                   >
                                     <FontAwesomeIcon
                                       icon={faDownload}
-                                      className="size-3 shrink-0 text-slate-400 dark:text-slate-500"
+                                      className="size-3 shrink-0 text-black-50 dark:text-black-50"
                                     />
                                     <span className="truncate">
                                       {formatDownloadFormat(format)}
                                     </span>
                                     {typeof formatAttachment.size ===
                                       "number" && (
-                                      <span className="shrink-0 text-slate-400 dark:text-slate-500">
+                                      <span className="shrink-0 text-black-50 dark:text-black-50">
                                         {formatFileSize(formatAttachment.size)}
                                       </span>
                                     )}
@@ -481,38 +481,38 @@ export default async function DatasetPage({
           <SidebarSection title="Provenance">
             <dl className="space-y-4">
               <div>
-                <dt className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                <dt className="text-sm font-medium text-black-100 dark:text-white">
                   Source
                 </dt>
-                <dd className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                <dd className="mt-1 text-sm leading-6 text-black-75 dark:text-black-25">
                   <a
                     href={frontmatter.source}
                     target="_blank"
                     rel="noreferrer"
-                    className="break-all hover:text-primary dark:hover:text-sky-300"
+                    className="break-all hover:text-blue-100 dark:hover:text-blue-50"
                   >
                     {frontmatter.source}
                   </a>
                 </dd>
               </div>
               <div>
-                <dt className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                <dt className="text-sm font-medium text-black-100 dark:text-white">
                   License
                 </dt>
-                <dd className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                <dd className="mt-1 text-sm leading-6 text-black-75 dark:text-black-25">
                   {licenseDisplay ?? "Unknown"}
                 </dd>
               </div>
               <div>
-                <dt className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                <dt className="text-sm font-medium text-black-100 dark:text-white">
                   Build script
                 </dt>
-                <dd className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                <dd className="mt-1 text-sm leading-6 text-black-75 dark:text-black-25">
                   <a
                     href={`https://github.com/netsci-rwth/ahorn/blob/main/scripts/${slug}.py`}
                     target="_blank"
                     rel="noreferrer"
-                    className="font-medium hover:text-primary dark:hover:text-sky-300"
+                    className="font-medium hover:text-blue-100 dark:hover:text-blue-50"
                   >
                     Converter script
                   </a>
@@ -529,7 +529,7 @@ export default async function DatasetPage({
           {frontmatter.citation && (
             <section id="citation">
               <div className="mb-3 flex items-center justify-between gap-4">
-                <h2 className="text-xs font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">
+                <h2 className="text-xs font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">
                   Citation
                 </h2>
                 <CitationCopyButton bibtex={bibtex} />
@@ -544,7 +544,7 @@ export default async function DatasetPage({
                     />
                   ))}
                 </ul>
-                <div className="mt-4 text-xs text-slate-500 dark:text-slate-400">
+                <div className="mt-4 text-xs text-black-50 dark:text-black-50">
                   If you use this dataset, please ensure you cite it
                   appropriately in your work.
                 </div>

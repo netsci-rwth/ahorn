@@ -137,12 +137,12 @@ export default function DegreeLineChart({
   return (
     <StatisticsBlock title={title}>
       <div className="mb-4">
-        <label className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-300">
+        <label className="inline-flex items-center gap-2 text-sm font-medium text-black-75 dark:text-black-25">
           <input
             type="checkbox"
             checked={useLogScale}
             onChange={(e) => setUseLogScale(e.target.checked)}
-            className="rounded bg-white text-primary focus:ring-primary/30 dark:bg-slate-950/35"
+            className="rounded bg-white text-blue-100 focus:ring-blue-100/30 dark:bg-black-100/35"
           />
           Use log scale (y-axis)
         </label>
