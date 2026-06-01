@@ -96,6 +96,22 @@ def write_dataset(
     *,
     include_cuisine_label: bool,
 ) -> None:
+    """Write a dataset file in the project's gzip text format.
+
+    Parameters
+    ----------
+    output_file : Path
+        Path to the output .txt.gz file to write.
+    slug : str
+        Dataset slug used in metadata and descriptions.
+    filtered_hyperedges : list[Any]
+        List of hyperedge objects to write as edges.
+    participating_nodes : set[int | str]
+        Set of node identifiers that should be included as nodes.
+    include_cuisine_label : bool
+        If True, include the hyperedge "label" as a cuisine field when
+        writing edges; otherwise omit cuisine information.
+    """
     with gzip.open(output_file, "wt") as file:
         write_dataset_metadata(file, slug, revision)
         for node in track(nodes, description=f"Writing {slug} nodes"):
