@@ -374,18 +374,17 @@ def lint_file(path: Path) -> list[FrontmatterIssue]:
                     )
                 )
             else:
-                for key in revision_keys:
-                    if re.fullmatch(r"revision-\d+", str(key)) is None:
-                        issues.append(
-                            FrontmatterIssue(
-                                path=path,
-                                line=attachments_line,
-                                message=(
-                                    "Invalid revision key format: "
-                                    f"'{key}'. Expected format: revision-N where N is a number."
-                                ),
-                            )
-                        )
+                issues.extend(
+                    FrontmatterIssue(
+                        path=path,
+                        line=attachments_line,
+                        message=(
+                            "Revision keys must follow the format 'revision-N' where N is a number."
+                        ),
+                    )
+                    for key in revision_keys
+                    if re.fullmatch(r"revision-\d+", str(key)) is None
+                )
 
                 if revision_numbers:
                     revision_numbers.sort()

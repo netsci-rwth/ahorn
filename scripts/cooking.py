@@ -30,34 +30,20 @@ target_dir = root_dir / "public" / "datasets"
 dataset_file = target_dir / "cooking.txt.gz"
 datasheet_file = root_dir / "src" / "datasets" / "cooking.mdx"
 revision = 2
-zenodo_file_base_url = "https://zenodo.org/records/20491193/files"
 
 nodes, raw_hyperedges = load_benson_hyperedges(root_dir / "data" / "cat-edge-Cooking")
 singleton_edge_label_counts = Counter(
     hyperedge["label"] for hyperedge in raw_hyperedges if len(hyperedge.elements) == 1
 )
-hyperedges = [
-    hyperedge for hyperedge in raw_hyperedges if len(hyperedge.elements) > 1
-]
-
-
-def child_slug(label: str) -> str:
-    return f"cooking-{label.replace('_', '-')}"
-
-
-def zenodo_download_url(filename: str) -> str:
-    return f"{zenodo_file_base_url}/{filename}?download=1"
+hyperedges = [hyperedge for hyperedge in raw_hyperedges if len(hyperedge.elements) > 1]
 
 
 if singleton_edge_label_counts:
     affected_subdatasets = ", ".join(
-        f"{child_slug(label)} ({count})"
+        f"{f'cooking-{label.replace("_", "-")}'} ({count})"
         for label, count in sorted(singleton_edge_label_counts.items())
     )
-    print(
-        "Single-node hyperedge filter affects sub-datasets: "
-        f"{affected_subdatasets}"
-    )
+    print(f"Single-node hyperedge filter affects sub-datasets: {affected_subdatasets}")
 else:
     print("Single-node hyperedge filter affects no sub-datasets.")
 
@@ -143,8 +129,8 @@ update_frontmatter(
     {
         "attachments": {
             f"revision-{revision}": {
-                "ahorn": zenodo_download_url(dataset_file.name),
-                "hif": zenodo_download_url("cooking.hif.json.gz"),
+                "ahorn": dataset_file.name,
+                "hif": "cooking.hif.json.gz",
                 "changelog": [
                     "Dropped hyperedges with only a single distinct ingredient.",
                     "Updated the format version to `0.3`.",
@@ -162,7 +148,7 @@ update_frontmatter(
 )
 
 for label in sorted(edge_label_counts):
-    slug = child_slug(label)
+    slug = f"cooking-{label.replace('_', '-')}"
     child_file = root_dir / "src" / "datasets" / f"{slug}.mdx"
     filtered_hyperedges = [
         hyperedge for hyperedge in hyperedges if hyperedge["label"] == label
@@ -184,8 +170,8 @@ for label in sorted(edge_label_counts):
         {
             "attachments": {
                 f"revision-{revision}": {
-                    "ahorn": zenodo_download_url(f"{slug}.txt.gz"),
-                    "hif": zenodo_download_url(f"{slug}.hif.json.gz"),
+                    "ahorn": f"{slug}.txt.gz",
+                    "hif": f"{slug}.hif.json.gz",
                 }
             },
             "statistics": {
