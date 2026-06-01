@@ -1,0 +1,161 @@
+---
+title: Cooking (Spanish)
+source: https://www.cs.cornell.edu/~arb/data/cat-edge-Cooking/
+license: unprovided-reuse-encouraged
+citation:
+  - 10.1145/3366423.3380152
+network-type:
+  - hypergraph
+tags:
+  - 'source: benson'
+parent: cooking
+attachments:
+  revision-2:
+    ahorn: https://zenodo.org/records/20491193/files/cooking-spanish.txt.gz?download=1
+    hif: https://zenodo.org/records/20491193/files/cooking-spanish.hif.json.gz?download=1
+statistics:
+  num-nodes: 1263
+  num-edges: 987
+  node-degrees:
+    1: 535
+    2: 206
+    3: 99
+    4: 71
+    5: 42
+    6: 36
+    7: 29
+    8: 21
+    9: 29
+    10: 12
+    11: 13
+    12: 13
+    13: 8
+    14: 6
+    15: 7
+    16: 4
+    17: 6
+    18: 10
+    19: 6
+    20: 8
+    21: 11
+    22: 5
+    23: 5
+    24: 2
+    25: 1
+    26: 4
+    27: 1
+    28: 4
+    29: 2
+    30: 3
+    31: 3
+    32: 2
+    33: 3
+    35: 4
+    37: 1
+    39: 2
+    40: 2
+    41: 1
+    42: 1
+    43: 1
+    44: 1
+    45: 1
+    46: 2
+    47: 1
+    48: 2
+    49: 2
+    52: 1
+    53: 1
+    55: 4
+    57: 1
+    58: 1
+    60: 1
+    62: 1
+    67: 1
+    69: 1
+    71: 2
+    72: 1
+    82: 1
+    83: 1
+    88: 1
+    95: 1
+    99: 1
+    100: 1
+    116: 1
+    120: 1
+    128: 1
+    129: 1
+    133: 1
+    142: 1
+    149: 1
+    151: 1
+    158: 1
+    253: 1
+    255: 1
+    290: 1
+    387: 1
+    460: 1
+  edge-degrees:
+    2: 6
+    3: 10
+    4: 31
+    5: 49
+    6: 69
+    7: 83
+    8: 103
+    9: 103
+    10: 93
+    11: 82
+    12: 61
+    13: 82
+    14: 57
+    15: 49
+    16: 32
+    17: 29
+    18: 14
+    19: 11
+    20: 9
+    21: 4
+    23: 3
+    24: 3
+    25: 1
+    27: 1
+    29: 1
+    35: 1
+---
+import { ComputedBoxPlot } from "@/components/chart/box-plot";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+## Overview
+
+This dataset is the `Cooking` subset restricted to recipes labelled as `spanish`.
+It keeps the ingredient nodes that participate in at least one recipe of this cuisine.
+Raw data was obtained from the [“What's Cooking?” Kaggle competition](https://www.kaggle.com/c/whats-cooking).
+
+> [!IMPORTANT]
+> Two recipes with only one distinct ingredient have been dropped from this dataset.
+
+## Attributes
+
+- `ingredient : string`: The name of the ingredient corresponding to a node.
+
+## Statistics
+
+### Nodes
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
+  <Stat title="Node Type" value="Ingredient" />
+  <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-2" />
+</dl>
+
+### Hyperedges
+
+<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+  />
+  <Stat title="Hyperedge Type" value="Recipe" />
+  <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />
+</dl>

@@ -1,15 +1,9 @@
 import Link from "next/link";
 
 import Tag from "@/components/tag";
+import { type DatasetFrontmatter } from "@/utils/datasets";
 import { formatNetworkType, formatNumber } from "@/utils/format";
 import classNames from "classnames";
-
-type DatasetFrontmatter = {
-  title?: unknown;
-  "network-type"?: unknown;
-  tags?: unknown;
-  statistics?: Record<string, unknown>;
-};
 
 type DatasetModule = {
   frontmatter: DatasetFrontmatter;
@@ -100,6 +94,7 @@ export default async function DatasetCardList({
     >
       {datasets.map((dataset) => {
         const isSingleColumn = columns === "single";
+        const hasSummary = typeof dataset.summary === "string";
 
         return (
           <article key={dataset.slug} className="h-full">
@@ -112,7 +107,9 @@ export default async function DatasetCardList({
                   "flex-col py-4 pr-3 pl-4 before:top-4 before:h-9":
                     isSingleColumn,
                   "min-h-60 flex-col py-5 pr-4 pl-5 before:top-5 before:h-12":
-                    !isSingleColumn,
+                    !isSingleColumn && hasSummary,
+                  "flex-col py-4 pr-4 pl-5 before:top-4 before:h-9":
+                    !isSingleColumn && !hasSummary,
                 },
               )}
             >
@@ -172,10 +169,12 @@ export default async function DatasetCardList({
 
               <p
                 className={classNames(
-                  "mt-auto text-xs font-semibold tracking-wide text-black-50 dark:text-black-50",
+                  "text-xs font-semibold tracking-wide text-black-50 dark:text-black-50",
                   {
+                    "mt-auto": hasSummary,
+                    "mt-3": !hasSummary,
                     "pt-3": isSingleColumn,
-                    "pt-5": !isSingleColumn,
+                    "pt-5": !isSingleColumn && hasSummary,
                   },
                 )}
               >

@@ -33,6 +33,7 @@ Optional fields that are automatically used when present:
 - `license`: The license of the dataset. This can be either a string or an object with `spdx` and `link` fields. Prefer the latter for standard licenses for easier presentation.
 - `citation`: List of DOIs or BibTeX entries that should be cited when using the dataset. DOIs are automatically resolved.
 - `tags`: List of tags that describe the dataset. These are used for filtering datasets in the UI.
+- `parent`: Slug of the parent dataset for sub-datasets.
 
 To improve consistency, we enforce various rules on the frontmatter fields, such as required fields, field types, and field ordering.
 The provided [`datasheet_linter`](https://github.com/netsci-rwth/ahorn/blob/main/tools/datasheet_linter.py) tool checks these rules and provides feedback on how to fix any issue found in the frontmatter.

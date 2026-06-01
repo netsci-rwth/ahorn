@@ -4,6 +4,7 @@ import { Metadata } from "next";
 
 import DatasetTable from "@/components/dataset-table";
 import PageHeader from "@/components/page-header";
+import { getParentSlug } from "@/utils/datasets";
 
 export const metadata: Metadata = {
   title: "Datasets | AHORN - Aachen Higher-Order Repository of Networks",
@@ -26,6 +27,7 @@ export default async function DatasetList() {
               ? frontmatter.title
               : path.parse(filename).name,
           disable: frontmatter.disable === true,
+          parent: frontmatter.parent,
           networkType: frontmatter["network-type"],
           tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],
           license: frontmatter.license,
@@ -36,7 +38,9 @@ export default async function DatasetList() {
       }),
   );
 
-  datasets = datasets.filter((d) => !d.disable);
+  datasets = datasets.filter(
+    (d) => !d.disable && getParentSlug(d.parent) === null,
+  );
 
   return (
     <>

@@ -16,6 +16,7 @@ from typing import Any
 
 from ahorn_loader.model import DatasetMetadata, Edge, Node
 from ahorn_loader.validator import Validator
+from rich.progress import track
 
 
 class HifConversionError(ValueError):
@@ -310,10 +311,32 @@ def write_hif_document(hif: dict[str, Any], output_path: Path | str) -> None:
         handle.write("\n")
 
 
+def derive_canonical_output_path(input_path: Path | str) -> Path:
+    """Return the canonical HIF output path for one AHORN input file."""
+    if isinstance(input_path, str):
+        input_path = Path(input_path)
+
+    name = input_path.name
+    if name.endswith(".txt.gz"):
+        output_name = f"{name.removesuffix('.txt.gz')}.hif.json.gz"
+    elif name.endswith(".txt"):
+        output_name = f"{name.removesuffix('.txt')}.hif.json"
+    else:
+        raise HifConversionError(
+            "Input file name must end with .txt or .txt.gz to derive output name."
+        )
+
+    return input_path.with_name(output_name)
+
+
+def resolve_output_paths(input_paths: list[Path]) -> list[Path]:
+    """Resolve one output path per input path."""
+    return [derive_canonical_output_path(input_path) for input_path in input_paths]
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("input", type=Path)
-    parser.add_argument("output", type=Path)
+    parser.add_argument("inputs", type=Path, nargs="+")
     parser.add_argument(
         "--network-type",
         action="append",
@@ -323,5 +346,11 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    hif = convert_ahorn_to_hif(args.input, network_types=args.network_types)
-    write_hif_document(hif, args.output)
+    output_paths = resolve_output_paths(args.inputs)
+    conversion_jobs = list(zip(args.inputs, output_paths, strict=True))
+    for input_path, output_path in track(
+        conversion_jobs,
+        description="Converting AHORN datasets to HIF",
+    ):
+        hif = convert_ahorn_to_hif(input_path, network_types=args.network_types)
+        write_hif_document(hif, output_path)

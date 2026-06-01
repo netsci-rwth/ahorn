@@ -29,6 +29,7 @@ FIELD_ORDER: tuple[Hashable, ...] = (
     "citation",
     "network-type",
     "tags",
+    "parent",
     "related",
     "attachments",
     "statistics",
@@ -187,6 +188,10 @@ def lint_file(path: Path) -> list[FrontmatterIssue]:
                 formats[str(format_name)] = value
         return formats
 
+    def is_subdataset() -> bool:
+        parent = data.get("parent")
+        return isinstance(parent, str) and bool(parent.strip())
+
     # Check field ordering
     order_map = {key: index for index, key in enumerate(FIELD_ORDER)}
     last_index = -1
@@ -279,6 +284,19 @@ def lint_file(path: Path) -> list[FrontmatterIssue]:
                 )
             )
         else:
+            revision_numbers: list[int] = []
+            revision_number_by_key: dict[Hashable, int] = {}
+            for key in attachments:
+                revision_match = re.fullmatch(r"revision-(\d+)", str(key))
+                if revision_match is None:
+                    continue
+
+                revision_number = int(revision_match.group(1))
+                revision_numbers.append(revision_number)
+                revision_number_by_key[key] = revision_number
+
+            first_revision_number = min(revision_numbers, default=None)
+
             for attachment_key, attachment in attachments.items():
                 if not isinstance(attachment, dict):
                     issues.append(
@@ -302,10 +320,10 @@ def lint_file(path: Path) -> list[FrontmatterIssue]:
                     )
 
                 changelog = attachment.get("changelog")
-                revision_match = re.fullmatch(r"revision-(\d+)", str(attachment_key))
+                revision_number = revision_number_by_key.get(attachment_key)
                 if (
-                    revision_match is not None
-                    and int(revision_match.group(1)) > 1
+                    revision_number is not None
+                    and revision_number != first_revision_number
                     and "changelog" not in attachment
                 ):
                     issues.append(
@@ -356,13 +374,8 @@ def lint_file(path: Path) -> list[FrontmatterIssue]:
                     )
                 )
             else:
-                # Extract revision numbers and check they are consecutive starting from 1
-                revision_numbers = []
                 for key in revision_keys:
-                    try:
-                        num = int(key.split("-")[1])
-                        revision_numbers.append(num)
-                    except IndexError, ValueError:
+                    if re.fullmatch(r"revision-\d+", str(key)) is None:
                         issues.append(
                             FrontmatterIssue(
                                 path=path,
@@ -376,8 +389,7 @@ def lint_file(path: Path) -> list[FrontmatterIssue]:
 
                 if revision_numbers:
                     revision_numbers.sort()
-                    # Check that revisions start at 1
-                    if revision_numbers[0] != 1:
+                    if not is_subdataset() and revision_numbers[0] != 1:
                         issues.append(
                             FrontmatterIssue(
                                 path=path,
@@ -387,7 +399,12 @@ def lint_file(path: Path) -> list[FrontmatterIssue]:
                         )
 
                     # Check that revisions are consecutive
-                    expected = list(range(1, len(revision_numbers) + 1))
+                    expected = list(
+                        range(
+                            revision_numbers[0],
+                            revision_numbers[0] + len(revision_numbers),
+                        )
+                    )
                     if revision_numbers != expected:
                         issues.append(
                             FrontmatterIssue(

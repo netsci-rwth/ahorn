@@ -32,6 +32,7 @@ type ZenodoRecordResponse = {
 };
 
 const zenodoRecordCache = new Map<string, Promise<Map<string, number>>>();
+const ZENODO_FETCH_TIMEOUT_MS = 3_000;
 
 export function isAttachmentFormat(key: string): key is AttachmentFormat {
   return key !== "changelog";
@@ -95,13 +96,20 @@ function parseZenodoFileUrl(url: string): {
   };
 }
 
+function createZenodoRequestSignal(): AbortSignal | undefined {
+  return typeof AbortSignal.timeout === "function"
+    ? AbortSignal.timeout(ZENODO_FETCH_TIMEOUT_MS)
+    : undefined;
+}
+
 async function getZenodoRecordFiles(
   recordId: string,
 ): Promise<Map<string, number>> {
   let recordPromise = zenodoRecordCache.get(recordId);
   if (!recordPromise) {
-    recordPromise = fetch(`https://zenodo.org/api/records/${recordId}`).then(
-      async (response) => {
+    recordPromise = fetch(`https://zenodo.org/api/records/${recordId}`, {
+      signal: createZenodoRequestSignal(),
+    }).then(async (response) => {
         if (!response.ok) {
           throw new Error(`Zenodo record ${recordId} request failed`);
         }

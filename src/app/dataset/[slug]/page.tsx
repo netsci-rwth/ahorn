@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
+import Link from "next/link";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -20,6 +21,11 @@ import PageHeader from "@/components/page-header";
 import UsageCommand from "@/components/usage-command";
 
 import { citeToApa, citeToBibtex, toCite } from "@/utils/citation";
+import {
+  getBuildScriptSlug,
+  getParentSlug,
+  type DatasetFrontmatter,
+} from "@/utils/datasets";
 import {
   formatAttachmentTag,
   formatFileSize,
@@ -44,6 +50,11 @@ type AttachmentRevision = {
   key: string;
   label: string;
   attachment: ResolvedRevisionAttachment;
+};
+
+type ImportedDataset = {
+  slug: string;
+  frontmatter: DatasetFrontmatter;
 };
 
 function isSafeMarkdownUrl(url: string): boolean {
@@ -179,7 +190,9 @@ export async function generateMetadata({
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const datasetsDir = path.join(process.cwd(), "src", "datasets");
   const filenames = await fs.promises.readdir(datasetsDir);
-  return filenames.map((filename) => ({ slug: path.parse(filename).name }));
+  return filenames
+    .filter((filename) => filename.endsWith(".mdx"))
+    .map((filename) => ({ slug: path.parse(filename).name }));
 }
 
 export default async function DatasetPage({
@@ -191,12 +204,58 @@ export default async function DatasetPage({
   const { default: Dataset, frontmatter } = await import(
     `@/datasets/${slug}.mdx`
   );
+  const parentSlug = getParentSlug(frontmatter.parent);
+  const datasetsDir = path.join(process.cwd(), "src", "datasets");
+  const filenames = await fs.promises.readdir(datasetsDir);
+  const importedDatasets = await Promise.all(
+    filenames
+      .filter((filename) => filename.endsWith(".mdx"))
+      .map(async (filename) => {
+        const importedSlug = path.parse(filename).name;
+        const { frontmatter: importedFrontmatter } = (await import(
+          `@/datasets/${filename}`
+        )) as {
+          frontmatter: DatasetFrontmatter;
+        };
+
+        return {
+          slug: importedSlug,
+          frontmatter: importedFrontmatter,
+        } satisfies ImportedDataset;
+      }),
+  );
   const relatedDatasetSlugs = Array.isArray(frontmatter.related)
     ? frontmatter.related.filter(
-        (relatedSlug: unknown): relatedSlug is string =>
-          typeof relatedSlug === "string",
-      )
+      (relatedSlug: unknown): relatedSlug is string =>
+        typeof relatedSlug === "string",
+    )
     : [];
+  const childDatasetSlugs = importedDatasets
+    .filter((dataset) => getParentSlug(dataset.frontmatter.parent) === slug)
+    .sort((left, right) => {
+      const leftTitle =
+        typeof left.frontmatter.title === "string"
+          ? left.frontmatter.title
+          : left.slug;
+      const rightTitle =
+        typeof right.frontmatter.title === "string"
+          ? right.frontmatter.title
+          : right.slug;
+
+      return leftTitle.localeCompare(rightTitle);
+    })
+    .map((dataset) => dataset.slug);
+  const parentTitle =
+    parentSlug === null
+      ? null
+      : (() => {
+        const matchedParent = importedDatasets.find(
+          (dataset) => dataset.slug === parentSlug,
+        );
+        return typeof matchedParent?.frontmatter.title === "string"
+          ? matchedParent.frontmatter.title
+          : parentSlug;
+      })();
 
   const attachmentMetadata = (frontmatter.attachments || {}) as AttachmentMap;
   const attachments = await resolveAttachmentSizes(attachmentMetadata);
@@ -223,6 +282,7 @@ export default async function DatasetPage({
   }));
   const latestAttachmentEntry = attachmentEntries.at(-1) ?? null;
   const latestAttachment = latestAttachmentEntry?.attachment["ahorn"];
+  const buildScriptSlug = getBuildScriptSlug(slug, frontmatter.parent);
 
   const licenseDisplay = (() => {
     const license = frontmatter.license;
@@ -260,7 +320,36 @@ export default async function DatasetPage({
     >
       <div className="min-w-0 flex-1">
         <PageHeader
-          eyebrow="Dataset"
+          eyebrow={
+            <nav aria-label="Breadcrumb">
+              <ol className="flex flex-wrap items-center gap-2">
+                <li>
+                  <Link href="/" className="hover:text-blue-75">
+                    Repository
+                  </Link>
+                </li>
+                <li aria-hidden="true">/</li>
+                <li>
+                  <Link href="/dataset" className="hover:text-blue-75">
+                    Datasets
+                  </Link>
+                </li>
+                {parentSlug !== null && (
+                  <>
+                    <li aria-hidden="true">/</li>
+                    <li>
+                      <Link
+                        href={`/dataset/${parentSlug}`}
+                        className="hover:text-blue-75"
+                      >
+                        {parentTitle}
+                      </Link>
+                    </li>
+                  </>
+                )}
+              </ol>
+            </nav>
+          }
           title={frontmatter.title}
           actions={
             <div className="flex w-full max-w-full items-stretch rounded-xl border border-black-25 bg-white lg:max-w-120 dark:border-black-75 dark:bg-black-100">
@@ -348,6 +437,19 @@ export default async function DatasetPage({
           <Dataset />
           <Changelog revisions={changelogRevisions} />
         </div>
+        {childDatasetSlugs.length > 0 && (
+          <section className="not-prose mt-10" data-pagefind-ignore>
+            <div className="mb-5 flex flex-wrap items-center gap-3">
+              <h2 className="text-2xl font-semibold tracking-tight text-black-100 dark:text-white">
+                Sub-datasets
+              </h2>
+              <Badge color="info" className="px-2 py-0.5 text-[11px]">
+                {childDatasetSlugs.length}
+              </Badge>
+            </div>
+            <DatasetCardList slugs={childDatasetSlugs} />
+          </section>
+        )}
       </div>
 
       <aside className="mt-10 w-full shrink-0 lg:mt-0 lg:w-88">
@@ -460,10 +562,10 @@ export default async function DatasetPage({
                                     </span>
                                     {typeof formatAttachment.size ===
                                       "number" && (
-                                      <span className="shrink-0 text-black-50 dark:text-black-50">
-                                        {formatFileSize(formatAttachment.size)}
-                                      </span>
-                                    )}
+                                        <span className="shrink-0 text-black-50 dark:text-black-50">
+                                          {formatFileSize(formatAttachment.size)}
+                                        </span>
+                                      )}
                                   </a>
                                 );
                               },
@@ -509,7 +611,7 @@ export default async function DatasetPage({
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-black-75 dark:text-black-25">
                   <a
-                    href={`https://github.com/netsci-rwth/ahorn/blob/main/scripts/${slug}.py`}
+                    href={`https://github.com/netsci-rwth/ahorn/blob/main/scripts/${buildScriptSlug}.py`}
                     target="_blank"
                     rel="noreferrer"
                     className="font-medium hover:text-blue-100 dark:hover:text-blue-50"

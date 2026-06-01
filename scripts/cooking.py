@@ -9,6 +9,7 @@ https://www.cs.cornell.edu/~arb/data/cat-edge-Cooking/
 import gzip
 from collections import Counter, defaultdict
 from pathlib import Path
+from typing import Any
 
 from more_itertools import first
 from rich.progress import track
@@ -25,45 +26,133 @@ from .utils.yaml import patch_dumper
 patch_dumper()
 
 root_dir = Path(__file__).parent.parent
-dataset_file = root_dir / "public" / "datasets" / "cooking.txt.gz"
+target_dir = root_dir / "public" / "datasets"
+dataset_file = target_dir / "cooking.txt.gz"
 datasheet_file = root_dir / "src" / "datasets" / "cooking.mdx"
-revision = 1
+revision = 2
+zenodo_file_base_url = "https://zenodo.org/records/20491193/files"
 
-nodes, hyperedges = load_benson_hyperedges(root_dir / "data" / "cat-edge-Cooking")
+nodes, raw_hyperedges = load_benson_hyperedges(root_dir / "data" / "cat-edge-Cooking")
+singleton_edge_label_counts = Counter(
+    hyperedge["label"] for hyperedge in raw_hyperedges if len(hyperedge.elements) == 1
+)
+hyperedges = [
+    hyperedge for hyperedge in raw_hyperedges if len(hyperedge.elements) > 1
+]
 
-node_degrees = defaultdict(int)
-edge_degree_counts = defaultdict(int)
 
-# write dataset file
-with gzip.open(dataset_file, "wt") as f:
-    write_dataset_metadata(f, datasheet_file.stem, revision)
-    for node in track(nodes, description="Writing nodes"):
-        write_node(f, first(node), ingredient=node["name"])
-    for hyperedge in track(hyperedges, description="Writing hyperedges"):
-        write_edge(f, hyperedge, cuisine=hyperedge["label"])
+def child_slug(label: str) -> str:
+    return f"cooking-{label.replace('_', '-')}"
 
+
+def zenodo_download_url(filename: str) -> str:
+    return f"{zenodo_file_base_url}/{filename}?download=1"
+
+
+if singleton_edge_label_counts:
+    affected_subdatasets = ", ".join(
+        f"{child_slug(label)} ({count})"
+        for label, count in sorted(singleton_edge_label_counts.items())
+    )
+    print(
+        "Single-node hyperedge filter affects sub-datasets: "
+        f"{affected_subdatasets}"
+    )
+else:
+    print("Single-node hyperedge filter affects no sub-datasets.")
+
+
+def build_statistics(
+    filtered_hyperedges: list[Any],
+) -> tuple[dict[int, int], dict[int, int], set[int | str]]:
+    """Build statistics from filtered hyperedges.
+
+    Parameters
+    ----------
+    filtered_hyperedges : list[Any]
+        List of hyperedges to analyze.
+
+    Returns
+    -------
+    node_degree_counts : dict[int, int]
+        Mapping of degree to count of nodes.
+    edge_degree_counts : dict[int, int]
+        Mapping of degree to count of edges.
+    participating_nodes : set[int | str]
+        Set of node IDs that participate in the hyperedges.
+    """
+    node_degrees = defaultdict(int)
+    edge_degree_counts = defaultdict(int)
+    participating_nodes: set[int | str] = set()
+
+    for hyperedge in filtered_hyperedges:
+        edge_degree_counts[len(hyperedge.elements)] += 1
         for node in hyperedge.elements:
+            participating_nodes.add(node)
             node_degrees[node] += 1
 
-        edge_degree_counts[len(hyperedge.elements)] += 1
+    node_degree_counts = defaultdict(int)
+    for degree in node_degrees.values():
+        node_degree_counts[degree] += 1
 
-node_degree_counts = defaultdict(int)
-for d in node_degrees.values():
-    node_degree_counts[d] += 1
-node_degree_histogram = dict(sorted(node_degree_counts.items()))
+    return (
+        dict(sorted(node_degree_counts.items())),
+        dict(sorted(edge_degree_counts.items())),
+        participating_nodes,
+    )
 
-edge_degree_histogram = dict(sorted(edge_degree_counts.items()))
 
-edge_label_counts = Counter(x["label"] for x in hyperedges)
+def write_dataset(
+    output_file: Path,
+    slug: str,
+    filtered_hyperedges: list[Any],
+    participating_nodes: set[int | str],
+    *,
+    include_cuisine_label: bool,
+) -> None:
+    with gzip.open(output_file, "wt") as file:
+        write_dataset_metadata(file, slug, revision)
+        for node in track(nodes, description=f"Writing {slug} nodes"):
+            node_id = first(node)
+            if node_id in participating_nodes:
+                write_node(file, node_id, ingredient=node["name"])
+
+        for hyperedge in track(
+            filtered_hyperedges, description=f"Writing {slug} edges"
+        ):
+            if include_cuisine_label:
+                write_edge(file, hyperedge, cuisine=hyperedge["label"])
+            else:
+                write_edge(file, hyperedge)
+
+
+node_degree_histogram, edge_degree_histogram, participating_nodes = build_statistics(
+    hyperedges
+)
+write_dataset(
+    dataset_file,
+    datasheet_file.stem,
+    hyperedges,
+    participating_nodes,
+    include_cuisine_label=True,
+)
+edge_label_counts = Counter(hyperedge["label"] for hyperedge in hyperedges)
 
 update_frontmatter(
     datasheet_file,
     {
         "attachments": {
-            f"revision-{revision}": {"ahorn": dataset_file.name},
+            f"revision-{revision}": {
+                "ahorn": zenodo_download_url(dataset_file.name),
+                "hif": zenodo_download_url("cooking.hif.json.gz"),
+                "changelog": [
+                    "Dropped hyperedges with only a single distinct ingredient.",
+                    "Updated the format version to `0.3`.",
+                ],
+            },
         },
         "statistics": {
-            "num-nodes": len(nodes),
+            "num-nodes": len(participating_nodes),
             "num-edges": len(hyperedges),
             "node-degrees": node_degree_histogram,
             "edge-degrees": edge_degree_histogram,
@@ -71,3 +160,39 @@ update_frontmatter(
         "edge-label-count": dict(sorted(edge_label_counts.items())),
     },
 )
+
+for label in sorted(edge_label_counts):
+    slug = child_slug(label)
+    child_file = root_dir / "src" / "datasets" / f"{slug}.mdx"
+    filtered_hyperedges = [
+        hyperedge for hyperedge in hyperedges if hyperedge["label"] == label
+    ]
+    node_degree_histogram, edge_degree_histogram, participating_nodes = (
+        build_statistics(filtered_hyperedges)
+    )
+
+    write_dataset(
+        root_dir / "public" / "datasets" / f"{slug}.txt.gz",
+        slug,
+        filtered_hyperedges,
+        participating_nodes,
+        include_cuisine_label=False,
+    )
+
+    update_frontmatter(
+        child_file,
+        {
+            "attachments": {
+                f"revision-{revision}": {
+                    "ahorn": zenodo_download_url(f"{slug}.txt.gz"),
+                    "hif": zenodo_download_url(f"{slug}.hif.json.gz"),
+                }
+            },
+            "statistics": {
+                "num-nodes": len(participating_nodes),
+                "num-edges": len(filtered_hyperedges),
+                "node-degrees": node_degree_histogram,
+                "edge-degrees": edge_degree_histogram,
+            },
+        },
+    )

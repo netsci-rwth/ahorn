@@ -1,0 +1,171 @@
+---
+title: Cooking (Japanese)
+source: https://www.cs.cornell.edu/~arb/data/cat-edge-Cooking/
+license: unprovided-reuse-encouraged
+citation:
+  - 10.1145/3366423.3380152
+network-type:
+  - hypergraph
+tags:
+  - 'source: benson'
+parent: cooking
+attachments:
+  revision-2:
+    ahorn: https://zenodo.org/records/20491193/files/cooking-japanese.txt.gz?download=1
+    hif: https://zenodo.org/records/20491193/files/cooking-japanese.hif.json.gz?download=1
+statistics:
+  num-nodes: 1439
+  num-edges: 1420
+  node-degrees:
+    1: 601
+    2: 237
+    3: 115
+    4: 70
+    5: 48
+    6: 40
+    7: 26
+    8: 23
+    9: 23
+    10: 16
+    11: 13
+    12: 10
+    13: 12
+    14: 16
+    15: 9
+    16: 15
+    17: 12
+    18: 9
+    19: 9
+    20: 3
+    21: 5
+    22: 9
+    23: 6
+    24: 3
+    25: 5
+    26: 1
+    27: 3
+    28: 7
+    29: 3
+    30: 4
+    31: 4
+    32: 4
+    33: 1
+    34: 2
+    35: 2
+    36: 1
+    37: 3
+    38: 3
+    39: 7
+    40: 2
+    41: 3
+    42: 1
+    43: 2
+    46: 1
+    48: 1
+    49: 2
+    51: 1
+    52: 1
+    55: 1
+    57: 1
+    58: 1
+    59: 1
+    60: 3
+    61: 2
+    62: 2
+    64: 2
+    66: 2
+    69: 2
+    70: 1
+    72: 1
+    73: 1
+    75: 1
+    80: 1
+    84: 1
+    87: 1
+    90: 1
+    123: 1
+    124: 1
+    125: 1
+    144: 1
+    146: 1
+    152: 1
+    166: 1
+    175: 1
+    184: 1
+    186: 1
+    190: 1
+    229: 1
+    245: 1
+    261: 1
+    289: 1
+    382: 1
+    401: 1
+    402: 1
+    422: 1
+    561: 1
+  edge-degrees:
+    2: 13
+    3: 44
+    4: 51
+    5: 84
+    6: 135
+    7: 158
+    8: 131
+    9: 139
+    10: 114
+    11: 123
+    12: 108
+    13: 77
+    14: 52
+    15: 44
+    16: 42
+    17: 42
+    18: 19
+    19: 16
+    20: 7
+    21: 4
+    22: 8
+    23: 3
+    24: 1
+    28: 1
+    29: 2
+    30: 1
+    34: 1
+---
+import { ComputedBoxPlot } from "@/components/chart/box-plot";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+## Overview
+
+This dataset is the `Cooking` subset restricted to recipes labelled as `japanese`.
+It keeps the ingredient nodes that participate in at least one recipe of this cuisine.
+Raw data was obtained from the [“What's Cooking?” Kaggle competition](https://www.kaggle.com/c/whats-cooking).
+
+> [!IMPORTANT]
+> Three recipes with only one distinct ingredient have been dropped from this dataset.
+
+## Attributes
+
+- `ingredient : string`: The name of the ingredient corresponding to a node.
+
+## Statistics
+
+### Nodes
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
+  <Stat title="Node Type" value="Ingredient" />
+  <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-2" />
+</dl>
+
+### Hyperedges
+
+<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+  />
+  <Stat title="Hyperedge Type" value="Recipe" />
+  <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />
+</dl>

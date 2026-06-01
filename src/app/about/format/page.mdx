@@ -136,6 +136,14 @@ The published datasets are versioned to ensure reproducibility and track changes
 The dataset-level metadata MUST include the `revision` attribute, which is an integer that indicates the version of the dataset.
 When a dataset is updated or modified, the `revision` number MUST be incremented by one.
 
+## Sub-datasets
+
+Some datasets are published as sub-datasets of a larger parent dataset.
+In that case, the dataset `name` MUST be the parent dataset name followed by a dash and the sub-dataset name, for example `cooking-brazilian`.
+
+Sub-datasets MUST always use the same `revision` number as their parent dataset if they are derived from it directly.
+As a consequence, a newly introduced sub-dataset MAY start at a revision number greater than `1` if the parent dataset is already at a later revision.
+
 ## Changelog
 
 <details className="mt-3 rounded border border-black-25 bg-white p-4 dark:border-black-75 dark:bg-black-100">

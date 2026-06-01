@@ -1,0 +1,126 @@
+---
+title: Cooking (Brazilian)
+source: https://www.cs.cornell.edu/~arb/data/cat-edge-Cooking/
+license: unprovided-reuse-encouraged
+citation:
+  - 10.1145/3366423.3380152
+network-type:
+  - hypergraph
+tags:
+  - 'source: benson'
+parent: cooking
+attachments:
+  revision-2:
+    ahorn: https://zenodo.org/records/20491193/files/cooking-brazilian.txt.gz?download=1
+    hif: https://zenodo.org/records/20491193/files/cooking-brazilian.hif.json.gz?download=1
+statistics:
+  num-nodes: 853
+  num-edges: 467
+  node-degrees:
+    1: 392
+    2: 148
+    3: 75
+    4: 34
+    5: 31
+    6: 22
+    7: 16
+    8: 12
+    9: 16
+    10: 15
+    11: 11
+    12: 12
+    13: 7
+    14: 7
+    15: 2
+    16: 5
+    17: 2
+    18: 7
+    19: 2
+    20: 4
+    21: 2
+    22: 2
+    23: 5
+    25: 1
+    26: 2
+    29: 2
+    36: 1
+    43: 1
+    44: 1
+    48: 2
+    52: 1
+    56: 1
+    57: 1
+    58: 1
+    63: 1
+    69: 1
+    70: 1
+    82: 1
+    83: 1
+    87: 1
+    89: 1
+    118: 1
+    133: 1
+    194: 1
+  edge-degrees:
+    2: 3
+    3: 24
+    4: 57
+    5: 50
+    6: 50
+    7: 27
+    8: 22
+    9: 26
+    10: 21
+    11: 34
+    12: 23
+    13: 22
+    14: 23
+    15: 22
+    16: 21
+    17: 15
+    18: 10
+    19: 5
+    20: 1
+    21: 2
+    22: 2
+    23: 1
+    24: 1
+    25: 2
+    29: 1
+    36: 1
+    59: 1
+---
+import { ComputedBoxPlot } from "@/components/chart/box-plot";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+## Overview
+
+This dataset is the `Cooking` subset restricted to recipes labelled as `brazilian`.
+It keeps the ingredient nodes that participate in at least one recipe of this cuisine.
+Raw data was obtained from the [“What's Cooking?” Kaggle competition](https://www.kaggle.com/c/whats-cooking).
+
+## Attributes
+
+- `ingredient : string`: The name of the ingredient corresponding to a node.
+
+## Statistics
+
+### Nodes
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
+  <Stat title="Node Type" value="Ingredient" />
+  <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-2" />
+</dl>
+
+### Hyperedges
+
+<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+  />
+  <Stat title="Hyperedge Type" value="Recipe" />
+  <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />
+</dl>

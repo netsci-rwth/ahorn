@@ -1,0 +1,208 @@
+---
+title: Cooking (French)
+source: https://www.cs.cornell.edu/~arb/data/cat-edge-Cooking/
+license: unprovided-reuse-encouraged
+citation:
+  - 10.1145/3366423.3380152
+network-type:
+  - hypergraph
+tags:
+  - 'source: benson'
+parent: cooking
+attachments:
+  revision-2:
+    ahorn: https://zenodo.org/records/20491193/files/cooking-french.txt.gz?download=1
+    hif: https://zenodo.org/records/20491193/files/cooking-french.hif.json.gz?download=1
+statistics:
+  num-nodes: 2102
+  num-edges: 2644
+  node-degrees:
+    1: 823
+    2: 313
+    3: 164
+    4: 103
+    5: 104
+    6: 74
+    7: 50
+    8: 32
+    9: 40
+    10: 28
+    11: 18
+    12: 24
+    13: 21
+    14: 15
+    15: 16
+    16: 12
+    17: 16
+    18: 9
+    19: 17
+    20: 5
+    21: 10
+    22: 7
+    23: 4
+    24: 8
+    25: 4
+    26: 11
+    27: 6
+    28: 5
+    29: 5
+    30: 5
+    31: 5
+    32: 3
+    33: 2
+    34: 3
+    35: 2
+    36: 3
+    37: 2
+    38: 2
+    39: 2
+    40: 1
+    41: 3
+    42: 3
+    44: 4
+    45: 1
+    46: 1
+    47: 5
+    48: 4
+    49: 4
+    50: 1
+    51: 2
+    52: 3
+    53: 1
+    54: 5
+    56: 3
+    57: 3
+    58: 5
+    59: 1
+    60: 1
+    61: 2
+    63: 2
+    64: 3
+    66: 1
+    67: 3
+    69: 2
+    71: 2
+    72: 1
+    73: 1
+    74: 2
+    75: 2
+    77: 1
+    80: 1
+    84: 1
+    85: 1
+    86: 1
+    88: 1
+    90: 1
+    91: 1
+    92: 2
+    93: 1
+    94: 1
+    97: 1
+    101: 2
+    102: 1
+    105: 2
+    108: 1
+    110: 1
+    115: 1
+    121: 1
+    125: 1
+    127: 1
+    129: 1
+    136: 1
+    137: 1
+    149: 1
+    153: 1
+    166: 2
+    170: 1
+    171: 1
+    172: 1
+    185: 1
+    188: 1
+    209: 1
+    210: 1
+    214: 1
+    219: 1
+    221: 1
+    222: 1
+    239: 1
+    245: 1
+    256: 1
+    321: 1
+    368: 1
+    385: 1
+    403: 1
+    415: 1
+    439: 1
+    513: 1
+    516: 1
+    592: 1
+    593: 1
+    637: 1
+    1203: 1
+  edge-degrees:
+    2: 32
+    3: 48
+    4: 111
+    5: 161
+    6: 235
+    7: 232
+    8: 259
+    9: 313
+    10: 252
+    11: 205
+    12: 184
+    13: 152
+    14: 106
+    15: 100
+    16: 76
+    17: 40
+    18: 47
+    19: 29
+    20: 22
+    21: 16
+    22: 5
+    23: 6
+    24: 4
+    25: 4
+    26: 1
+    27: 1
+    28: 2
+    31: 1
+---
+import { ComputedBoxPlot } from "@/components/chart/box-plot";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+## Overview
+
+This dataset is the `Cooking` subset restricted to recipes labelled as `french`.
+It keeps the ingredient nodes that participate in at least one recipe of this cuisine.
+Raw data was obtained from the [“What's Cooking?” Kaggle competition](https://www.kaggle.com/c/whats-cooking).
+
+> [!IMPORTANT]
+> Two recipes with only one distinct ingredient have been dropped from this dataset.
+
+## Attributes
+
+- `ingredient : string`: The name of the ingredient corresponding to a node.
+
+## Statistics
+
+### Nodes
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
+  <Stat title="Node Type" value="Ingredient" />
+  <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-2" />
+</dl>
+
+### Hyperedges
+
+<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+  />
+  <Stat title="Hyperedge Type" value="Recipe" />
+  <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />
+</dl>

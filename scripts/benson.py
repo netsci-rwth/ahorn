@@ -192,13 +192,18 @@ def _attach_labels(
             atom[label_name] = label_fn(line)
 
 
-def load_benson_hyperedges(folder: Path | str) -> tuple[list[Simplex], list[Simplex]]:
+def load_benson_hyperedges(
+    folder: Path | str, *, map_hyperedge_label_names: bool = True
+) -> tuple[list[Simplex], list[Simplex]]:
     """Load hyperedge data from the Benson dataset format.
 
     Parameters
     ----------
     folder : Path | str
         Path to the folder containing the dataset.
+    map_hyperedge_label_names : bool, default=True
+        If True, map hyperedge label IDs through the label-name file when present.
+        If False, attach the raw label IDs from the label file.
 
     Returns
     -------
@@ -290,7 +295,7 @@ def load_benson_hyperedges(folder: Path | str) -> tuple[list[Simplex], list[Simp
                 )
 
             simplices.append(Simplex(seen))
-    if hyperedge_label_names_file is not None:
+    if map_hyperedge_label_names and hyperedge_label_names_file is not None:
         with (folder / hyperedge_label_names_file).open() as file:
             hyperedge_label_list = [line.strip() for line in file]
     else:

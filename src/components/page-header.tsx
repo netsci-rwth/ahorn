@@ -1,7 +1,7 @@
 import classNames from "classnames";
 
 type PageHeaderProps = {
-  eyebrow?: string;
+  eyebrow?: React.ReactNode;
   title: string;
   description?: string;
   actions?: React.ReactNode;
@@ -27,9 +27,9 @@ export default function PageHeader({
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
         <div className="min-w-0">
           {eyebrow && (
-            <p className="text-sm font-semibold tracking-widest text-blue-100 uppercase">
+            <div className="text-sm font-semibold tracking-widest text-blue-100 uppercase">
               {eyebrow}
-            </p>
+            </div>
           )}
           <h1 className="mt-3 text-4xl font-semibold tracking-tight wrap-break-word text-black-100 dark:text-white">
             {title}
