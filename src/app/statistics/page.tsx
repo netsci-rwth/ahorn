@@ -140,20 +140,35 @@ function getAttachmentStats(attachments: unknown): {
 
   const formats = new Set<string>();
   const formatCounts: Record<string, number> = {};
-  let revisionCount = 0;
+  const revisionEntries = Object.entries(attachments)
+    .map(([key, value]) => ({
+      key,
+      revisionNumber: getRevisionNumber(key),
+      value,
+    }))
+    .filter(
+      (
+        entry,
+      ): entry is {
+        key: string;
+        revisionNumber: number;
+        value: Record<string, unknown>;
+      } =>
+        isRevisionKey(entry.key) &&
+        entry.revisionNumber !== null &&
+        entry.value !== null &&
+        typeof entry.value === "object",
+    );
+  const firstRevisionNumber = Math.min(
+    ...revisionEntries.map(({ revisionNumber }) => revisionNumber),
+  );
+
+  const revisionCount = revisionEntries.length;
   let revisionsAfterFirst = 0;
   let changelogsAfterFirst = 0;
 
-  for (const [revisionKey, revisionValue] of Object.entries(attachments)) {
-    if (!isRevisionKey(revisionKey) || typeof revisionValue !== "object") {
-      continue;
-    }
-
-    revisionCount += 1;
-    const revisionNumber = getRevisionNumber(revisionKey);
-    const revision = revisionValue as Record<string, unknown>;
-
-    if (revisionNumber !== null && revisionNumber > 1) {
+  for (const { revisionNumber, value: revision } of revisionEntries) {
+    if (revisionNumber > firstRevisionNumber) {
       revisionsAfterFirst += 1;
       if (Array.isArray(revision.changelog) && revision.changelog.length > 0) {
         changelogsAfterFirst += 1;
