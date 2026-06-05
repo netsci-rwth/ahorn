@@ -40,16 +40,11 @@ import {
   type ResolvedRevisionAttachment,
 } from "@/utils/zenodo";
 
-type ChangelogRevision = {
-  key: string;
-  label: string;
-  changelog: string[];
-};
-
 type AttachmentRevision = {
   key: string;
   label: string;
   attachment: ResolvedRevisionAttachment;
+  changelog: string[];
 };
 
 type ImportedDataset = {
@@ -84,7 +79,12 @@ function renderInlineMarkdown(text: string): ReactNode[] {
     const link = token.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
     if (link && isSafeMarkdownUrl(link[2])) {
       nodes.push(
-        <a key={nodes.length} href={link[2]} target="_blank" rel="noreferrer">
+        <a
+          key={nodes.length}
+          href={link[2]}
+          target="_blank"
+          rel="noreferrer"
+        >
           {link[1]}
         </a>,
       );
@@ -102,35 +102,6 @@ function renderInlineMarkdown(text: string): ReactNode[] {
   }
 
   return nodes;
-}
-
-function Changelog({ revisions }: { revisions: ChangelogRevision[] }) {
-  if (revisions.length === 0) {
-    return null;
-  }
-
-  return (
-    <>
-      <h2>Changelog</h2>
-      {revisions.map((revision) => (
-        <details
-          key={revision.key}
-          className="mt-3 rounded border border-black-25 bg-white p-4 dark:border-black-75 dark:bg-black-100"
-        >
-          <summary className="cursor-pointer select-none">
-            {revision.label}
-          </summary>
-          <div>
-            <ul>
-              {revision.changelog.map((entry, index) => (
-                <li key={index}>{renderInlineMarkdown(entry)}</li>
-              ))}
-            </ul>
-          </div>
-        </details>
-      ))}
-    </>
-  );
 }
 
 function formatDownloadFormat(format: AttachmentFormat): string {
@@ -226,9 +197,9 @@ export default async function DatasetPage({
   );
   const relatedDatasetSlugs = Array.isArray(frontmatter.related)
     ? frontmatter.related.filter(
-      (relatedSlug: unknown): relatedSlug is string =>
-        typeof relatedSlug === "string",
-    )
+        (relatedSlug: unknown): relatedSlug is string =>
+          typeof relatedSlug === "string",
+      )
     : [];
   const childDatasetSlugs = importedDatasets
     .filter((dataset) => getParentSlug(dataset.frontmatter.parent) === slug)
@@ -249,13 +220,13 @@ export default async function DatasetPage({
     parentSlug === null
       ? null
       : (() => {
-        const matchedParent = importedDatasets.find(
-          (dataset) => dataset.slug === parentSlug,
-        );
-        return typeof matchedParent?.frontmatter.title === "string"
-          ? matchedParent.frontmatter.title
-          : parentSlug;
-      })();
+          const matchedParent = importedDatasets.find(
+            (dataset) => dataset.slug === parentSlug,
+          );
+          return typeof matchedParent?.frontmatter.title === "string"
+            ? matchedParent.frontmatter.title
+            : parentSlug;
+        })();
 
   const attachmentMetadata = (frontmatter.attachments || {}) as AttachmentMap;
   const attachments = await resolveAttachmentSizes(attachmentMetadata);
@@ -264,21 +235,13 @@ export default async function DatasetPage({
     : null;
   const apaCitations = citations ? citeToApa(citations) : [];
   const bibtex = citations ? citeToBibtex(citations) : "";
-  const changelogRevisions = Object.entries(attachmentMetadata)
-    .map(([key, attachment]) => {
-      return {
-        key,
-        label: formatAttachmentTag(key),
-        changelog: attachment.changelog ?? [],
-      };
-    })
-    .filter((entry) => entry.changelog.length > 0);
   const attachmentEntries: AttachmentRevision[] = Object.entries(
     attachments,
   ).map(([key, attachment]) => ({
     key,
     label: formatAttachmentTag(key),
     attachment,
+    changelog: attachment.changelog,
   }));
   const latestAttachmentEntry = attachmentEntries.at(-1) ?? null;
   const latestAttachment = latestAttachmentEntry?.attachment["ahorn"];
@@ -435,7 +398,6 @@ export default async function DatasetPage({
 
         <div className="prose mt-8 max-w-none dark:prose-invert">
           <Dataset />
-          <Changelog revisions={changelogRevisions} />
         </div>
         {childDatasetSlugs.length > 0 && (
           <section className="not-prose mt-10" data-pagefind-ignore>
@@ -461,121 +423,141 @@ export default async function DatasetPage({
           {attachmentEntries.length > 0 && (
             <SidebarSection title="Files">
               <ul className="space-y-3" role="list">
-                {attachmentEntries.map(({ key, label, attachment }) => {
-                  const primaryAttachment = attachment["ahorn"];
-                  const primaryUrl = new URL(
-                    primaryAttachment.url,
-                    "https://ahorn.rwth-aachen.de/",
-                  );
-                  const zenodoUrl = getZenodoRecordUrl(primaryAttachment.url);
-                  const isLatest = latestAttachmentEntry?.key === key;
-                  const additionalFormats = getResolvedAttachmentFormatEntries(
-                    attachment,
-                  ).filter(([format]) => format !== "ahorn");
+                {attachmentEntries.map(
+                  ({ key, label, attachment, changelog }) => {
+                    const primaryAttachment = attachment["ahorn"];
+                    const primaryUrl = new URL(
+                      primaryAttachment.url,
+                      "https://ahorn.rwth-aachen.de/",
+                    );
+                    const zenodoUrl = getZenodoRecordUrl(primaryAttachment.url);
+                    const isLatest = latestAttachmentEntry?.key === key;
+                    const additionalFormats =
+                      getResolvedAttachmentFormatEntries(attachment).filter(
+                        ([format]) => format !== "ahorn",
+                      );
 
-                  return (
-                    <li
-                      key={key}
-                      className="rounded-xl bg-blue-10/70 p-3 dark:bg-black-100/70"
-                    >
-                      <div className="flex min-w-0 items-center justify-between gap-3">
-                        <div className="flex min-w-0 items-center gap-2">
-                          <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-white text-black-50 dark:bg-black-100 dark:text-black-50">
+                    return (
+                      <li
+                        key={key}
+                        className="rounded-xl bg-blue-10/70 p-3 dark:bg-black-100/70"
+                      >
+                        <div className="flex min-w-0 items-center justify-between gap-3">
+                          <div className="flex min-w-0 items-center gap-2">
+                            <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-white text-black-50 dark:bg-black-100 dark:text-black-50">
+                              <FontAwesomeIcon
+                                icon={faPaperclip}
+                                className="size-3"
+                              />
+                            </span>
+                            <div className="min-w-0">
+                              <div className="flex min-w-0 flex-wrap items-center gap-2">
+                                <span className="truncate text-sm font-semibold text-black-100 dark:text-white">
+                                  {label}
+                                </span>
+                                {isLatest && (
+                                  <Badge
+                                    color="success"
+                                    className="px-2 py-0.5 text-[11px]"
+                                  >
+                                    Latest
+                                  </Badge>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          {zenodoUrl && (
+                            <a
+                              href={zenodoUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="shrink-0 text-xs font-semibold text-black-50 hover:text-blue-100 dark:text-black-50 dark:hover:text-blue-50"
+                            >
+                              Zenodo
+                            </a>
+                          )}
+                        </div>
+
+                        <a
+                          href={primaryUrl.href}
+                          download
+                          className="mt-3 flex min-h-12 items-center justify-between gap-3 rounded-lg bg-blue-100 px-3 py-2.5 text-white shadow-sm transition-colors hover:bg-blue-100 dark:bg-blue-100 dark:hover:bg-blue-75"
+                        >
+                          <span className="flex min-w-0 items-center gap-2 text-sm font-semibold">
                             <FontAwesomeIcon
-                              icon={faPaperclip}
-                              className="size-3"
+                              icon={faDownload}
+                              className="size-3.5 shrink-0"
                             />
+                            <span>Download</span>
                           </span>
-                          <div className="min-w-0">
-                            <div className="flex min-w-0 flex-wrap items-center gap-2">
-                              <span className="truncate text-sm font-semibold text-black-100 dark:text-white">
-                                {label}
-                              </span>
-                              {isLatest && (
-                                <Badge
-                                  color="success"
-                                  className="px-2 py-0.5 text-[11px]"
-                                >
-                                  Latest
-                                </Badge>
+                          {typeof primaryAttachment.size === "number" && (
+                            <span className="shrink-0 text-xs font-medium text-white/80">
+                              {formatFileSize(primaryAttachment.size)}
+                            </span>
+                          )}
+                        </a>
+
+                        {additionalFormats.length > 0 && (
+                          <div className="mt-3">
+                            <div className="mb-2 text-[11px] font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">
+                              Additional formats
+                            </div>
+                            <div className="flex flex-wrap gap-2">
+                              {additionalFormats.map(
+                                ([format, formatAttachment]) => {
+                                  const url = new URL(
+                                    formatAttachment.url,
+                                    "https://ahorn.rwth-aachen.de/",
+                                  );
+
+                                  return (
+                                    <a
+                                      key={format}
+                                      href={url.href}
+                                      download
+                                      className="inline-flex min-h-8 max-w-full items-center gap-1.5 rounded-lg bg-white/80 px-2.5 py-1 text-xs font-medium text-black-75 hover:bg-white hover:text-blue-100 dark:bg-black-100/75 dark:text-black-25 dark:hover:bg-black-100 dark:hover:text-blue-50"
+                                    >
+                                      <FontAwesomeIcon
+                                        icon={faDownload}
+                                        className="size-3 shrink-0 text-black-50 dark:text-black-50"
+                                      />
+                                      <span className="truncate">
+                                        {formatDownloadFormat(format)}
+                                      </span>
+                                      {typeof formatAttachment.size ===
+                                        "number" && (
+                                        <span className="shrink-0 text-black-50 dark:text-black-50">
+                                          {formatFileSize(
+                                            formatAttachment.size,
+                                          )}
+                                        </span>
+                                      )}
+                                    </a>
+                                  );
+                                },
                               )}
                             </div>
                           </div>
-                        </div>
-                        {zenodoUrl && (
-                          <a
-                            href={zenodoUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="shrink-0 text-xs font-semibold text-black-50 hover:text-blue-100 dark:text-black-50 dark:hover:text-blue-50"
-                          >
-                            Zenodo
-                          </a>
                         )}
-                      </div>
 
-                      <a
-                        href={primaryUrl.href}
-                        download
-                        className="mt-3 flex min-h-12 items-center justify-between gap-3 rounded-lg bg-blue-100 px-3 py-2.5 text-white shadow-sm transition-colors hover:bg-blue-100 dark:bg-blue-100 dark:hover:bg-blue-75"
-                      >
-                        <span className="flex min-w-0 items-center gap-2 text-sm font-semibold">
-                          <FontAwesomeIcon
-                            icon={faDownload}
-                            className="size-3.5 shrink-0"
-                          />
-                          <span>Download</span>
-                        </span>
-                        {typeof primaryAttachment.size === "number" && (
-                          <span className="shrink-0 text-xs font-medium text-white/80">
-                            {formatFileSize(primaryAttachment.size)}
-                          </span>
+                        {changelog.length > 0 && (
+                          <div className="prose mt-3 rounded-lg bg-white/80 px-3 py-2.5 text-xs leading-5 text-black-75 dark:bg-black-100/75 dark:text-black-25">
+                            <div className="mb-1.5 text-xs font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">
+                              Changelog
+                            </div>
+                            <ul role="list">
+                              {changelog.map((entry, index) => (
+                                <li key={index}>
+                                  {renderInlineMarkdown(entry)}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
                         )}
-                      </a>
-
-                      {additionalFormats.length > 0 && (
-                        <div className="mt-3">
-                          <div className="mb-2 text-[11px] font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">
-                            Additional formats
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            {additionalFormats.map(
-                              ([format, formatAttachment]) => {
-                                const url = new URL(
-                                  formatAttachment.url,
-                                  "https://ahorn.rwth-aachen.de/",
-                                );
-
-                                return (
-                                  <a
-                                    key={format}
-                                    href={url.href}
-                                    download
-                                    className="inline-flex min-h-8 max-w-full items-center gap-1.5 rounded-lg bg-white/80 px-2.5 py-1 text-xs font-medium text-black-75 hover:bg-white hover:text-blue-100 dark:bg-black-100/75 dark:text-black-25 dark:hover:bg-black-100 dark:hover:text-blue-50"
-                                  >
-                                    <FontAwesomeIcon
-                                      icon={faDownload}
-                                      className="size-3 shrink-0 text-black-50 dark:text-black-50"
-                                    />
-                                    <span className="truncate">
-                                      {formatDownloadFormat(format)}
-                                    </span>
-                                    {typeof formatAttachment.size ===
-                                      "number" && (
-                                        <span className="shrink-0 text-black-50 dark:text-black-50">
-                                          {formatFileSize(formatAttachment.size)}
-                                        </span>
-                                      )}
-                                  </a>
-                                );
-                              },
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </li>
-                  );
-                })}
+                      </li>
+                    );
+                  },
+                )}
               </ul>
             </SidebarSection>
           )}
