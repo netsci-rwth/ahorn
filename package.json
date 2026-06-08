@@ -41,7 +41,7 @@
     "tailwindcss": "4.3.0"
   },
   "devDependencies": {
-    "@types/mdx": "2.0.13",
+    "@types/mdx": "2.0.14",
     "@types/node": "24.12.4",
     "@types/react": "19.2.16",
     "@types/react-dom": "19.2.3",
