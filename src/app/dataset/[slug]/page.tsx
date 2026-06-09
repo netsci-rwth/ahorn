@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faArrowUpRightFromSquare,
   faDownload,
   faPaperclip,
   faHexagonNodes,
@@ -116,6 +117,19 @@ function getZenodoRecordUrl(url: string): string | null {
 
   const match = parsedUrl.pathname.match(/^\/records\/\d+/);
   return match ? `https://zenodo.org${match[0]}` : null;
+}
+
+function formatExternalLinkLabel(url: string | undefined): string {
+  if (!url) {
+    return "Unknown";
+  }
+
+  try {
+    const parsed = new URL(url, "https://ahorn.rwth-aachen.de/");
+    return parsed.hostname.replace(/^www\./, "");
+  } catch {
+    return url;
+  }
 }
 
 type SidebarSectionProps = {
@@ -416,7 +430,7 @@ export default async function DatasetPage({
 
       <aside className="mt-10 w-full shrink-0 lg:mt-0 lg:w-88">
         <div className="flex flex-col gap-y-8 lg:sticky lg:top-24">
-          <section>
+          <section data-pagefind-ignore>
             <UsageCommand slug={slug} />
           </section>
 
@@ -573,9 +587,16 @@ export default async function DatasetPage({
                     href={frontmatter.source}
                     target="_blank"
                     rel="noreferrer"
-                    className="break-all hover:text-blue-100 dark:hover:text-blue-50"
+                    title={frontmatter.source}
+                    className="inline-flex max-w-full items-center gap-1.5 font-medium hover:text-blue-100 dark:hover:text-blue-50"
                   >
-                    {frontmatter.source}
+                    <span className="truncate">
+                      {formatExternalLinkLabel(frontmatter.source)}
+                    </span>
+                    <FontAwesomeIcon
+                      icon={faArrowUpRightFromSquare}
+                      className="size-3 shrink-0 text-black-50 dark:text-black-50"
+                    />
                   </a>
                 </dd>
               </div>
