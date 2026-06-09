@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { formatNumber } from "@/utils/format";
 
 export type SimplicialShapeTableProps = {
-  shape: Array<number | string>;
+  shape: number[];
   className?: string;
 };
 
@@ -16,9 +16,7 @@ export default function SimplicialShapeTable({
   shape,
   className = "",
 }: SimplicialShapeTableProps) {
-  const totalSimplices = shape
-    .reduce((sum, count) => sum + BigInt(String(count)), BigInt(0))
-    .toString();
+  const totalSimplices = shape.reduce((sum, count) => sum + count, 0);
 
   return (
     <section
