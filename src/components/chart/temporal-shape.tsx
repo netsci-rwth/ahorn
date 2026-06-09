@@ -68,12 +68,15 @@ interface TemporalShapeChartProps {
    * Optional maximum time unit for aggregation (inclusive). Defaults to "year".
    */
   maxUnit?: TimeUnit;
+
+  className?: string;
 }
 
 const TemporalShapeChart = ({
   shape,
   minUnit: minUnit = "hour",
   maxUnit: maxUnit = "year",
+  className = "",
 }: TemporalShapeChartProps) => {
   const [timeUnit, setTimeUnit] = useState<TimeUnit>(minUnit);
   const [isDark, setIsDark] = useState<boolean>(false);
@@ -208,7 +211,7 @@ const TemporalShapeChart = ({
   };
 
   return (
-    <StatisticsBlock title="Dataset Shape Over Time">
+    <StatisticsBlock title="Dataset Shape Over Time" className={className}>
       <div className="mb-4 flex flex-wrap items-center gap-3">
         <label
           htmlFor="time-unit"

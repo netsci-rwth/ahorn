@@ -155,8 +155,8 @@ Each node is labeled with political party affiliation.
   <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
   <Stat title="Node Type" value="Representative" />
   <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-2" />
+  <LabelDistributionChart title="Node Label Distribution" labels={frontmatter["label-count"]} className="sm:col-span-2" />
 </dl>
-<LabelDistributionChart title="Node Label Distribution" labels={frontmatter["label-count"]} />
 
 ### Hyperedges
 

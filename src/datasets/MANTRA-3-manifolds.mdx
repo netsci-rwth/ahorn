@@ -255387,17 +255387,25 @@ Each network includes the following metadata:
 
 ### Size Distribution
 
-<div className="not-prose space-y-4">
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
   <BoxPlot
     title="Vertices per manifold"
     stats={frontmatter["statistics"]["nodes-boxplot"]}
+    className="sm:col-span-2"
   />
   <BoxPlot
     title="Simplices per manifold"
     stats={frontmatter["statistics"]["simplices-boxplot"]}
+    className="sm:col-span-2"
   />
-</div>
+</dl>
 
 ### Average Degree
 
-<ComputedBoxPlot title="Average Node Degree" values={frontmatter["statistics"]["avg-degree"]} />
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <ComputedBoxPlot
+    title="Average Node Degree"
+    values={frontmatter["statistics"]["avg-degree"]}
+    className="sm:col-span-2"
+  />
+</dl>

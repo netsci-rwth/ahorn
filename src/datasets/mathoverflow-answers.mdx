@@ -1828,8 +1828,8 @@ Nodes are labeled by the tags used in the questions, and nodes often have multip
   <Stat title="Node Type" value="Question" />
   <Stat title="Node Label" value="Category" />
   <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-3" />
+  <LabelDistributionChart title="Node Label Distribution" labels={frontmatter["label-count"]} className="sm:col-span-3" />
 </dl>
-<LabelDistributionChart title="Node Label Distribution" labels={frontmatter["label-count"]} />
 
 ### Hyperedges
 

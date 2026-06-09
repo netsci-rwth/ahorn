@@ -18,6 +18,7 @@ from pathlib import Path
 from rich.progress import track
 from toponetx.classes.simplex import Simplex
 
+from .utils.simplicial_shape import compute_simplicial_closure_shape
 from .utils.write import (
     update_frontmatter,
     write_dataset_metadata,
@@ -94,6 +95,10 @@ node_degree_histogram = dict(sorted(node_degree_counts.items()))
 edge_degree_histogram = dict(sorted(edge_degree_counts.items()))
 
 label_counts = Counter(node["label"] for node in nodes)
+simplicial_closure_shape = compute_simplicial_closure_shape(
+    (hyperedge.elements for hyperedge in hyperedges),
+    num_vertices=len(nodes),
+)
 
 # Write dataset metadata into existing frontmatter
 update_frontmatter(
@@ -107,6 +112,12 @@ update_frontmatter(
             "num-edges": len(hyperedges),
             "node-degrees": node_degree_histogram,
             "edge-degrees": edge_degree_histogram,
+        },
+        "simplicial-complex": {
+            "active-vertices": simplicial_closure_shape.active_vertices,
+            "maximal-simplices": simplicial_closure_shape.maximal_simplices,
+            "total-simplices": simplicial_closure_shape.total_simplices,
+            "shape": simplicial_closure_shape.shape,
         },
         "label-count": dict(sorted(label_counts.items())),
     },

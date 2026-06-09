@@ -70,12 +70,15 @@ interface LineChartProps {
    * Optional maximum time unit for aggregation (inclusive). Defaults to "year".
    */
   maxUnit?: TimeUnit;
+
+  className?: string;
 }
 
 export default function LineChart({
   data,
   minUnit = "hour",
   maxUnit = "year",
+  className = "",
 }: LineChartProps) {
   const [timeUnit, setTimeUnit] = useState<TimeUnit>(minUnit);
   const [isDark, setIsDark] = useState<boolean>(false);
@@ -220,7 +223,7 @@ export default function LineChart({
   };
 
   return (
-    <StatisticsBlock title="Hyperedges Over Time">
+    <StatisticsBlock title="Hyperedges Over Time" className={className}>
       {selectableUnits.length > 1 && (
         <div className="mb-4 flex flex-wrap items-center gap-3">
           <label

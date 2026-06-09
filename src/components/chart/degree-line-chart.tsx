@@ -33,12 +33,14 @@ export type DegreeLineChartProps = {
   histogram: Record<string | number, number>;
   title?: string;
   logScale?: boolean;
+  className?: string;
 };
 
 export default function DegreeLineChart({
   histogram,
   title = "Node Degree Distribution",
   logScale = false,
+  className = "",
 }: DegreeLineChartProps) {
   const [useLogScale, setUseLogScale] = useState<boolean>(logScale);
   const [isDark, setIsDark] = useState<boolean>(false);
@@ -135,7 +137,7 @@ export default function DegreeLineChart({
   };
 
   return (
-    <StatisticsBlock title={title}>
+    <StatisticsBlock title={title} className={className}>
       <div className="mb-4">
         <label className="inline-flex items-center gap-2 text-sm font-medium text-black-75 dark:text-black-25">
           <input

@@ -17,11 +17,13 @@ const imbalanceFormatter = new Intl.NumberFormat("en-US", {
 export type LabelDistributionChartProps = {
   labels: Record<string, number>;
   title?: string;
+  className?: string;
 };
 
 export default function LabelDistributionChart({
   labels,
   title = "Label Distribution",
+  className,
 }: LabelDistributionChartProps) {
   const [isDark, setIsDark] = useState<boolean>(false);
 
@@ -119,7 +121,7 @@ export default function LabelDistributionChart({
   } as const;
 
   return (
-    <StatisticsBlock title={title}>
+    <StatisticsBlock title={title} className={className}>
       <div className="h-80">
         <Pie data={data} options={options} />
       </div>

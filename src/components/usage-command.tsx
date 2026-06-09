@@ -1,7 +1,7 @@
 "use client";
 
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { useState } from "react";
-import classNames from "classnames";
 
 const STORAGE_KEY = "ahorn:usage-package-manager";
 
@@ -34,52 +34,47 @@ export default function UsageCommand({ slug }: { slug: string }) {
     return "uvx";
   });
 
-  const selectedPackageManager =
-    packageManagers.find((manager) => manager.id === selectedManager) ??
-    packageManagers[0];
-  const command = selectedPackageManager.command(slug);
+  const selectedIndex = Math.max(
+    packageManagers.findIndex((manager) => manager.id === selectedManager),
+    0,
+  );
 
   return (
-    <>
+    <TabGroup
+      selectedIndex={selectedIndex}
+      onChange={(index) => {
+        const manager = packageManagers[index] ?? packageManagers[0];
+        setSelectedManager(manager.id);
+        window.localStorage.setItem(STORAGE_KEY, manager.id);
+      }}
+    >
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-xs font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">
           Usage
         </h2>
-        <div
-          className="inline-flex rounded-xl border border-black-25 bg-white p-1 dark:border-black-75 dark:bg-black-100"
-          role="tablist"
-          aria-label="Package manager"
-        >
-          {packageManagers.map((manager) => {
-            const isSelected = manager.id === selectedManager;
-
-            return (
-              <button
-                key={manager.id}
-                type="button"
-                role="tab"
-                aria-selected={isSelected}
-                className={classNames(
-                  "cursor-pointer rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-colors",
-                  isSelected
-                    ? "bg-white text-black-100 shadow-sm dark:bg-black-100 dark:text-white"
-                    : "text-black-50 hover:text-blue-100 dark:text-black-50 dark:hover:text-blue-50",
-                )}
-                onClick={() => {
-                  setSelectedManager(manager.id);
-                  window.localStorage.setItem(STORAGE_KEY, manager.id);
-                }}
-              >
-                {manager.label}
-              </button>
-            );
-          })}
-        </div>
+        <TabList className="inline-flex rounded-xl bg-blue-10/70 p-1 dark:bg-blue-100/15">
+          {packageManagers.map((manager) => (
+            <Tab
+              key={manager.id}
+              className="cursor-pointer rounded-lg px-2.5 py-1.5 text-xs font-semibold text-black-75 outline-none transition-colors data-hover:text-black-100 data-selected:bg-white data-selected:text-blue-100 data-selected:shadow-sm dark:text-black-25 dark:data-hover:text-white dark:data-selected:bg-black-100 dark:data-selected:text-blue-50"
+            >
+              {manager.label}
+            </Tab>
+          ))}
+        </TabList>
       </div>
 
-      <pre className="overflow-x-auto rounded-xl bg-black-100 p-4 text-sm text-white shadow-inner">
-        <code className="break-all whitespace-pre-wrap">{command}</code>
-      </pre>
-    </>
+      <TabPanels>
+        {packageManagers.map((manager) => (
+          <TabPanel key={manager.id}>
+            <pre className="overflow-x-auto rounded-xl bg-black-100 p-4 text-sm text-white shadow-inner">
+              <code className="break-all whitespace-pre-wrap">
+                {manager.command(slug)}
+              </code>
+            </pre>
+          </TabPanel>
+        ))}
+      </TabPanels>
+    </TabGroup>
   );
 }

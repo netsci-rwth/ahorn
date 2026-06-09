@@ -335,8 +335,8 @@ Products not assigned to any of these departments are grouped into an "Other" ca
   <Stat title="Node Type" value="Product" />
   <Stat title="Node Label" value="Product Department" />
   <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-3" />
+  <LabelDistributionChart title="Node Label Distribution" labels={frontmatter["label-count"]} className="sm:col-span-3" />
 </dl>
-<LabelDistributionChart title="Node Label Distribution" labels={frontmatter["label-count"]} />
 
 ### Hyperedges
 

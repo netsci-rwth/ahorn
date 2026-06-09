@@ -58,6 +58,37 @@ statistics:
     18: 1
     19: 1
     26: 1
+simplicial-complex:
+  active-vertices: 1458
+  maximal-simplices: 832
+  total-simplices: "67992805"
+  shape:
+    - 3312
+    - 4307
+    - 10301
+    - 31249
+    - 99379
+    - 292230
+    - 756367
+    - 1694964
+    - 3274324
+    - 5452453
+    - 7835423
+    - 9727215
+    - 10436420
+    - 9672404
+    - 7730853
+    - 5312857
+    - 3124739
+    - 1562295
+    - 657801
+    - 230230
+    - 65780
+    - 14950
+    - 2600
+    - 325
+    - 26
+    - 1
 label-count:
   AI: 596
   Agents: 701
@@ -69,7 +100,9 @@ label-count:
 
 import { ComputedBoxPlot } from "@/components/chart/box-plot";
 import LabelDistributionChart from "@/components/chart/label-distribution-chart";
+import SimplicialShapeTable from "@/components/simplicial-shape-table";
 import Stat from "@/components/stat";
+import TabBar from "@/components/tab-bar";
 import { formatNumber } from "@/utils/format";
 
 ## Overview
@@ -80,23 +113,83 @@ This dataset is commonly used as a benchmark in hypergraph learning tasks.
 
 ## Statistics
 
-### Nodes
+<TabBar label="Interpretation" tabs={["Simplicial Complex", "Hypergraph"]}>
+  <div className="space-y-5">
+    <p>
+      In the simplicial-complex interpretation, each co-citation set generates a
+      simplex together with all of its subsets. The shape below is the full
+      f-vector of that closure, with isolated papers retained as 0-simplices.
+    </p>
+    <dl className="not-prose grid gap-5 sm:grid-cols-3">
+      <Stat
+        title="Nodes"
+        value={formatNumber(frontmatter["statistics"]["num-nodes"])}
+      />
+      <Stat title="Node Type" value="Scientific Paper" />
+      <Stat title="Node Label" value="Research Field" />
+      <Stat
+        title="Active Vertices"
+        value={formatNumber(frontmatter["simplicial-complex"]["active-vertices"])}
+        description="Papers appearing in at least one co-citation set."
+      />
+      <Stat
+        title="Maximal Simplices"
+        value={formatNumber(frontmatter["simplicial-complex"]["maximal-simplices"])}
+      />
+      <Stat
+        title="Max Dimension"
+        value={frontmatter["simplicial-complex"]["shape"].length - 1}
+      />
+      <LabelDistributionChart
+        title="Node Label Distribution"
+        labels={frontmatter["label-count"]}
+        className="sm:col-span-3"
+      />
+    </dl>
+    <SimplicialShapeTable shape={frontmatter["simplicial-complex"]["shape"]} />
+  </div>
 
-<dl className="not-prose grid gap-5 sm:grid-cols-3">
-  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
-  <Stat title="Node Type" value="Scientific Paper" />
-  <Stat title="Node Label" value="Research Field" />
-  <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-3" />
-</dl>
-<LabelDistributionChart title="Node Label Distribution" labels={frontmatter["label-count"]} />
+  <div className="space-y-5">
+    <div>
+      <h3 className="mb-4 text-lg font-semibold tracking-tight text-black-100 dark:text-white">
+        Nodes
+      </h3>
+      <dl className="not-prose grid gap-5 sm:grid-cols-3">
+        <Stat
+          title="Nodes"
+          value={formatNumber(frontmatter["statistics"]["num-nodes"])}
+        />
+        <Stat title="Node Type" value="Scientific Paper" />
+        <Stat title="Node Label" value="Research Field" />
+        <ComputedBoxPlot
+          title="Node Degree"
+          values={frontmatter["statistics"]["node-degrees"]}
+          className="sm:col-span-3"
+        />
+        <LabelDistributionChart
+          title="Node Label Distribution"
+          labels={frontmatter["label-count"]}
+          className="sm:col-span-3"
+        />
+      </dl>
+    </div>
 
-### Hyperedges
-
-<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
-  <Stat
-    title="Hyperedges"
-    value={formatNumber(frontmatter["statistics"]["num-edges"])}
-  />
-  <Stat title="Hyperedge Type" value="Co-Citation Set" />
-  <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />
-</dl>
+    <div>
+      <h3 className="mb-4 text-lg font-semibold tracking-tight text-black-100 dark:text-white">
+        Hyperedges
+      </h3>
+      <dl className="not-prose grid gap-5 sm:grid-cols-2">
+        <Stat
+          title="Hyperedges"
+          value={formatNumber(frontmatter["statistics"]["num-edges"])}
+        />
+        <Stat title="Hyperedge Type" value="Co-Citation Set" />
+        <ComputedBoxPlot
+          title="Hyperedge Degree"
+          values={frontmatter["statistics"]["edge-degrees"]}
+          className="sm:col-span-2"
+        />
+      </dl>
+    </div>
+  </div>
+</TabBar>

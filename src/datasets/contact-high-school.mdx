@@ -238,8 +238,11 @@ Wearable sensors captured contacts in 20-second windows; each timestamped simple
 
 ## Statistics
 
-<TemporalShapeChart
-  shape={frontmatter.shape}
-  minUnit="hour"
-  maxUnit="week"
-/>
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <TemporalShapeChart
+    shape={frontmatter.shape}
+    minUnit="hour"
+    maxUnit="week"
+    className="sm:col-span-2"
+  />
+</dl>
