@@ -238,12 +238,7 @@ async function HighlightedCode({ snippet }: { snippet: UsageSnippet }) {
   return <>{renderStarryNode(starryNight.highlight(snippet.code, scope), 0)}</>;
 }
 
-async function UsageSnippetCard({
-  snippet,
-}: {
-  snippet: UsageSnippet;
-  showHeadline: boolean;
-}) {
+async function UsageSnippetCard({ snippet }: { snippet: UsageSnippet }) {
   return (
     <div className={codePanelClassName}>
       {snippet.title && (
