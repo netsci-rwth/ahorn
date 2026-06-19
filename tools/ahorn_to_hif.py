@@ -300,15 +300,22 @@ def _validate_items(key: str, items: list[Any]) -> None:
             raise HifConversionError("HIF weight values must be numeric.")
 
 
-def write_hif_document(hif: dict[str, Any], output_path: Path | str) -> None:
-    """Write HIF JSON, using gzip when the output path ends in ``.gz``."""
+def write_hif_document(hif: dict[str, Any], output_path: Path | str) -> Path:
+    """Write a gzip-compressed HIF JSON document.
+
+    If ``output_path`` does not end in ``.gz``, the suffix is appended so HIF
+    artifacts always have a filename that reflects their compression.
+    """
     if isinstance(output_path, str):
         output_path = Path(output_path)
+    if not output_path.name.endswith(".gz"):
+        output_path = output_path.with_name(f"{output_path.name}.gz")
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    with _open_text(output_path, "wt") as handle:
+    with gzip.open(output_path, "wt", encoding="utf-8") as handle:
         json.dump(hif, handle, sort_keys=True, separators=(",", ":"))
         handle.write("\n")
+    return output_path
 
 
 def derive_canonical_output_path(input_path: Path | str) -> Path:
@@ -320,7 +327,7 @@ def derive_canonical_output_path(input_path: Path | str) -> Path:
     if name.endswith(".txt.gz"):
         output_name = f"{name.removesuffix('.txt.gz')}.hif.json.gz"
     elif name.endswith(".txt"):
-        output_name = f"{name.removesuffix('.txt')}.hif.json"
+        output_name = f"{name.removesuffix('.txt')}.hif.json.gz"
     else:
         raise HifConversionError(
             "Input file name must end with .txt or .txt.gz to derive output name."

@@ -99,13 +99,13 @@ const Navbar: FC = () => {
       className="sticky top-0 z-50 border-b border-black-25 bg-white dark:border-black-100 dark:bg-black-100"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="relative flex h-16 items-center justify-between gap-4 sm:px-1">
+        <div className="relative flex h-16 items-center justify-between gap-4">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
             {/* Mobile menu button*/}
             <DisclosureButton
               type="button"
               onClick={() => setMobileOpen((v) => !v)}
-              className="group relative inline-flex items-center justify-center rounded-xl p-2 text-black-50 hover:bg-white hover:text-black-100 focus:outline-hidden dark:text-black-50 dark:hover:bg-black-100 dark:hover:text-white"
+              className="group relative inline-flex items-center justify-center rounded-lg p-2 text-black-50 transition-colors hover:bg-black-10 hover:text-black-100 focus-visible:ring-2 focus-visible:ring-blue-100/30 focus-visible:outline-none dark:text-black-50 dark:hover:bg-black-75/35 dark:hover:text-white"
               aria-controls="mobile-menu"
               aria-expanded="false"
             >
@@ -131,7 +131,7 @@ const Navbar: FC = () => {
               <Logo className="mr-2 h-6 w-6" />
               AHORN
             </Link>
-            <div className="hidden sm:ml-6 sm:flex sm:items-center sm:gap-2">
+            <div className="hidden sm:ml-6 sm:flex sm:h-full sm:items-stretch sm:gap-2">
               {links.map((link) => {
                 const active = isActive(link.link);
                 return (
@@ -139,10 +139,11 @@ const Navbar: FC = () => {
                     key={link.link}
                     href={link.link}
                     className={classnames(
-                      "inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold",
+                      "relative inline-flex h-full items-center rounded-lg px-4 text-sm font-semibold transition-colors after:absolute after:right-4 after:bottom-0 after:left-4 after:h-0.5 after:rounded-t-sm after:transition-colors after:content-[''] focus-visible:ring-2 focus-visible:ring-blue-100/30 focus-visible:outline-none",
                       {
-                        "bg-blue-100 text-white shadow-sm": active,
-                        "text-black-75 hover:bg-white hover:text-black-100 dark:text-black-25 dark:hover:bg-black-100 dark:hover:text-white":
+                        "text-blue-100 after:bg-blue-100 dark:text-blue-50 dark:after:bg-blue-50":
+                          active,
+                        "text-black-75 after:bg-transparent hover:text-blue-100 hover:after:bg-blue-100/45 dark:text-black-25 dark:hover:text-blue-50 dark:hover:after:bg-blue-50/45":
                           !active,
                       },
                     )}
@@ -179,10 +180,11 @@ const Navbar: FC = () => {
                   key={link.link}
                   href={link.link}
                   className={classnames(
-                    "block rounded-xl px-3 py-2.5 text-base font-semibold",
+                    "block rounded-lg px-3 py-2.5 text-base font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-blue-100/30 focus-visible:outline-none",
                     {
-                      "bg-blue-100 text-white": active,
-                      "text-black-75 hover:bg-white hover:text-black-100 dark:text-black-25 dark:hover:bg-black-100 dark:hover:text-white":
+                      "bg-blue-10 text-blue-100 dark:bg-blue-100/15 dark:text-blue-50":
+                        active,
+                      "text-black-75 hover:bg-black-10 hover:text-blue-100 dark:text-black-25 dark:hover:bg-black-75/35 dark:hover:text-blue-50":
                         !active,
                     },
                   )}

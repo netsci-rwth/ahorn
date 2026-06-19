@@ -73,8 +73,8 @@ export default function MultiRangeSlider({
           ></div>
         </div>
       </div>
-      <div className="mt-3 flex justify-between gap-4 text-black-75 dark:text-black-50">
-        <div className="flex flex-col gap-1">
+      <div className="mt-3 grid grid-cols-2 gap-3 text-black-75 sm:flex sm:justify-between sm:gap-4 dark:text-black-50">
+        <div className="flex min-w-0 flex-col gap-1">
           <label htmlFor="range-min" className="text-xs">
             Min:
           </label>
@@ -92,10 +92,10 @@ export default function MultiRangeSlider({
                 e.currentTarget.blur();
               }
             }}
-            className="w-28 rounded border border-black-25 bg-white px-2 py-1 text-sm text-black-100 focus:border-blue-100 focus:ring-1 focus:ring-blue-100 focus:outline-none dark:border-black-75 dark:bg-black-100 dark:text-white"
+            className="w-full min-w-0 rounded border border-black-25 bg-white px-2 py-1 text-sm text-black-100 focus:border-blue-100 focus:ring-1 focus:ring-blue-100 focus:outline-none sm:w-28 dark:border-black-75 dark:bg-black-100 dark:text-white"
           />
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex min-w-0 flex-col gap-1">
           <label htmlFor="range-max" className="text-xs">
             Max:
           </label>
@@ -113,7 +113,7 @@ export default function MultiRangeSlider({
                 e.currentTarget.blur();
               }
             }}
-            className="w-28 rounded border border-black-25 bg-white px-2 py-1 text-sm text-black-100 focus:border-blue-100 focus:ring-1 focus:ring-blue-100 focus:outline-none dark:border-black-75 dark:bg-black-100 dark:text-white"
+            className="w-full min-w-0 rounded border border-black-25 bg-white px-2 py-1 text-sm text-black-100 focus:border-blue-100 focus:ring-1 focus:ring-blue-100 focus:outline-none sm:w-28 dark:border-black-75 dark:bg-black-100 dark:text-white"
           />
         </div>
       </div>

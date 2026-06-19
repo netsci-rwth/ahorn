@@ -9,6 +9,7 @@ export default function CitationCopyButton({ bibtex }: { bibtex: string }) {
       label="Copy BibTeX"
       successMessage="BibTeX copied to clipboard."
       errorMessage="Could not copy BibTeX."
+      className="cursor-pointer rounded-md border border-blue-25 bg-white px-3 py-1.5 text-xs font-semibold text-blue-100 hover:bg-blue-10 focus-visible:ring-2 focus-visible:ring-blue-100/30 focus-visible:outline-none dark:border-blue-75/35 dark:bg-black-100/70 dark:text-blue-50 dark:hover:bg-blue-100/15"
     />
   );
 }

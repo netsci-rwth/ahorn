@@ -1,0 +1,74 @@
+---
+title: Stack Overflow Tags
+source: https://www.cs.cornell.edu/~arb/data/tags-stack-overflow/
+license: unprovided-reuse-encouraged
+citation:
+  - 10.1073/pnas.1800683115
+network-type:
+  - hypergraph
+tags:
+  - 'domain: communication'
+  - 'network-type: temporal'
+  - 'source: benson'
+related:
+  - threads-stack-overflow
+  - tags-ask-ubuntu
+  - tags-math-sx
+attachments:
+  revision-1:
+    ahorn: https://zenodo.org/records/20761904/files/tags-stack-overflow.txt.gz?download=1
+statistics:
+  num-nodes: 49998
+  num-edges: 12741779
+  node-degree-boxplot:
+    min: 1
+    q1: 9
+    median: 35
+    q3: 148
+    max: 1382051
+  edge-degree-boxplot:
+    min: 2
+    q1: 2
+    median: 3
+    q3: 4
+    max: 5
+---
+
+import BoxPlot from "@/components/chart/box-plot";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+## Overview
+
+This temporal higher-order network represents tag co-occurrence on Stack Overflow.
+Nodes are tags, and each hyperedge is the set of tags applied to a question.
+
+> [!IMPORTANT]
+> Singleton hyperedges, corresponding to questions with only one tag, are omitted in this dataset.
+
+## Attributes
+
+- `name : string`: The tag name corresponding to a node.
+- `post_id : string`: The Stack Exchange post identifier associated with a hyperedge.
+- `time : datetime`: The question timestamp in ISO 8601 format.
+
+## Statistics
+
+### Nodes
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
+  <Stat title="Node Type" value="Tag" />
+  <BoxPlot title="Node Degree" stats={frontmatter["statistics"]["node-degree-boxplot"]} className="sm:col-span-2" />
+</dl>
+
+### Hyperedges
+
+<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+  />
+  <Stat title="Hyperedge Type" value="Question Tag Set" />
+  <BoxPlot title="Hyperedge Degree" stats={frontmatter["statistics"]["edge-degree-boxplot"]} className="sm:col-span-2" />
+</dl>

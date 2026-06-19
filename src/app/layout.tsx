@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 
 import Footer from "@/components/footer";
@@ -11,6 +11,11 @@ export const metadata: Metadata = {
   title: "AHORN - Aachen Higher-Order Repository of Networks",
   description:
     "Comprehensive repository of research-quality simplicial complex, cell complex, and hypergraph datasets for higher-order network science.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -30,7 +35,7 @@ export default function RootLayout({
           type="module"
         />
         <Navbar />
-        <main className="mx-auto w-full max-w-7xl grow px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+        <main className="mx-auto w-full max-w-7xl grow px-4 sm:px-6 lg:px-8">
           {children}
         </main>
         <Footer />

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-@import "highlight.js/styles/stackoverflow-dark.css";
+@import "@wooorm/starry-night/style/dark";
 
 @theme {
   --color-*: initial;
@@ -88,7 +88,7 @@
   --pf-shadow-md: 0 20px 50px
     color-mix(in srgb, var(--color-black-100) 16%, transparent);
   --pf-outline-width: 0;
-  --pf-border-radius: 1rem;
+  --pf-border-radius: 0.5rem;
   --pf-input-height: 40px;
   --pf-input-font-size: 0.875rem;
   --pf-result-title-font-size: 0.875rem;

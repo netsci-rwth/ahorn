@@ -110,21 +110,20 @@ async function getZenodoRecordFiles(
     recordPromise = fetch(`https://zenodo.org/api/records/${recordId}`, {
       signal: createZenodoRequestSignal(),
     }).then(async (response) => {
-        if (!response.ok) {
-          throw new Error(`Zenodo record ${recordId} request failed`);
-        }
+      if (!response.ok) {
+        throw new Error(`Zenodo record ${recordId} request failed`);
+      }
 
-        const payload = (await response.json()) as ZenodoRecordResponse;
-        return new Map(
-          (payload.files || [])
-            .filter(
-              (file): file is Required<Pick<ZenodoFile, "key" | "size">> =>
-                typeof file.key === "string" && typeof file.size === "number",
-            )
-            .map((file) => [file.key, file.size]),
-        );
-      },
-    );
+      const payload = (await response.json()) as ZenodoRecordResponse;
+      return new Map(
+        (payload.files || [])
+          .filter(
+            (file): file is Required<Pick<ZenodoFile, "key" | "size">> =>
+              typeof file.key === "string" && typeof file.size === "number",
+          )
+          .map((file) => [file.key, file.size]),
+      );
+    });
 
     zenodoRecordCache.set(recordId, recordPromise);
   }

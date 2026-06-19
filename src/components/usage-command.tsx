@@ -52,11 +52,11 @@ export default function UsageCommand({ slug }: { slug: string }) {
         <h2 className="text-xs font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">
           Usage
         </h2>
-        <TabList className="inline-flex rounded-xl bg-blue-10/70 p-1 dark:bg-blue-100/15">
+        <TabList className="inline-flex rounded-lg bg-blue-10/70 p-1 dark:bg-blue-100/15">
           {packageManagers.map((manager) => (
             <Tab
               key={manager.id}
-              className="cursor-pointer rounded-lg px-2.5 py-1.5 text-xs font-semibold text-black-75 outline-none transition-colors data-hover:text-black-100 data-selected:bg-white data-selected:text-blue-100 data-selected:shadow-sm dark:text-black-25 dark:data-hover:text-white dark:data-selected:bg-black-100 dark:data-selected:text-blue-50"
+              className="cursor-pointer rounded-md px-2.5 py-1.5 text-xs font-semibold text-black-75 transition-colors outline-none data-hover:text-black-100 data-selected:bg-white data-selected:text-blue-100 data-selected:shadow-sm dark:text-black-25 dark:data-hover:text-white dark:data-selected:bg-black-100 dark:data-selected:text-blue-50"
             >
               {manager.label}
             </Tab>
@@ -67,7 +67,7 @@ export default function UsageCommand({ slug }: { slug: string }) {
       <TabPanels>
         {packageManagers.map((manager) => (
           <TabPanel key={manager.id}>
-            <pre className="overflow-x-auto rounded-xl bg-black-100 p-4 text-sm text-white shadow-inner">
+            <pre className="overflow-x-auto rounded-lg bg-black-100 p-4 text-sm text-white shadow-inner">
               <code className="break-all whitespace-pre-wrap">
                 {manager.command(slug)}
               </code>

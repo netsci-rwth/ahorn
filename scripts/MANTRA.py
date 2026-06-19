@@ -13,11 +13,11 @@ import gzip
 import json
 from collections import defaultdict
 from pathlib import Path
-from statistics import median
 from typing import Any
 
 from rich.progress import track
 
+from .utils.boxplot import compute_boxplot_stats
 from .utils.write import (
     update_frontmatter,
     write_dataset_metadata,
@@ -32,27 +32,6 @@ patch_dumper()
 root_dir = Path(__file__).parent.parent
 data_dir = root_dir / "data" / "MANTRA"
 revision = 1
-
-
-def boxplot_stats(values: list[float | int]) -> dict[str, float | int]:
-    """Return five-number summary for a list of numeric values."""
-
-    def _clean(value: float) -> float | int:
-        return int(value) if float(value).is_integer() else float(value)
-
-    sorted_vals = sorted(values)
-    n = len(sorted_vals)
-    mid = n // 2
-    lower = sorted_vals[:mid]
-    upper = sorted_vals[mid:] if n % 2 == 0 else sorted_vals[mid + 1 :]
-
-    return {
-        "min": _clean(sorted_vals[0]),
-        "q1": _clean(median(lower)),
-        "median": _clean(median(sorted_vals)),
-        "q3": _clean(median(upper)),
-        "max": _clean(sorted_vals[-1]),
-    }
 
 
 def extract_manifold_metadata(manifold: dict[str, Any]) -> dict[str, Any]:
@@ -139,8 +118,8 @@ for dimension in [2, 3]:
     # Calculate statistics for this dimension
     num_nodes = len(degrees_total)
     num_manifolds = len(manifolds)
-    nodes_box = boxplot_stats(node_counts)
-    simplices_box = boxplot_stats(simplex_counts)
+    nodes_box = compute_boxplot_stats(node_counts)
+    simplices_box = compute_boxplot_stats(simplex_counts)
 
     update_frontmatter(
         datasheet_file,

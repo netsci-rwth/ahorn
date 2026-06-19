@@ -38,11 +38,11 @@ export default function SidebarNav({ links, className = "" }: SidebarNavProps) {
         {Object.entries(links).map(([groupTitle, items]) => (
           <li key={groupTitle}>
             {groupTitle && (
-              <div className="text-xs font-semibold tracking-widest text-black-50 uppercase dark:text-black-50">
+              <div className="px-2 text-xs font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">
                 {groupTitle}
               </div>
             )}
-            <ul className={classNames("space-y-0.5", groupTitle ? "mt-2" : "")}>
+            <ul className={classNames("space-y-1", groupTitle ? "mt-2" : "")}>
               {items.map((item) => {
                 const active = isActive(item.href);
 
@@ -52,21 +52,21 @@ export default function SidebarNav({ links, className = "" }: SidebarNavProps) {
                       href={item.href}
                       aria-current={active ? "page" : undefined}
                       className={classNames(
-                        "group flex items-center rounded-lg px-3 py-2 text-sm font-semibold transition-colors",
+                        "group flex items-center rounded-md px-2.5 py-2 text-sm font-medium transition-colors",
                         item.icon ? "gap-x-2.5" : "gap-x-0",
                         active
-                          ? "bg-blue-100/10 text-blue-100 dark:bg-blue-100/15 dark:text-blue-75"
-                          : "text-black-75 hover:bg-white hover:text-blue-100 dark:text-black-25 dark:hover:bg-black-100/70",
+                          ? "bg-blue-10 text-blue-100 dark:bg-blue-100/15 dark:text-blue-50"
+                          : "text-black-75 hover:bg-black-10/70 hover:text-blue-100 dark:text-black-25 dark:hover:bg-black-75/35 dark:hover:text-blue-50",
                       )}
                     >
                       {item.icon && (
                         <FontAwesomeIcon
                           icon={item.icon}
                           className={classNames(
-                            "shrink-0 text-base",
+                            "size-3.5 shrink-0",
                             active
-                              ? "text-blue-75"
-                              : "text-black-50 group-hover:text-blue-100 dark:text-black-50",
+                              ? "text-blue-100 dark:text-blue-50"
+                              : "text-black-50 group-hover:text-blue-100 dark:text-black-50 dark:group-hover:text-blue-50",
                           )}
                         />
                       )}

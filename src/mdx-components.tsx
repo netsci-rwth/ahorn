@@ -116,7 +116,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       );
     },
     pre: ({ children }) => (
-      <pre className="not-prose my-6 overflow-x-auto rounded-sm">
+      <pre className="not-prose my-6 overflow-x-auto rounded-md bg-black-100 p-4 text-sm leading-6 text-white">
         {children}
       </pre>
     ),

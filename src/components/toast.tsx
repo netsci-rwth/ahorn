@@ -36,7 +36,7 @@ export default function Toast({
   return (
     <div
       className={classNames(
-        "pointer-events-none fixed right-4 bottom-4 z-200 flex max-w-sm items-center gap-3 rounded-2xl border px-4 py-3 shadow-[0_18px_45px_rgb(15_23_42_/_0.14)] backdrop-blur-sm",
+        "pointer-events-none fixed right-4 bottom-4 z-200 flex max-w-sm items-center gap-3 rounded-lg border px-4 py-3 shadow-[0_18px_45px_rgb(15_23_42/0.14)] backdrop-blur-sm",
         "transition-all duration-300 ease-out motion-reduce:transition-none",
         visible ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0",
         variantStyles[variant],

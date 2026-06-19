@@ -38,6 +38,7 @@ FIELD_ORDER: tuple[Hashable, ...] = (
     "shape",
 )
 NETWORK_TYPE_ORDER = (
+    "graph",
     "simplicial-complex",
     "cell-complex",
     "combinatorial-complex",

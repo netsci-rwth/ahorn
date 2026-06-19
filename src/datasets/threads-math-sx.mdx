@@ -1,0 +1,74 @@
+---
+title: Mathematics Stack Exchange Threads
+source: https://www.cs.cornell.edu/~arb/data/threads-math-sx/
+license: unprovided-reuse-encouraged
+citation:
+  - 10.1073/pnas.1800683115
+network-type:
+  - hypergraph
+tags:
+  - 'domain: communication'
+  - 'network-type: temporal'
+  - 'source: benson'
+related:
+  - tags-math-sx
+  - threads-ask-ubuntu
+  - threads-stack-overflow
+attachments:
+  revision-1:
+    ahorn: https://zenodo.org/records/20762488/files/threads-math-sx.txt.gz?download=1
+    hif: https://zenodo.org/records/20762488/files/threads-math-sx.hif.json.gz?download=1
+statistics:
+  num-nodes: 176445
+  num-edges: 563710
+  node-degree-boxplot:
+    min: 1
+    q1: 1
+    median: 1
+    q3: 3
+    max: 12403
+  edge-degree-boxplot:
+    min: 2
+    q1: 2
+    median: 2
+    q3: 3
+    max: 21
+---
+
+import BoxPlot from "@/components/chart/box-plot";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+## Overview
+
+This temporal higher-order network represents discussion threads on Mathematics Stack Exchange.
+Nodes are users, and each hyperedge is the set of users participating in a thread.
+
+> [!IMPORTANT]
+> Singleton hyperedges, corresponding to threads with only one participating user, are omitted in this dataset.
+
+## Attributes
+
+- `thread_id : string`: The source thread identifier associated with a hyperedge.
+- `time : datetime`: The thread timestamp in ISO 8601 format, relative to the normalized source epoch.
+
+## Statistics
+
+### Nodes
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
+  <Stat title="Node Type" value="User" />
+  <BoxPlot title="Node Degree" stats={frontmatter["statistics"]["node-degree-boxplot"]} className="sm:col-span-2" />
+</dl>
+
+### Hyperedges
+
+<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+  />
+  <Stat title="Hyperedge Type" value="Thread Participants" />
+  <BoxPlot title="Hyperedge Degree" stats={frontmatter["statistics"]["edge-degree-boxplot"]} className="sm:col-span-2" />
+</dl>

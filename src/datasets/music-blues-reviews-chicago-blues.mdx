@@ -1,0 +1,147 @@
+---
+title: Music Blues Reviews (Chicago Blues)
+source: https://www.cs.cornell.edu/~arb/data/cat-edge-music-blues-reviews/
+license: unprovided-reuse-encouraged
+citation:
+  - 10.18653/v1/D19-1018
+network-type:
+  - hypergraph
+tags:
+  - 'domain: reviews'
+  - 'source: benson'
+parent: music-blues-reviews
+attachments:
+  revision-3:
+    ahorn: https://zenodo.org/records/20744406/files/music-blues-reviews-chicago-blues.txt?download=1
+    hif: https://zenodo.org/records/20744406/files/music-blues-reviews-chicago-blues.hif.json.gz?download=1
+statistics:
+  num-nodes: 404
+  num-edges: 223
+  node-degrees:
+    1: 2
+    2: 4
+    3: 4
+    4: 5
+    5: 152
+    6: 4
+    7: 4
+    9: 3
+    10: 17
+    12: 8
+    13: 8
+    14: 3
+    15: 9
+    16: 13
+    18: 8
+    19: 117
+    20: 1
+    21: 1
+    22: 2
+    23: 6
+    24: 2
+    27: 1
+    28: 2
+    29: 1
+    30: 1
+    31: 1
+    34: 1
+    35: 2
+    36: 4
+    37: 2
+    38: 2
+    39: 2
+    42: 1
+    45: 1
+    47: 1
+    48: 2
+    53: 1
+    55: 1
+    62: 1
+    64: 1
+    65: 2
+    87: 1
+  edge-degrees:
+    2: 2
+    5: 1
+    7: 1
+    8: 2
+    9: 1
+    10: 2
+    11: 3
+    12: 4
+    13: 11
+    14: 11
+    15: 14
+    16: 8
+    17: 16
+    18: 8
+    19: 13
+    20: 8
+    21: 8
+    22: 14
+    23: 4
+    24: 3
+    25: 7
+    26: 8
+    27: 3
+    28: 4
+    29: 6
+    30: 7
+    31: 2
+    32: 1
+    33: 2
+    34: 3
+    36: 4
+    37: 2
+    38: 2
+    39: 4
+    40: 1
+    41: 3
+    42: 1
+    43: 3
+    45: 3
+    46: 1
+    47: 2
+    48: 4
+    49: 2
+    50: 1
+    52: 2
+    53: 1
+    54: 3
+    55: 1
+    57: 1
+    59: 1
+    60: 2
+    61: 1
+    72: 1
+---
+
+import { ComputedBoxPlot } from "@/components/chart/box-plot";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+## Overview
+
+This dataset is the `Music Blues Reviews` subset restricted to review groups labelled as `Chicago Blues`.
+It keeps the Amazon reviewer nodes that participate in at least one co-review hyperedge for this blues music genre.
+
+## Statistics
+
+### Nodes
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
+  <Stat title="Node Type" value="Amazon Reviewer" />
+  <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-2" />
+</dl>
+
+### Hyperedges
+
+<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+  />
+  <Stat title="Hyperedge Type" value="Monthly Co-review Group" />
+  <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />
+</dl>

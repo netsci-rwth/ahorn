@@ -1,73 +1,17 @@
-import fs from "fs";
-import path from "path";
-
-import PageHeader from "@/components/page-header";
 import Person from "@/components/person";
-import Stat from "@/components/stat";
-import NetworkTypeChart from "@/components/chart/network-type";
 
 export const metadata = {
   title: "About | AHORN - Aachen Higher-Order Repository of Networks",
 };
 
-export async function getDatasetStatistics() {
-  const datasetsDir = path.join(process.cwd(), "src", "datasets");
-  const filenames = await fs.promises.readdir(datasetsDir);
+# About the Project
 
-  const datasets = await Promise.all(
-    filenames
-      .filter((f) => f.endsWith(".mdx"))
-      .map(async (filename) => {
-        const { frontmatter } = await import(`@/datasets/${filename}`);
-        return {
-          disable: frontmatter.disable === true,
-          tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],
-          networkType: Array.isArray(frontmatter["network-type"])
-            ? frontmatter["network-type"]
-            : [],
-        };
-      }),
-  );
-
-  const activeDatasets = datasets.filter((d) => !d.disable);
-  const tagSet = new Set();
-  activeDatasets.forEach((d) => d.tags.forEach((tag) => tagSet.add(tag)));
-
-  const networkTypeCount = {};
-  activeDatasets.forEach((d) => {
-    d.networkType.forEach((type) => {
-      networkTypeCount[type] = (networkTypeCount[type] || 0) + 1;
-    });
-  });
-
-  return {
-    datasetCount: activeDatasets.length,
-    uniqueTagCount: tagSet.size,
-    networkTypeCount,
-  };
-}
-
-export const { datasetCount, uniqueTagCount, networkTypeCount } =
-  await getDatasetStatistics();
-
-<PageHeader
-  eyebrow="About"
-  title="About the Project"
-  description="Background on AHORN, its goals, persistence strategy, and the people behind the project."
-/>
+Background on AHORN, its goals, persistence strategy, and the people behind the project.
 
 The Aachen Higher-Order Repository of Networks (AHORN) aims to provide a comprehensive collection of higher-order network datasets, particularly focusing on simplicial complexes, cell complexes and hypergraphs.
 This repository is designed to facilitate research and development in the field of higher-order networks by offering a variety of datasets that can be used for benchmarking, testing algorithms, and exploring new concepts in network science.
 
 The project is similar in spirit to graph repositories like [ICON](https://icon.colorado.edu/), [SNAP](https://snap.stanford.edu/), and [Netzschleuder](https://networks.skewed.de/) but specifically tailored for higher-order datasets.
-
-<div className="not-prose my-8">
-  <dl className="grid gap-5 sm:grid-cols-2">
-    <Stat title="Number of Datasets" value={datasetCount} />
-    <Stat title="Unique Tags" value={uniqueTagCount} />
-    <NetworkTypeChart data={networkTypeCount} className="col-span-2" />
-  </dl>
-</div>
 
 ## Persistence Statement
 

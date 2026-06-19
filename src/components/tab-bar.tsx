@@ -29,12 +29,12 @@ export default function TabBar({ label, tabs, children }: TabBarProps) {
         <TabList className="flex max-w-full overflow-x-auto">
           <nav
             aria-label={label}
-            className="inline-flex items-center gap-1 rounded-xl bg-blue-10/70 p-1 dark:bg-blue-100/15"
+            className="inline-flex items-center gap-1 rounded-lg bg-blue-10/70 p-1 dark:bg-blue-100/15"
           >
             {tabs.map((tab) => (
               <Tab
                 key={tab}
-                className="cursor-pointer rounded-lg px-3 py-1.5 text-sm font-semibold whitespace-nowrap text-black-75 outline-none transition select-none data-hover:text-black-100 data-selected:bg-white data-selected:text-blue-100 data-selected:shadow-sm dark:text-black-25 dark:data-hover:text-white dark:data-selected:bg-black-100 dark:data-selected:text-blue-50"
+                className="cursor-pointer rounded-md px-3 py-1.5 text-sm font-semibold whitespace-nowrap text-black-75 transition outline-none select-none data-hover:text-black-100 data-selected:bg-white data-selected:text-blue-100 data-selected:shadow-sm dark:text-black-25 dark:data-hover:text-white dark:data-selected:bg-black-100 dark:data-selected:text-blue-50"
               >
                 {tab}
               </Tab>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import Tag from "@/components/tag";
+import { surfaceClassName } from "@/components/surface";
 import { type DatasetFrontmatter } from "@/utils/datasets";
 import { formatNetworkType, formatNumber } from "@/utils/format";
 import classNames from "classnames";
@@ -23,6 +24,7 @@ type DatasetCardListProps = {
   slugs: readonly string[];
   columns?: "responsive" | "single";
   summaries?: Partial<Record<string, string>>;
+  backgroundEffect?: boolean;
 };
 
 function getStatisticValue(
@@ -75,6 +77,7 @@ export default async function DatasetCardList({
   slugs,
   columns = "responsive",
   summaries = {},
+  backgroundEffect = true,
 }: DatasetCardListProps) {
   if (slugs.length === 0) {
     return null;
@@ -89,7 +92,7 @@ export default async function DatasetCardList({
       className={classNames({
         "grid gap-x-8 gap-y-9 md:grid-cols-2 xl:grid-cols-3":
           columns !== "single",
-        grid: columns === "single",
+        "grid gap-3": columns === "single",
       })}
     >
       {datasets.map((dataset) => {
@@ -100,18 +103,23 @@ export default async function DatasetCardList({
           <article key={dataset.slug} className="h-full">
             <Link
               href={`/dataset/${dataset.slug}`}
-              className={classNames(
-                "relative flex h-full min-w-0 transition",
-                "before:absolute before:left-0 before:w-0.5 before:bg-blue-75 before:transition hover:bg-blue-10/35 hover:before:bg-blue-100 dark:before:bg-blue-50 dark:hover:bg-blue-100/10",
-                {
-                  "flex-col py-4 pr-3 pl-4 before:top-4 before:h-9":
-                    isSingleColumn,
-                  "min-h-60 flex-col py-5 pr-4 pl-5 before:top-5 before:h-12":
-                    !isSingleColumn && hasSummary,
-                  "flex-col py-4 pr-4 pl-5 before:top-4 before:h-9":
-                    !isSingleColumn && !hasSummary,
-                },
-              )}
+              className={surfaceClassName({
+                variant:
+                  isSingleColumn || !backgroundEffect ? "secondary" : "primary",
+                interactive: true,
+                className: classNames(
+                  "relative flex h-full min-w-0",
+                  "before:absolute before:left-0 before:w-0.5 before:bg-blue-75 before:transition hover:before:bg-blue-100 dark:before:bg-blue-50",
+                  {
+                    "flex-col py-4 pr-3 pl-4 before:top-4 before:h-9":
+                      isSingleColumn,
+                    "min-h-60 flex-col py-5 pr-4 pl-5 before:top-5 before:h-12":
+                      !isSingleColumn && hasSummary,
+                    "flex-col py-4 pr-4 pl-5 before:top-4 before:h-9":
+                      !isSingleColumn && !hasSummary,
+                  },
+                ),
+              })}
             >
               <div className="min-w-0">
                 {dataset.networkTypes.length > 0 && (

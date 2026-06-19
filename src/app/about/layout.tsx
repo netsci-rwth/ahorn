@@ -40,12 +40,12 @@ export default function AboutLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="gap-8 sm:flex">
-      <aside className="sm:sticky sm:top-24 sm:w-72 sm:shrink-0 sm:self-start">
+    <div className="grid min-w-0 gap-8 py-8 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-12 lg:py-10">
+      <aside className="min-w-0 lg:sticky lg:top-24 lg:self-start">
         <SidebarNav links={links} />
       </aside>
       <main
-        className="prose max-w-none flex-1 max-sm:mt-8 sm:min-w-0 dark:prose-invert"
+        className="prose max-w-none min-w-0 flex-1 dark:prose-invert"
         data-pagefind-body
       >
         {children}

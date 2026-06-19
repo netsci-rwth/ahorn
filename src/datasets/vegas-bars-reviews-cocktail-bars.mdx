@@ -1,0 +1,104 @@
+---
+title: Vegas Bars Reviews (Cocktail Bars)
+source: https://www.cs.cornell.edu/~arb/data/cat-edge-vegas-bars-reviews/
+license: unprovided-reuse-encouraged
+citation:
+  - |
+    @article{amburg2020fair,
+      title={Fair Clustering for Diverse and Experienced Groups},
+      author={Amburg, Ilya and Veldt, Nate and Benson, Austin R},
+      journal={arXiv:2006.05645},
+      year={2020}
+    }
+network-type:
+  - hypergraph
+tags:
+  - 'domain: reviews'
+  - 'source: benson'
+parent: vegas-bars-reviews
+attachments:
+  revision-3:
+    ahorn: https://zenodo.org/records/20744599/files/vegas-bars-reviews-cocktail-bars.txt.gz?download=1
+    hif: https://zenodo.org/records/20744599/files/vegas-bars-reviews-cocktail-bars.hif.json.gz?download=1
+statistics:
+  num-nodes: 241
+  num-edges: 133
+  node-degrees:
+    1: 10
+    4: 3
+    5: 5
+    6: 9
+    7: 52
+    8: 61
+    9: 16
+    10: 44
+    11: 24
+    12: 5
+    13: 2
+    14: 3
+    15: 1
+    18: 2
+    19: 2
+    21: 1
+    22: 1
+  edge-degrees:
+    2: 7
+    3: 5
+    4: 3
+    5: 6
+    6: 5
+    7: 2
+    8: 4
+    9: 3
+    10: 2
+    11: 3
+    12: 5
+    13: 7
+    14: 2
+    15: 5
+    16: 4
+    17: 8
+    18: 8
+    19: 2
+    20: 10
+    21: 7
+    22: 9
+    23: 10
+    24: 2
+    25: 5
+    26: 1
+    27: 3
+    28: 3
+    29: 1
+    30: 1
+---
+
+import { ComputedBoxPlot } from "@/components/chart/box-plot";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+## Overview
+
+This dataset is the `Vegas Bars Reviews` subset restricted to bars labelled as `Cocktail Bars`.
+It keeps the Yelp user nodes that participate in at least one co-review hyperedge for this Las Vegas bar category.
+
+## Statistics
+
+### Nodes
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
+  <Stat title="Node Type" value="Yelp User" />
+  <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-2" />
+</dl>
+
+### Hyperedges
+
+<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+  />
+  <Stat title="Hyperedge Type" value="Monthly Co-review Group" />
+  <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />
+</dl>

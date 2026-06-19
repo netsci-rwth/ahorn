@@ -1,0 +1,129 @@
+---
+title: Music Blues Reviews (New York Blues)
+source: https://www.cs.cornell.edu/~arb/data/cat-edge-music-blues-reviews/
+license: unprovided-reuse-encouraged
+citation:
+  - 10.18653/v1/D19-1018
+network-type:
+  - hypergraph
+tags:
+  - 'domain: reviews'
+  - 'source: benson'
+parent: music-blues-reviews
+attachments:
+  revision-3:
+    ahorn: https://zenodo.org/records/20744406/files/music-blues-reviews-new-york-blues.txt?download=1
+    hif: https://zenodo.org/records/20744406/files/music-blues-reviews-new-york-blues.hif.json.gz?download=1
+statistics:
+  num-nodes: 565
+  num-edges: 239
+  node-degrees:
+    1: 44
+    2: 156
+    3: 37
+    4: 117
+    5: 46
+    6: 28
+    7: 10
+    8: 9
+    9: 5
+    10: 7
+    11: 2
+    12: 1
+    15: 1
+    16: 6
+    17: 4
+    18: 1
+    19: 3
+    20: 42
+    21: 32
+    22: 5
+    25: 1
+    26: 1
+    27: 2
+    29: 1
+    31: 1
+    35: 1
+    37: 2
+  edge-degrees:
+    2: 4
+    3: 7
+    4: 10
+    5: 21
+    6: 22
+    7: 20
+    8: 14
+    9: 18
+    10: 16
+    11: 13
+    12: 8
+    13: 6
+    14: 6
+    15: 5
+    16: 5
+    17: 3
+    18: 3
+    19: 2
+    20: 1
+    21: 2
+    22: 2
+    23: 4
+    24: 1
+    26: 5
+    27: 1
+    28: 4
+    29: 4
+    30: 4
+    31: 2
+    32: 1
+    33: 2
+    34: 3
+    36: 2
+    37: 1
+    41: 1
+    42: 1
+    45: 1
+    53: 1
+    56: 1
+    59: 1
+    64: 1
+    65: 1
+    67: 1
+    68: 1
+    69: 1
+    73: 1
+    76: 1
+    78: 1
+    79: 2
+    83: 1
+---
+
+import { ComputedBoxPlot } from "@/components/chart/box-plot";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+## Overview
+
+This dataset is the `Music Blues Reviews` subset restricted to review groups labelled as `New York Blues`.
+It keeps the Amazon reviewer nodes that participate in at least one co-review hyperedge for this blues music genre.
+
+## Statistics
+
+### Nodes
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
+  <Stat title="Node Type" value="Amazon Reviewer" />
+  <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-2" />
+</dl>
+
+### Hyperedges
+
+<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+  />
+  <Stat title="Hyperedge Type" value="Monthly Co-review Group" />
+  <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />
+</dl>

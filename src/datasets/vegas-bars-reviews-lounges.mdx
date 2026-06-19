@@ -1,0 +1,68 @@
+---
+title: Vegas Bars Reviews (Lounges)
+source: https://www.cs.cornell.edu/~arb/data/cat-edge-vegas-bars-reviews/
+license: unprovided-reuse-encouraged
+citation:
+  - |
+    @article{amburg2020fair,
+      title={Fair Clustering for Diverse and Experienced Groups},
+      author={Amburg, Ilya and Veldt, Nate and Benson, Austin R},
+      journal={arXiv:2006.05645},
+      year={2020}
+    }
+network-type:
+  - hypergraph
+tags:
+  - 'domain: reviews'
+  - 'source: benson'
+parent: vegas-bars-reviews
+attachments:
+  revision-3:
+    ahorn: https://zenodo.org/records/20744599/files/vegas-bars-reviews-lounges.txt.gz?download=1
+    hif: https://zenodo.org/records/20744599/files/vegas-bars-reviews-lounges.hif.json.gz?download=1
+statistics:
+  num-nodes: 21
+  num-edges: 56
+  node-degrees:
+    4: 3
+    6: 3
+    7: 6
+    8: 5
+    9: 3
+    10: 1
+  edge-degrees:
+    2: 30
+    3: 17
+    4: 7
+    5: 2
+---
+
+import { ComputedBoxPlot } from "@/components/chart/box-plot";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+## Overview
+
+This dataset is the `Vegas Bars Reviews` subset restricted to bars labelled as `Lounges`.
+It keeps the Yelp user nodes that participate in at least one co-review hyperedge for this Las Vegas bar category.
+
+## Statistics
+
+### Nodes
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
+  <Stat title="Node Type" value="Yelp User" />
+  <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-2" />
+</dl>
+
+### Hyperedges
+
+<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+  />
+  <Stat title="Hyperedge Type" value="Monthly Co-review Group" />
+  <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />
+</dl>

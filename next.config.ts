@@ -28,7 +28,7 @@ const withMDX = createMDX({
       ["remark-mdx-frontmatter"],
       ["remark-gfm"],
     ],
-    rehypePlugins: [["rehype-highlight"]],
+    rehypePlugins: [["rehype-starry-night"]],
   },
 });
 

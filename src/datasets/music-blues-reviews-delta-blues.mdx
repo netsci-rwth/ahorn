@@ -1,0 +1,90 @@
+---
+title: Music Blues Reviews (Delta Blues)
+source: https://www.cs.cornell.edu/~arb/data/cat-edge-music-blues-reviews/
+license: unprovided-reuse-encouraged
+citation:
+  - 10.18653/v1/D19-1018
+network-type:
+  - hypergraph
+tags:
+  - 'domain: reviews'
+  - 'source: benson'
+parent: music-blues-reviews
+attachments:
+  revision-3:
+    ahorn: https://zenodo.org/records/20744406/files/music-blues-reviews-delta-blues.txt?download=1
+    hif: https://zenodo.org/records/20744406/files/music-blues-reviews-delta-blues.hif.json.gz?download=1
+statistics:
+  num-nodes: 178
+  num-edges: 146
+  node-degrees:
+    1: 55
+    2: 49
+    6: 15
+    7: 7
+    8: 21
+    9: 6
+    10: 1
+    11: 3
+    12: 1
+    13: 4
+    14: 3
+    15: 1
+    16: 7
+    17: 2
+    18: 1
+    25: 1
+    38: 1
+  edge-degrees:
+    2: 28
+    3: 20
+    4: 21
+    5: 10
+    6: 16
+    7: 16
+    8: 9
+    9: 6
+    10: 1
+    11: 4
+    12: 1
+    13: 1
+    14: 2
+    15: 3
+    16: 1
+    17: 1
+    18: 2
+    21: 1
+    22: 1
+    26: 1
+    31: 1
+---
+
+import { ComputedBoxPlot } from "@/components/chart/box-plot";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+## Overview
+
+This dataset is the `Music Blues Reviews` subset restricted to review groups labelled as `Delta Blues`.
+It keeps the Amazon reviewer nodes that participate in at least one co-review hyperedge for this blues music genre.
+
+## Statistics
+
+### Nodes
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
+  <Stat title="Node Type" value="Amazon Reviewer" />
+  <ComputedBoxPlot title="Node Degree" values={frontmatter["statistics"]["node-degrees"]} className="sm:col-span-2" />
+</dl>
+
+### Hyperedges
+
+<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+  />
+  <Stat title="Hyperedge Type" value="Monthly Co-review Group" />
+  <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />
+</dl>

@@ -14,7 +14,7 @@ network-type:
   - simplicial-complex
   - hypergraph
 tags:
-  - reviews
+  - 'domain: reviews'
   - 'metadata: edge classes'
   - 'source: benson'
 attachments:
@@ -24,9 +24,14 @@ attachments:
     ahorn: https://zenodo.org/records/18771537/files/vegas-bars-reviews.txt.gz?download=1
     changelog:
       - Renamed the edge attribute from `genre` to `category`.
-      - Updated the category edge attribute to store the category name instead
-        of a numeric code.
+      - Updated the category edge attribute to store the category name instead of
+        a numeric code.
       - Provided the dataset in gzipped format to reduce file size.
+  revision-3:
+    ahorn: https://zenodo.org/records/20744599/files/vegas-bars-reviews.txt.gz?download=1
+    hif: https://zenodo.org/records/20744599/files/vegas-bars-reviews.hif.json.gz?download=1
+    changelog:
+      - Sub-dataset for each bar category.
 statistics:
   num-nodes: 1234
   num-edges: 1194

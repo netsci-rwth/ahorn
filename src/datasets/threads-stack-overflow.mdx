@@ -1,0 +1,73 @@
+---
+title: Stack Overflow Threads
+source: https://www.cs.cornell.edu/~arb/data/threads-stack-overflow/
+license: unprovided-reuse-encouraged
+citation:
+  - 10.1073/pnas.1800683115
+network-type:
+  - hypergraph
+tags:
+  - 'domain: communication'
+  - 'network-type: temporal'
+  - 'source: benson'
+related:
+  - tags-stack-overflow
+  - threads-ask-ubuntu
+  - threads-math-sx
+attachments:
+  revision-1:
+    ahorn: https://zenodo.org/records/20761583/files/threads-stack-overflow.txt.gz?download=1
+statistics:
+  num-nodes: 2675969
+  num-edges: 8804634
+  node-degree-boxplot:
+    min: 1
+    q1: 1
+    median: 2
+    q3: 5
+    max: 36269
+  edge-degree-boxplot:
+    min: 2
+    q1: 2
+    median: 2
+    q3: 3
+    max: 67
+---
+
+import BoxPlot from "@/components/chart/box-plot";
+import Stat from "@/components/stat";
+import { formatNumber } from "@/utils/format";
+
+## Overview
+
+This temporal higher-order network represents discussion threads on Stack Overflow.
+Nodes are users, and each hyperedge is the set of users participating in a thread.
+
+> [!IMPORTANT]
+> Singleton hyperedges, corresponding to threads with only one participating user, are omitted in this dataset.
+
+## Attributes
+
+- `thread_id : string`: The source thread identifier associated with a hyperedge.
+- `time : datetime`: The thread timestamp in ISO 8601 format.
+
+## Statistics
+
+### Nodes
+
+<dl className="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
+  <Stat title="Node Type" value="User" />
+  <BoxPlot title="Node Degree" stats={frontmatter["statistics"]["node-degree-boxplot"]} className="sm:col-span-2" />
+</dl>
+
+### Hyperedges
+
+<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
+  <Stat
+    title="Hyperedges"
+    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+  />
+  <Stat title="Hyperedge Type" value="Thread Participants" />
+  <BoxPlot title="Hyperedge Degree" stats={frontmatter["statistics"]["edge-degree-boxplot"]} className="sm:col-span-2" />
+</dl>

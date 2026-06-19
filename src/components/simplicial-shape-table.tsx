@@ -1,5 +1,6 @@
 import classNames from "classnames";
 
+import Surface from "@/components/surface";
 import { formatNumber } from "@/utils/format";
 
 export type SimplicialShapeTableProps = {
@@ -19,22 +20,21 @@ export default function SimplicialShapeTable({
   const totalSimplices = shape.reduce((sum, count) => sum + count, 0);
 
   return (
-    <section
-      className={classNames(
-        "not-prose overflow-hidden rounded-xl bg-blue-10/70 ring-1 ring-blue-25/70 transition dark:bg-blue-100/15 dark:ring-blue-75/25",
-        className,
-      )}
+    <Surface
+      as="section"
+      variant="secondary"
+      className={classNames("not-prose", className)}
     >
       <div className="max-h-128 overflow-auto">
         <table className="w-full min-w-136 border-collapse text-sm">
-          <thead className="sticky top-0 z-10 border-b border-blue-25/70 bg-blue-10/95 text-left text-xs font-semibold tracking-wide text-black-50 uppercase backdrop-blur dark:border-blue-75/25 dark:bg-black-100/95 dark:text-black-50">
+          <thead className="sticky top-0 z-10 border-b border-black-25 bg-black-10/95 text-left text-xs font-semibold tracking-wide text-black-50 uppercase backdrop-blur dark:border-black-75 dark:bg-black-100/95 dark:text-black-50">
             <tr>
               <th className="w-28 py-2 pr-4 pl-4">Dimension</th>
               <th className="py-2 pr-4">Simplex Type</th>
               <th className="py-2 pr-4 text-right">Count</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-blue-25/60 dark:divide-blue-75/20">
+          <tbody className="divide-y divide-black-10 dark:divide-black-75/45">
             {shape.map((count, dimension) => (
               <tr
                 key={dimension}
@@ -52,7 +52,7 @@ export default function SimplicialShapeTable({
               </tr>
             ))}
           </tbody>
-          <tfoot className="sticky bottom-0 border-t border-blue-25/80 bg-blue-10/95 text-black-100 backdrop-blur dark:border-blue-75/25 dark:bg-black-100/95 dark:text-white">
+          <tfoot className="sticky bottom-0 border-t border-black-25 bg-black-10/95 text-black-100 backdrop-blur dark:border-black-75 dark:bg-black-100/95 dark:text-white">
             <tr>
               <td
                 colSpan={2}
@@ -67,6 +67,6 @@ export default function SimplicialShapeTable({
           </tfoot>
         </table>
       </div>
-    </section>
+    </Surface>
   );
 }

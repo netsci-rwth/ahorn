@@ -27,7 +27,7 @@ export default async function DatasetList() {
               ? frontmatter.title
               : path.parse(filename).name,
           disable: frontmatter.disable === true,
-          parent: frontmatter.parent,
+          isSubDataset: getParentSlug(frontmatter.parent) !== null,
           networkType: frontmatter["network-type"],
           tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],
           license: frontmatter.license,
@@ -38,9 +38,7 @@ export default async function DatasetList() {
       }),
   );
 
-  datasets = datasets.filter(
-    (d) => !d.disable && getParentSlug(d.parent) === null,
-  );
+  datasets = datasets.filter((d) => !d.disable);
 
   return (
     <>
