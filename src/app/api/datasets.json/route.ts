@@ -11,6 +11,7 @@ export interface Dataset {
   slug: string;
   title: string;
   tags: string[];
+  "suggested-network-types": string[];
   statistics: {
     "num-nodes": number;
     "num-interactions": number;
@@ -41,6 +42,11 @@ export async function GET() {
             title:
               typeof frontmatter.title === "string" ? frontmatter.title : slug,
             tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],
+            "suggested-network-types": Array.isArray(
+              frontmatter["network-type"],
+            )
+              ? frontmatter["network-type"]
+              : [],
             statistics: {
               "num-nodes": frontmatter.statistics["num-nodes"],
               "num-interactions": frontmatter.statistics["num-interactions"],
