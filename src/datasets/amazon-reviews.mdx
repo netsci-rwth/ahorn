@@ -24,7 +24,7 @@ attachments:
     ahorn: https://zenodo.org/records/17202002/files/amazon-reviews.txt.gz?download=1
 statistics:
   num-nodes: 2268264
-  num-edges: 4285363
+  num-interactions: 4285363
   node-degrees:
     1: 1368
     2: 2334
@@ -4296,7 +4296,7 @@ Nodes are labeled by their product categories.
 <dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
   <Stat
     title="Hyperedges"
-    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+    value={formatNumber(frontmatter["statistics"]["num-interactions"])}
   />
   <Stat title="Hyperedge Type" value="Co-reviewed Products" />
   <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />

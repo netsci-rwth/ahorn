@@ -16,7 +16,7 @@ attachments:
     hif: https://zenodo.org/records/20744406/files/music-blues-reviews-memphis-blues.hif.json.gz?download=1
 statistics:
   num-nodes: 14
-  num-edges: 26
+  num-interactions: 26
   node-degrees:
     3: 1
     4: 5
@@ -53,7 +53,7 @@ It keeps the Amazon reviewer nodes that participate in at least one co-review hy
 <dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
   <Stat
     title="Hyperedges"
-    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+    value={formatNumber(frontmatter["statistics"]["num-interactions"])}
   />
   <Stat title="Hyperedge Type" value="Monthly Co-review Group" />
   <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />

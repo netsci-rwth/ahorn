@@ -15,7 +15,7 @@ attachments:
     ahorn: https://zenodo.org/records/17202694/files/trivago-clicks.txt.gz?download=1
 statistics:
   num-nodes: 172738
-  num-edges: 233202
+  num-interactions: 233202
   node-degrees:
     1: 71437
     2: 32737
@@ -433,7 +433,7 @@ The dataset was derived from the ACM RecSys Challenge 2019.
 <dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
   <Stat
     title="Hyperedges"
-    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+    value={formatNumber(frontmatter["statistics"]["num-interactions"])}
   />
   <Stat title="Hyperedge Type" value="Click-out Action in One Session" />
   <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />

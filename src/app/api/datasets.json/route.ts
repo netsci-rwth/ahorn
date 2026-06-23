@@ -11,6 +11,10 @@ export interface Dataset {
   slug: string;
   title: string;
   tags: string[];
+  statistics: {
+    "num-nodes": number;
+    "num-interactions": number;
+  };
   attachments: Record<string, ResolvedRevisionAttachment>;
 }
 
@@ -27,11 +31,20 @@ export async function GET() {
         .map(async (filename) => {
           const slug = path.parse(filename).name;
           const { frontmatter } = await import(`@/datasets/${filename}`);
+
+          if (frontmatter.disable === true) {
+            return null;
+          }
+
           return {
             slug: slug,
             title:
               typeof frontmatter.title === "string" ? frontmatter.title : slug,
             tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],
+            statistics: {
+              "num-nodes": frontmatter.statistics["num-nodes"],
+              "num-interactions": frontmatter.statistics["num-interactions"],
+            },
             attachments: await resolveAttachmentSizes(
               (frontmatter.attachments || {}) as AttachmentMap,
             ),
@@ -40,6 +53,9 @@ export async function GET() {
     )
   ).reduce(
     (acc, data) => {
+      if (data === null) {
+        return acc;
+      }
       acc[data.slug] = data;
       return acc;
     },

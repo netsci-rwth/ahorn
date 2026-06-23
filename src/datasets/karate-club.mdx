@@ -18,7 +18,7 @@ attachments:
       - Updated the format version to 0.3.
 statistics:
   num-nodes: 34
-  num-edges: 136
+  num-interactions: 136
   node-degrees:
     1: 1
     2: 11
@@ -52,7 +52,7 @@ This dataset is suited to test your code, especially concerning your interaction
 
 <NetworkViewTabs
   numNodes={frontmatter["statistics"]["num-nodes"]}
-  numEdges={frontmatter["statistics"]["num-edges"]}
+  numEdges={frontmatter["shape"][1]}
   nodeDegrees={frontmatter["statistics"]["node-degrees"]}
   shape={frontmatter["shape"]}
 />

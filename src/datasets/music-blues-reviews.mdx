@@ -27,7 +27,7 @@ attachments:
       - Sub-dataset for each music genre.
 statistics:
   num-nodes: 1106
-  num-edges: 694
+  num-interactions: 694
   node-degrees:
     1: 95
     2: 186
@@ -198,7 +198,7 @@ Non-maximal simplices get the edge label of all maximal simplices they are conta
 <dl className="not-prose grid mt-5 gap-5 sm:grid-cols-3">
   <Stat
     title="Hyperedges"
-    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+    value={formatNumber(frontmatter["statistics"]["num-interactions"])}
   />
   <Stat title="Hyperedge Type" value="Co-reviewed" />
   <Stat title="Hyperedge Label" value="Genre of Blues Music" />

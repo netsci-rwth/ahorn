@@ -68,7 +68,7 @@ update_frontmatter(
         },
         "statistics": {
             "num-nodes": len(nodes),
-            "num-edges": written_edges,
+            "num-interactions": written_edges,
             "node-degree-boxplot": compute_boxplot_stats_from_histogram(
                 node_degree_histogram
             ),

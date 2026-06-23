@@ -17,7 +17,7 @@ attachments:
     ahorn: https://zenodo.org/records/17202738/files/mathoverflow-answers.txt.gz?download=1
 statistics:
   num-nodes: 73851
-  num-edges: 5446
+  num-interactions: 5446
   node-degrees:
     1: 45506
     2: 17252
@@ -1836,7 +1836,7 @@ Nodes are labeled by the tags used in the questions, and nodes often have multip
 <dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
   <Stat
     title="Hyperedges"
-    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+    value={formatNumber(frontmatter["statistics"]["num-interactions"])}
   />
   <Stat title="Hyperedge Type" value="Co-answered Questions" />
   <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />

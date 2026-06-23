@@ -63,7 +63,7 @@ update_frontmatter(
         },
         "statistics": {
             "num-nodes": len(nodes),
-            "num-edges": written_edges,
+            "num-interactions": written_edges,
             "node-degrees": dict(sorted(Counter(node_degrees.values()).items())),
             "edge-degrees": dict(sorted(edge_degrees.items())),
         },

@@ -60,7 +60,7 @@ update_frontmatter(
     {
         "statistics": {
             "num-nodes": len(nodes),
-            "num-edges": len(hyperedges),
+            "num-interactions": len(hyperedges),
             "node-degrees": dict(sorted(degree_histogram.items())),
         },
         "attachments": {

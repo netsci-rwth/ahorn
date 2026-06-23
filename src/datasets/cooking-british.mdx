@@ -16,7 +16,7 @@ attachments:
     hif: https://zenodo.org/records/20491193/files/cooking-british.hif.json.gz?download=1
 statistics:
   num-nodes: 1166
-  num-edges: 804
+  num-interactions: 804
   node-degrees:
     1: 535
     2: 181
@@ -137,7 +137,7 @@ Raw data was obtained from the [“What's Cooking?” Kaggle competition](https:
 <dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
   <Stat
     title="Hyperedges"
-    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+    value={formatNumber(frontmatter["statistics"]["num-interactions"])}
   />
   <Stat title="Hyperedge Type" value="Recipe" />
   <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />

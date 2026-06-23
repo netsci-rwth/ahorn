@@ -22,7 +22,7 @@ attachments:
     hif: https://zenodo.org/records/20744599/files/vegas-bars-reviews-dance-clubs.hif.json.gz?download=1
 statistics:
   num-nodes: 55
-  num-edges: 104
+  num-interactions: 104
   node-degrees:
     1: 4
     5: 3
@@ -68,7 +68,7 @@ It keeps the Yelp user nodes that participate in at least one co-review hyperedg
 <dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
   <Stat
     title="Hyperedges"
-    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+    value={formatNumber(frontmatter["statistics"]["num-interactions"])}
   />
   <Stat title="Hyperedge Type" value="Monthly Co-review Group" />
   <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />

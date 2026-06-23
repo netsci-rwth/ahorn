@@ -16,7 +16,7 @@ attachments:
     ahorn: https://zenodo.org/records/18632383/files/cora-cocitation.txt.gz?download=1
 statistics:
   num-nodes: 2708
-  num-edges: 1579
+  num-interactions: 1579
   node-degrees:
     1: 575
     2: 327
@@ -157,7 +157,7 @@ This dataset is commonly used as a benchmark in hypergraph learning tasks.
       <dl className="not-prose grid gap-5 sm:grid-cols-2">
         <Stat
           title="Hyperedges"
-          value={formatNumber(frontmatter["statistics"]["num-edges"])}
+          value={formatNumber(frontmatter["statistics"]["num-interactions"])}
         />
         <Stat title="Hyperedge Type" value="Co-Citation Set" />
         <ComputedBoxPlot

@@ -21,7 +21,7 @@ attachments:
     ahorn: https://zenodo.org/records/17198796/files/house-bills.txt?download=1
 statistics:
   num-nodes: 1494
-  num-edges: 60987
+  num-interactions: 60987
   node-degrees:
     1: 1
     2: 2
@@ -1412,7 +1412,7 @@ Each node is labeled with political party affiliation.
 <dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
   <Stat
     title="Hyperedges"
-    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+    value={formatNumber(frontmatter["statistics"]["num-interactions"])}
   />
   <Stat title="Hyperedge Type" value="Sponsors of Bill" />
   <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />

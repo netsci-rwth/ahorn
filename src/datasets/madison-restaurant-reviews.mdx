@@ -27,7 +27,7 @@ attachments:
       - Provided the dataset in gzipped format to reduce file size.
 statistics:
   num-nodes: 565
-  num-edges: 601
+  num-interactions: 601
   node-degrees:
     1: 11
     2: 31
@@ -153,7 +153,7 @@ Non-maximal simplices get the category of all maximal simplices they are contain
 <dl className="not-prose grid mt-5 gap-5 sm:grid-cols-3">
   <Stat
     title="Hyperedges"
-    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+    value={formatNumber(frontmatter["statistics"]["num-interactions"])}
   />
   <Stat title="Hyperedge Type" value="Co-reviewed Establishment" />
   <Stat title="Hyperedge Label" value="Cuisine" />

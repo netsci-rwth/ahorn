@@ -61,7 +61,7 @@ update_frontmatter(
     {
         "statistics": {
             "num-nodes": G.number_of_nodes(),
-            "num-edges": sum(islice(clique_complex.shape, 1, None)),
+            "num-interactions": sum(islice(clique_complex.shape, 1, None)),
             "node-degrees": node_degree_histogram,
         },
         "shape": list(clique_complex.shape),

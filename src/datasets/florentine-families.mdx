@@ -24,7 +24,7 @@ attachments:
     hif: https://zenodo.org/records/20741918/files/florentine-families.hif.json?download=1
 statistics:
   num-nodes: 15
-  num-edges: 23
+  num-interactions: 23
   node-degrees:
     1: 4
     2: 2
@@ -50,7 +50,7 @@ This dataset is suited to test graph-based methods on a small historical social 
 
 <NetworkViewTabs
   numNodes={frontmatter["statistics"]["num-nodes"]}
-  numEdges={frontmatter["statistics"]["num-edges"]}
+  numEdges={frontmatter["shape"][1]}
   nodeDegrees={frontmatter["statistics"]["node-degrees"]}
   shape={frontmatter["shape"]}
 />

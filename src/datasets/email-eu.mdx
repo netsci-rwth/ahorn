@@ -20,7 +20,7 @@ attachments:
     hif: https://zenodo.org/records/20759801/files/email-eu.hif.json.gz?download=1
 statistics:
   num-nodes: 1005
-  num-edges: 209508
+  num-interactions: 209508
   node-degrees:
     1: 50
     2: 27
@@ -671,7 +671,7 @@ Nodes are email addresses, and each hyperedge contains the sender together with 
 <dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
   <Stat
     title="Hyperedges"
-    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+    value={formatNumber(frontmatter["statistics"]["num-interactions"])}
   />
   <Stat title="Hyperedge Type" value="Email Sender and Recipients" />
   <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />

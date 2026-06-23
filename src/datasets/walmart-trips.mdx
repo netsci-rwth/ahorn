@@ -15,7 +15,7 @@ attachments:
     ahorn: https://zenodo.org/records/17201931/files/walmart-trips.txt.gz?download=1
 statistics:
   num-nodes: 88860
-  num-edges: 69906
+  num-interactions: 69906
   node-degrees:
     1: 37624
     2: 16310
@@ -343,7 +343,7 @@ Products not assigned to any of these departments are grouped into an "Other" ca
 <dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
   <Stat
     title="Hyperedges"
-    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+    value={formatNumber(frontmatter["statistics"]["num-interactions"])}
   />
   <Stat title="Hyperedge Type" value="Co-purchased Products" />
   <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />

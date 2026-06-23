@@ -19,7 +19,7 @@ attachments:
       - Dropped papers with only one author.
 statistics:
   num-nodes: 22363
-  num-edges: 32304
+  num-interactions: 32304
   node-degrees:
     1: 1673
     2: 9010
@@ -146,7 +146,7 @@ This dataset is commonly used as a benchmark in hypergraph learning tasks for au
 <dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
   <Stat
     title="Hyperedges"
-    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+    value={formatNumber(frontmatter["statistics"]["num-interactions"])}
   />
   <Stat title="Hyperedge Type" value="Publication" />
   <ComputedBoxPlot title="Hyperedge Degree" values={frontmatter["statistics"]["edge-degrees"]} className="sm:col-span-2" />

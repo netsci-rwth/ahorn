@@ -17,7 +17,7 @@ attachments:
     ahorn: https://zenodo.org/records/17607718/files/NDC-substances.txt.gz?download=1
 statistics:
   num-nodes: 5556
-  num-edges: 112919
+  num-interactions: 112919
   node-degrees:
     1: 1229
     2: 672
@@ -8148,7 +8148,7 @@ Timestamps are in days and represent when the drug was first marketed.
 <dl className="not-prose grid gap-5 sm:grid-cols-2">
   <Stat
     title="Hyperedges"
-    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+    value={formatNumber(frontmatter["statistics"]["num-interactions"])}
   />
   <Stat title="Hyperedge Type" value="Drug" />
   <LineChart data={frontmatter.shape} minUnit="day" className="sm:col-span-2" />

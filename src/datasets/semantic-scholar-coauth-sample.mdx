@@ -21,7 +21,7 @@ attachments:
     ahorn: https://zenodo.org/records/18199501/files/semantic-scholar-coauth-sample.txt.gz?download=1
 statistics:
   num-nodes: 352
-  num-edges: 24200
+  num-interactions: 24200
   node-degrees:
     1: 2
     3: 2
@@ -156,7 +156,7 @@ Similarly, node C has value 104 since C co-authored Paper 1 (100 citations) and 
 <dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
   <Stat
     title="Simplices"
-    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+    value={formatNumber(frontmatter["statistics"]["num-interactions"])}
   />
   <Stat title="Simplex Type" value="Co-Authorship" />
   <ComputedBoxPlot title="Maximal Simplex Size" values={frontmatter["statistics"]["maximal-simplex-sizes"]} className="sm:col-span-2" />

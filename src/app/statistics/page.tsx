@@ -342,7 +342,10 @@ async function getRepositoryStatistics(): Promise<RepositoryStatistics> {
       title: typeof frontmatter.title === "string" ? frontmatter.title : slug,
       isSubDataset,
       numNodes: getStatisticValue(frontmatter.statistics, "num-nodes"),
-      numRelations: getStatisticValue(frontmatter.statistics, "num-edges"),
+      numRelations: getStatisticValue(
+        frontmatter.statistics,
+        "num-interactions",
+      ),
     });
   }
 

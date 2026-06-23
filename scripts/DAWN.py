@@ -47,6 +47,7 @@ update_frontmatter(
         },
         "statistics": {
             "num-nodes": len(nodes),
+            "num-interactions": len(hyperedges),
         },
         "shape": {
             "nodes": len(nodes),

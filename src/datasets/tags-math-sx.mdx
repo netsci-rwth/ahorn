@@ -20,7 +20,7 @@ attachments:
     hif: https://zenodo.org/records/20762447/files/tags-math-sx.hif.json.gz?download=1
 statistics:
   num-nodes: 1629
-  num-edges: 558272
+  num-interactions: 558272
   node-degree-boxplot:
     min: 1
     q1: 25
@@ -68,7 +68,7 @@ Nodes are tags, and each hyperedge is the set of tags applied to a question.
 <dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
   <Stat
     title="Hyperedges"
-    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+    value={formatNumber(frontmatter["statistics"]["num-interactions"])}
   />
   <Stat title="Hyperedge Type" value="Question Tag Set" />
   <BoxPlot title="Hyperedge Degree" stats={frontmatter["statistics"]["edge-degree-boxplot"]} className="sm:col-span-2" />

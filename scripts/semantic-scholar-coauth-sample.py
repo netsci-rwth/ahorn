@@ -81,7 +81,7 @@ update_frontmatter(
     {
         "statistics": {
             "num-nodes": num_nodes,
-            "num-edges": num_edges,
+            "num-interactions": num_edges,
             "node-degrees": degree_histogram,
             "maximal-simplex-sizes": dict(sorted(maximal_simplex_size_hist.items())),
         },

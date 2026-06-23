@@ -21,7 +21,7 @@ attachments:
       - Updated the format version to `0.3`.
 statistics:
   num-nodes: 6714
-  num-edges: 39752
+  num-interactions: 39752
   node-degrees:
     1: 1759
     2: 798
@@ -608,7 +608,7 @@ Raw data was obtained from the [“What's Cooking?” Kaggle competition](https:
 <dl className="not-prose grid mt-5 gap-5 sm:grid-cols-3">
   <Stat
     title="Hyperedges"
-    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+    value={formatNumber(frontmatter["statistics"]["num-interactions"])}
   />
   <Stat title="Hyperedge Type" value="Recipe" />
   <Stat title="Hyperedge Label" value="Cuisine" />

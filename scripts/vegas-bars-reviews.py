@@ -110,7 +110,7 @@ update_frontmatter(
         },
         "statistics": {
             "num-nodes": len(nodes),
-            "num-edges": len(hyperedges),
+            "num-interactions": len(hyperedges),
             "node-degrees": node_degree_histogram,
             "edge-degrees": edge_degree_histogram,
         },
@@ -145,7 +145,7 @@ for label in sorted(edge_label_counts):
             },
             "statistics": {
                 "num-nodes": len(participating_nodes),
-                "num-edges": len(filtered_hyperedges),
+                "num-interactions": len(filtered_hyperedges),
                 "node-degrees": node_degree_histogram,
                 "edge-degrees": edge_degree_histogram,
             },

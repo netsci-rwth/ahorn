@@ -17,7 +17,7 @@ type DatasetCard = {
   networkTypes: string[];
   tags: string[];
   numNodes: number | null;
-  numEdges: number | null;
+  numInteractions: number | null;
 };
 
 type DatasetCardListProps = {
@@ -41,17 +41,19 @@ function getStringArray(value: unknown): string[] {
     : [];
 }
 
-function formatScale(dataset: Pick<DatasetCard, "numNodes" | "numEdges">) {
+function formatScale(
+  dataset: Pick<DatasetCard, "numNodes" | "numInteractions">,
+) {
   const nodeLabel =
     dataset.numNodes === null
       ? "Unknown nodes"
       : `${formatNumber(dataset.numNodes)} nodes`;
-  const edgeLabel =
-    dataset.numEdges === null
+  const interactionLabel =
+    dataset.numInteractions === null
       ? "See details"
-      : `${formatNumber(dataset.numEdges)} relations`;
+      : `${formatNumber(dataset.numInteractions)} relations`;
 
-  return `${nodeLabel} · ${edgeLabel}`;
+  return `${nodeLabel} · ${interactionLabel}`;
 }
 
 async function loadDatasetCard(
@@ -69,7 +71,10 @@ async function loadDatasetCard(
     networkTypes: getStringArray(frontmatter["network-type"]),
     tags: getStringArray(frontmatter.tags),
     numNodes: getStatisticValue(frontmatter.statistics, "num-nodes"),
-    numEdges: getStatisticValue(frontmatter.statistics, "num-edges"),
+    numInteractions: getStatisticValue(
+      frontmatter.statistics,
+      "num-interactions",
+    ),
   };
 }
 

@@ -29,10 +29,12 @@ simplices = load_benson_simplices(root_dir / "data" / "contact-high-school")
 nodes = set(chain.from_iterable(simplex.elements for simplex in simplices))
 
 # write dataset file
+num_interactions = 0
 with dataset_file.open("w") as f:
     write_dataset_metadata(f, datasheet_file.stem, revision)
     for simplex in track(simplices, description="Writing simplices"):
         write_edge(f, simplex, time=datetime.fromtimestamp(simplex["time"], tz=UTC))
+        num_interactions += 1
 
 # aggregate temporal simplices by hour
 hourly_simplices = defaultdict(list)
@@ -61,6 +63,7 @@ update_frontmatter(
         },
         "statistics": {
             "num-nodes": len(nodes),
+            "num-interactions": num_interactions,
         },
         "shape": {
             datetime.strptime(hour, "%Y-%m-%d %H")

@@ -484,7 +484,7 @@ export default function ToolsPage() {
             <>
               Use the loader for everyday downloads and Python scripts. If you
               are building services around the repository, consume the{" "}
-              <a href="https://ahorn.rwth-aachen.de/api/datasets.json">
+              <a href="/api/datasets.json">
                 Datasets JSON API
               </a>{" "}
               for machine-readable metadata.

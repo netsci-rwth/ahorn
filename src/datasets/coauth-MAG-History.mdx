@@ -19,7 +19,7 @@ attachments:
     ahorn: https://zenodo.org/records/17600662/files/coauth-MAG-History.txt.gz?download=1
 statistics:
   num-nodes: 1034876
-  num-edges: 1813147
+  num-interactions: 1813147
   node-degrees:
     1: 730527
     2: 130528
@@ -577,7 +577,7 @@ Timestamps are the year of publication.
 <dl className="not-prose grid gap-5 sm:grid-cols-2">
   <Stat
     title="Hyperedges"
-    value={formatNumber(frontmatter["statistics"]["num-edges"])}
+    value={formatNumber(frontmatter["statistics"]["num-interactions"])}
   />
   <Stat title="Hyperedge Type" value="Co-authored Publication" />
   <LineChart data={frontmatter.shape} minUnit="year" className="sm:col-span-2" />

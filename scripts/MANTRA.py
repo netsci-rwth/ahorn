@@ -127,6 +127,7 @@ for dimension in [2, 3]:
             "statistics": {
                 "num-manifolds": num_manifolds,
                 "num-nodes": num_nodes,
+                "num-interactions": num_total_simplices,
                 "num-simplices": num_total_simplices,
                 "nodes-boxplot": nodes_box,
                 "simplices-boxplot": simplices_box,
