@@ -1,0 +1,8 @@
+---
+type ChartPoint = { x: number; y: number };
+interface Props { points: ChartPoint[] }
+const { points } = Astro.props;
+const width = 640, height = 260, pad = 28;
+const maxX = Math.max(1, ...points.map(({ x }) => x)), maxY = Math.max(1, ...points.map(({ y }) => y));
+---
+<svg viewBox={`0 0 ${width} ${height}`} class="h-auto w-full text-black-50 dark:text-black-25" role="img" aria-label="Scatter chart"><line x1={pad} y1={height-pad} x2={width-pad} y2={height-pad} stroke="currentColor" opacity="0.35"></line><line x1={pad} y1={pad} x2={pad} y2={height-pad} stroke="currentColor" opacity="0.35"></line>{points.map((point) => <circle cx={pad+(point.x/maxX)*(width-pad*2)} cy={height-pad-(point.y/maxY)*(height-pad*2)} r="2.2" fill="#3b82f6" opacity="0.72"></circle>)}</svg>

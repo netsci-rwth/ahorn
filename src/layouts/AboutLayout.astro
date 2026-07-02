@@ -1,0 +1,88 @@
+---
+import type { MarkdownLayoutProps } from 'astro';
+import Icon from "@/components/Icon.astro";
+import {
+  faBox,
+  faChartPie,
+  faCircleInfo,
+  faCode,
+  faFileCode,
+  faHandshake,
+  faGavel,
+  faShieldHalved,
+  faSection,
+} from "@fortawesome/free-solid-svg-icons";
+
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+type Props = MarkdownLayoutProps<{
+  title: string;
+}>;
+const { frontmatter } = Astro.props;
+
+const groups = {
+  About: [
+    { href: "/about", label: "About", icon: faCircleInfo },
+    { href: "/about/format", label: "Dataset Format", icon: faFileCode },
+    { href: "/about/ahorn-loader", label: "ahorn-loader", icon: faBox },
+  ],
+  Contributing: [
+    { href: "/about/contributing", label: "Contributing Guidelines", icon: faHandshake },
+    { href: "/about/datasheet", label: "Datasheet Page", icon: faChartPie },
+    { href: "/about/dataset-converter", label: "Converter", icon: faCode },
+    { href: "/about/code-of-conduct", label: "Code of Conduct", icon: faGavel },
+  ],
+  Legal: [
+    { href: "/about/privacy", label: "Privacy Policy", icon: faShieldHalved },
+    { href: "/about/imprint", label: "Legal Notice", icon: faSection },
+  ],
+} as const;
+
+const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isActive = (href: string) => pathname === href;
+---
+
+<BaseLayout title={frontmatter.title}>
+<div class="grid min-w-0 gap-8 py-8 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-12 lg:py-10">
+  <aside class="min-w-0 lg:sticky lg:top-24 lg:self-start">
+    <nav class="flex flex-col">
+      <ul class="flex flex-col gap-y-5">
+        {Object.entries(groups).map(([group, links]) => (
+          <li>
+            <div class="px-2 text-xs font-semibold tracking-wide text-black-50 uppercase">{group}</div>
+            <ul class="mt-2 space-y-1">
+              {links.map((item) => (
+                <li>
+                  <a
+                    href={item.href}
+                    aria-current={isActive(item.href) ? "page" : undefined}
+                    class:list={[
+                      "group flex items-center gap-x-2.5 rounded-md px-2.5 py-2 text-sm font-medium",
+                      isActive(item.href)
+                        ? "bg-blue-10 text-blue-100 dark:bg-blue-100/15 dark:text-blue-50"
+                        : "text-black-75 hover:text-blue-100 dark:text-black-25 dark:hover:text-blue-50",
+                    ]}
+                  >
+                    <Icon
+                      icon={item.icon}
+                      class={`size-3.5 shrink-0 ${
+                        isActive(item.href)
+                          ? "text-blue-100 dark:text-blue-50"
+                          : "text-black-50 group-hover:text-blue-100 dark:text-black-50 dark:group-hover:text-blue-50"
+                      }`}
+                    />
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </aside>
+  <main class="prose max-w-none min-w-0 flex-1 dark:prose-invert" data-pagefind-body>
+    <slot />
+  </main>
+</div>
+</BaseLayout>

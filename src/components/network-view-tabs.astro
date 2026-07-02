@@ -1,0 +1,17 @@
+---
+import ComputedBoxPlot from "@/components/chart/computed-box-plot.astro";
+import ShapeChart from "@/components/chart/shape.astro";
+import Stat from "@/components/stat.astro";
+import TabBar from "@/components/tab-bar.astro";
+import { formatNumber } from "@/utils/format";
+interface Props { numNodes: number; numEdges: number; nodeDegrees?: Record<number, number> | null; shape?: number[] | null }
+const { numNodes, numEdges, nodeDegrees = null, shape = null } = Astro.props;
+const numSimplices = shape?.reduce((sum,count)=>sum+count,0) ?? 0;
+---
+<TabBar label="Domain Type" tabs={["Graph", "Simplicial Complex"]}>
+  <div class="space-y-6" role="tabpanel" data-tab-panel="0">
+    <div><h3 class="mb-4 text-lg font-semibold tracking-tight text-black-100 dark:text-white">Graph Statistics</h3><dl class="not-prose grid gap-5 sm:grid-cols-2"><Stat title="Nodes" value={formatNumber(numNodes)} /><Stat title="Node Type" value="Club Members" />{nodeDegrees&&<ComputedBoxPlot title="Node Degree" values={nodeDegrees} class="sm:col-span-2" />}<Stat title="Edges" value={formatNumber(numEdges)} /><Stat title="Edge Type" value="Friendships" /></dl></div>
+    <div><h3 class="mb-4 text-lg font-semibold tracking-tight text-black-100 dark:text-white">Graph Properties</h3><dl class="not-prose grid gap-5 sm:grid-cols-2"><Stat title="Density" value={((2*numEdges)/(numNodes*(numNodes-1))).toFixed(4)} /></dl></div>
+  </div>
+  {shape && <div class="space-y-6" role="tabpanel" data-tab-panel="1" hidden><div><h3 class="mb-4 text-lg font-semibold tracking-tight text-black-100 dark:text-white">Simplicial Complex Statistics</h3><dl class="not-prose grid gap-5 sm:grid-cols-2"><Stat title="Nodes" value={formatNumber(shape[0])} /><Stat title="Node Type" value="Club Members" /><Stat title="Edges" value={formatNumber(shape[1])} /><Stat title="Edge Type" value="Friendships" /><Stat title="Total Simplices" value={formatNumber(numSimplices)} /><Stat title="Max Dimension" value={shape.length-1} /></dl></div><div><h3 class="mb-4 text-lg font-semibold tracking-tight text-black-100 dark:text-white">Shape by Dimension</h3><ShapeChart shape={shape} /></div></div>}
+</TabBar>

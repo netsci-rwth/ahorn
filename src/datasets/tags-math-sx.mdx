@@ -35,8 +35,8 @@ statistics:
     max: 5
 ---
 
-import BoxPlot from "@/components/chart/box-plot";
-import Stat from "@/components/stat";
+import BoxPlot from "@/components/chart/box-plot.astro";
+import Stat from "@/components/stat.astro";
 import { formatNumber } from "@/utils/format";
 
 ## Overview
@@ -57,19 +57,19 @@ Nodes are tags, and each hyperedge is the set of tags applied to a question.
 
 ### Nodes
 
-<dl className="not-prose grid gap-5 sm:grid-cols-2">
+<dl class="not-prose grid gap-5 sm:grid-cols-2">
   <Stat title="Nodes" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
   <Stat title="Node Type" value="Tag" />
-  <BoxPlot title="Node Degree" stats={frontmatter["statistics"]["node-degree-boxplot"]} className="sm:col-span-2" />
+  <BoxPlot title="Node Degree" stats={frontmatter["statistics"]["node-degree-boxplot"]} class="sm:col-span-2" />
 </dl>
 
 ### Hyperedges
 
-<dl className="not-prose grid mt-5 gap-5 sm:grid-cols-2">
+<dl class="not-prose grid mt-5 gap-5 sm:grid-cols-2">
   <Stat
     title="Hyperedges"
     value={formatNumber(frontmatter["statistics"]["num-interactions"])}
   />
   <Stat title="Hyperedge Type" value="Question Tag Set" />
-  <BoxPlot title="Hyperedge Degree" stats={frontmatter["statistics"]["edge-degree-boxplot"]} className="sm:col-span-2" />
+  <BoxPlot title="Hyperedge Degree" stats={frontmatter["statistics"]["edge-degree-boxplot"]} class="sm:col-span-2" />
 </dl>

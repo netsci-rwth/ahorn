@@ -1,0 +1,33 @@
+---
+import type { ChartJsSpec } from "@/components/chart/chart-js-config";
+
+interface Props {
+  spec: ChartJsSpec;
+  ariaLabel: string;
+  class?: string;
+}
+
+const { spec, ariaLabel, class: classValue } = Astro.props;
+---
+
+<div
+  class:list={["not-prose", classValue]}
+  data-chart-js
+  data-chart-spec={JSON.stringify(spec)}
+>
+  <slot />
+  <div class="relative h-80">
+    <canvas role="img" aria-label={ariaLabel}></canvas>
+  </div>
+  <noscript>
+    <p class="mt-3 text-sm text-black-50 dark:text-black-50">
+      Enable JavaScript to view this chart.
+    </p>
+  </noscript>
+</div>
+
+<script>
+  import { initializeChartJs } from "@/components/chart/chart-js-runtime";
+
+  initializeChartJs();
+</script>

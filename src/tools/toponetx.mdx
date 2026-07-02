@@ -1,0 +1,14 @@
+---
+name: TopoNetX
+description: A Python library for higher-order network analysis, supporting simplicial and cell complexes.
+href: https://github.com/pyt-team/TopoNetX
+section: integration
+logo: /images/tools/toponetx.webp
+---
+
+```python
+import toponetx as tnx
+
+SC = tnx.datasets.load_ahorn_dataset("karate-club")
+B1 = SC.incidence_matrix(1)
+```

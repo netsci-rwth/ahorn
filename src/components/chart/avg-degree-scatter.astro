@@ -1,0 +1,9 @@
+---
+import StatisticsBlock from "@/components/statistics-block.astro";
+import StaticScatterChart from "@/components/chart/static-scatter-chart.astro";
+interface Props { values: number[]; title?: string; maxPoints?: number }
+const { values, title = "Average degree per manifold", maxPoints = 1500 } = Astro.props;
+const step = Math.max(1, Math.ceil(values.length / maxPoints));
+const points = values.flatMap((y, x) => x % step === 0 ? [{ x, y }] : []);
+---
+<StatisticsBlock title={title} class="not-prose"><StaticScatterChart points={points} /><p class="mt-2 text-xs text-black-50">{step > 1 ? `Every ${step}th point shown.` : `${points.length} points shown.`}</p></StatisticsBlock>

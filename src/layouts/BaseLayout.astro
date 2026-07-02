@@ -1,0 +1,69 @@
+---
+import Navbar from "@/components/Navbar.astro";
+import Footer from "@/components/Footer.astro";
+import favicon from "@/assets/icon.svg";
+import "@/styles/globals.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "AHORN - Aachen Higher-Order Repository of Networks",
+  description = "Comprehensive repository of research-quality simplicial complex, cell complex, and hypergraph datasets for higher-order network science.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" href={favicon.src} type="image/svg+xml" />
+    <link href="/_pagefind/pagefind-component-ui.css" rel="stylesheet" />
+    <script is:inline src="/_pagefind/pagefind-component-ui.js" type="module"></script>
+    <title>{title}</title>
+  </head>
+  <body class="flex min-h-screen flex-col dark:bg-black-100 dark:text-white">
+    <Navbar />
+    <main class="mx-auto w-full max-w-7xl grow px-4 sm:px-6 lg:px-8">
+      <slot />
+    </main>
+    <Footer />
+    <div id="copy-status" class="sr-only" aria-live="polite"></div>
+    <script>
+      document.addEventListener("click", async (event) => {
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+
+        const copyButton = target.closest<HTMLElement>("[data-copy-text]");
+        if (copyButton) {
+          const status = document.querySelector<HTMLElement>("#copy-status");
+          try {
+            await navigator.clipboard.writeText(copyButton.dataset.copyText ?? "");
+            if (status) status.textContent = copyButton.dataset.copySuccess ?? "Copied.";
+          } catch {
+            if (status) status.textContent = copyButton.dataset.copyError ?? "Copy failed.";
+          }
+          return;
+        }
+
+        const tabButton = target.closest<HTMLButtonElement>("[data-tab-button]");
+        const tabRoot = tabButton?.closest<HTMLElement>("[data-tabs]");
+        if (tabButton && tabRoot) {
+          const selected = tabButton.dataset.tabButton;
+          tabRoot.querySelectorAll<HTMLButtonElement>("[data-tab-button]").forEach((button) => {
+            const active = button.dataset.tabButton === selected;
+            button.setAttribute("aria-selected", String(active));
+            button.dataset.selected = String(active);
+          });
+          tabRoot.querySelectorAll<HTMLElement>("[data-tab-panel]").forEach((panel) => {
+            panel.hidden = panel.dataset.tabPanel !== selected;
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

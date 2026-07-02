@@ -1,0 +1,16 @@
+---
+interface Props { label?: string; tabs: string[] }
+const { label, tabs } = Astro.props;
+---
+
+<div data-tabs>
+  <div class="not-prose flex flex-col gap-2 border-b border-blue-25/80 pb-2 sm:flex-row sm:items-end sm:justify-between dark:border-blue-75/25">
+    {label && <h3 class="text-sm font-semibold tracking-wide text-black-75 uppercase dark:text-black-25">{label}</h3>}
+    <div role="tablist" aria-label={label} class="flex max-w-full gap-1 overflow-x-auto rounded-lg bg-blue-10/70 p-1 dark:bg-blue-100/15">
+      {tabs.map((tab, index) => (
+        <button type="button" role="tab" data-tab-button={String(index)} data-selected={String(index === 0)} aria-selected={index === 0} class="rounded-md px-3 py-1.5 text-sm font-semibold whitespace-nowrap data-[selected=true]:bg-white data-[selected=true]:text-blue-100 data-[selected=true]:shadow-sm dark:data-[selected=true]:bg-black-100">{tab}</button>
+      ))}
+    </div>
+  </div>
+  <div class="mt-6"><slot /></div>
+</div>

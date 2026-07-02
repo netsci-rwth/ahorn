@@ -1,0 +1,71 @@
+---
+title: Drug-Target Interaction
+source: https://github.com/perlman/DTI
+citation:
+  - >
+    @article{perlman2011combining,
+      title={Combining drug and gene similarity measures for drug-target elucidation},
+      author={Perlman, Liat and Gottlieb, Assaf and Atias, Nir and Ruppin, Eytan and Sharan, Roded},
+      journal={Journal of Computational Biology},
+      volume={18},
+      number={2},
+      pages={133--145},
+      year={2011},
+      doi={10.1089/cmb.2010.0213}
+    }
+network-type:
+  - combinatorial-complex
+tags:
+  - 'domain: biomedical'
+  - 'domain: similarity'
+attachments:
+  revision-1:
+    ahorn: drug-target-interaction.txt.gz
+statistics:
+  num-nodes: 565
+  num-interactions: 79627
+  num-faces: 877
+---
+
+import Stat from "@/components/stat.astro";
+import { formatNumber } from "@/utils/format";
+
+## Overview
+
+The `drug-target-interaction` dataset is a combinatorial complex representing drug-target interactions and similarity relationships.
+The dataset is based on the work by Perlman et al., which combines multiple drug and gene similarity measures to predict drug-target interactions.
+
+## Structure
+
+The complex has three cell levels:
+
+- `0-cells`: drugs, identified by DrugBank IDs, and protein targets, identified by Entrez Gene IDs.
+- `1-cells`: drug-target interaction pairs, indicating potential or known interactions between drugs and protein targets.
+- `2-cells`: similarity groups based on drug similarity measures (ATC hierarchy, chemical structure, ligand Jaccard, CMap Jaccard, and side effects) and target similarity measures (distance, Gene Ontology, and sequence similarity).
+
+This combines direct drug-target interactions with higher-order similarity relationships.
+
+## Statistics
+
+<dl class="not-prose grid gap-5 sm:grid-cols-2">
+  <Stat title="0-cells (Nodes)" value={formatNumber(frontmatter["statistics"]["num-nodes"])} />
+  <Stat title="Node Types" value="Drugs and Protein Targets" />
+  <Stat title="Interactions" value={formatNumber(frontmatter["statistics"]["num-interactions"])} />
+  <Stat title="Interaction Types" value="1-cells and 2-cells" />
+  <Stat title="2-cells (Faces)" value={formatNumber(frontmatter["statistics"]["num-faces"])} />
+  <Stat title="Face Type" value="Similarity Groups" />
+</dl>
+
+## Applications
+
+This structure is useful for:
+
+- Drug repositioning based on similarity patterns.
+- Protein target prediction for drugs.
+- Polypharmacology and network pharmacology studies.
+- Machine learning models that use topological features for drug-target interaction prediction.
+
+## Data Source
+
+The original data comes from Perlman et al.'s study on combining drug and gene similarity measures.
+The dataset includes interaction data from DrugBank and protein target information from Entrez Gene, integrated with multiple similarity measures to create a comprehensive representation of the drug-target interaction landscape.

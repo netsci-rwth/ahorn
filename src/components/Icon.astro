@@ -1,0 +1,38 @@
+---
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+
+interface Props {
+  icon: IconDefinition;
+  class?: string;
+}
+
+const {
+  icon,
+  class: classValue,
+} = Astro.props;
+const [width, height, , , pathData] = icon.icon;
+const paths = Array.isArray(pathData) ? pathData : [pathData];
+---
+
+<svg
+  data-prefix={icon.prefix}
+  data-icon={icon.iconName}
+  class:list={[
+    "svg-inline--fa",
+    `fa-${icon.iconName}`,
+    classValue,
+  ]}
+  role="img"
+  viewBox={`0 0 ${width} ${height}`}
+  aria-hidden="true"
+>
+  {
+    paths.map((path, index) => (
+      <path
+        class={paths.length > 1 ? (index === 0 ? "fa-secondary" : "fa-primary") : undefined}
+        fill="currentColor"
+        d={path}
+      />
+    ))
+  }
+</svg>

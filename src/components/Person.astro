@@ -1,0 +1,44 @@
+---
+interface Props {
+  avatar?: string;
+  name: string;
+  role: string;
+  class?: string;
+}
+
+const {
+  avatar,
+  name,
+  role,
+  class: classValue,
+} = Astro.props;
+const initials =
+  name
+    .split(" ")
+    .filter(Boolean)
+    .map((part) => part[0]?.toUpperCase())
+    .join("") || "?";
+---
+
+<div class:list={["flex items-center gap-x-5", classValue]}>
+  {avatar ? (
+    <img
+      src={avatar}
+      width="64"
+      height="64"
+      alt=""
+      class="rounded-full shadow-md ring-4 ring-white"
+      role="presentation"
+    />
+  ) : (
+    <span class="inline-flex size-16 items-center justify-center rounded-full bg-black-50 ring-4 ring-white dark:bg-black-75">
+      <span class="font-medium text-white">{initials}</span>
+    </span>
+  )}
+  <div>
+    <h3 class="text-base/7 font-semibold tracking-tight text-black-100 dark:text-white">
+      {name}
+    </h3>
+    <p class="text-sm/6 font-semibold text-blue-100">{role}</p>
+  </div>
+</div>

@@ -1,0 +1,132 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-blue-100: #00549f;
+  --color-blue-75: #407fb7;
+  --color-blue-50: #8ebae5;
+  --color-blue-25: #c7ddf2;
+  --color-blue-10: #e8f1fa;
+  --color-black-100: #000000;
+  --color-black-75: #646567;
+  --color-black-50: #9c9e9f;
+  --color-black-25: #cfd1d2;
+  --color-black-10: #eceded;
+  --color-magenta-100: #e30066;
+  --color-magenta-75: #e96088;
+  --color-magenta-50: #f19eb1;
+  --color-magenta-25: #f9d2da;
+  --color-magenta-10: #fdeef0;
+  --color-yellow-100: #ffed00;
+  --color-yellow-75: #fff055;
+  --color-yellow-50: #fff59b;
+  --color-yellow-25: #fffad1;
+  --color-yellow-10: #fffdee;
+  --color-petrol-100: #006165;
+  --color-petrol-75: #2d7f83;
+  --color-petrol-50: #7da4a7;
+  --color-petrol-25: #bfd0d1;
+  --color-petrol-10: #e6ecec;
+  --color-turquoise-100: #0098a1;
+  --color-turquoise-75: #00b1b7;
+  --color-turquoise-50: #89cccf;
+  --color-turquoise-25: #cae7e7;
+  --color-turquoise-10: #ebf6f6;
+  --color-green-100: #57ab27;
+  --color-green-75: #8dc060;
+  --color-green-50: #b8d698;
+  --color-green-25: #ddebce;
+  --color-green-10: #f2f7ec;
+  --color-maygreen-100: #bdcd00;
+  --color-maygreen-75: #d0d95c;
+  --color-maygreen-50: #e0e69a;
+  --color-maygreen-25: #f0f3d0;
+  --color-maygreen-10: #f9faed;
+  --color-orange-100: #f6a800;
+  --color-orange-75: #fabe50;
+  --color-orange-50: #fdd48f;
+  --color-orange-25: #feeac9;
+  --color-orange-10: #fff7ea;
+  --color-red-100: #cc071e;
+  --color-red-75: #d85c41;
+  --color-red-50: #e69679;
+  --color-red-25: #f3cdbb;
+  --color-red-10: #faebe3;
+  --color-bordeaux-100: #a11035;
+  --color-bordeaux-75: #b65256;
+  --color-bordeaux-50: #cd8b87;
+  --color-bordeaux-25: #e5c5c0;
+  --color-bordeaux-10: #f5e8e5;
+  --color-violet-100: #612158;
+  --color-violet-75: #834e75;
+  --color-violet-50: #a8859e;
+  --color-violet-25: #d2c0cd;
+  --color-violet-10: #ede5ea;
+  --color-purple-100: #7a6fac;
+  --color-purple-75: #9b91c1;
+  --color-purple-50: #bcb5d7;
+  --color-purple-25: #dedaeb;
+  --color-purple-10: #f2f0f7;
+}
+
+.navbar-search {
+  --pf-font:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  --pf-text: var(--color-black-100);
+  --pf-text-secondary: var(--color-black-75);
+  --pf-text-muted: var(--color-black-50);
+  --pf-background: color-mix(in srgb, var(--color-white) 96%, transparent);
+  --pf-border: color-mix(in srgb, var(--color-black-25) 90%, transparent);
+  --pf-border-focus: var(--color-blue-100);
+  --pf-hover: var(--color-black-10);
+  --pf-mark: var(--color-black-100);
+  --pf-shadow-md: 0 20px 50px
+    color-mix(in srgb, var(--color-black-100) 16%, transparent);
+  --pf-outline-width: 0;
+  --pf-border-radius: 0.5rem;
+  --pf-input-height: 40px;
+  --pf-input-font-size: 0.875rem;
+  --pf-result-title-font-size: 0.875rem;
+  --pf-result-excerpt-font-size: 0.75rem;
+  --pf-searchbox-max-width: 100%;
+  --pf-searchbox-dropdown-max-height: min(24rem, calc(100vh - 8rem));
+  --pf-dropdown-z-index: 60;
+}
+
+.navbar-search pagefind-searchbox {
+  width: 100%;
+}
+
+.navbar-search :is(*, #\#):is(*, #\#):is(*, #\#) .pf-searchbox-input {
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.08);
+  padding-right: 0.5rem !important;
+  padding-left: 2.5rem !important;
+}
+
+.navbar-search
+  :is(*, #\#):is(*, #\#):is(*, #\#)
+  .pf-searchbox-input-wrapper::before {
+  left: 0.9rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .navbar-search {
+    --pf-text: var(--color-black-10);
+    --pf-text-secondary: var(--color-black-25);
+    --pf-text-muted: var(--color-black-25);
+    --pf-background: color-mix(
+      in srgb,
+      var(--color-black-100) 96%,
+      transparent
+    );
+    --pf-border: color-mix(in srgb, var(--color-black-75) 90%, transparent);
+    --pf-border-focus: var(--color-blue-100);
+    --pf-hover: var(--color-black-100);
+    --pf-mark: var(--color-black-10);
+    --pf-shadow-md: 0 20px 50px
+      color-mix(in srgb, var(--color-black-100) 60%, transparent);
+  }
+}

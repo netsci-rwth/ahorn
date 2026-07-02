@@ -1,0 +1,8 @@
+---
+import BoxPlot from "@/components/chart/box-plot.astro";
+import { computeBox, computeBoxFromHistogram } from "@/components/chart/box-plot-stats";
+interface Props { values: number[] | Record<string | number, number>; title?: string; class?: string }
+const { values, title, class: classValue } = Astro.props;
+const stats = Array.isArray(values) ? computeBox(values) : computeBoxFromHistogram(values);
+---
+{stats ? <BoxPlot title={title} stats={stats} class={classValue} /> : <div class="text-sm text-black-75 dark:text-black-25">No average degree data available.</div>}

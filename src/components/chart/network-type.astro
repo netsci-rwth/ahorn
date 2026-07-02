@@ -1,0 +1,21 @@
+---
+import ChartCanvas from "@/components/chart/chart-canvas.astro";
+import StatisticsBlock from "@/components/statistics-block.astro";
+
+interface Props {
+  data: Record<string, number>;
+  class?: string;
+}
+
+const { data, class: classValue } = Astro.props;
+---
+
+<StatisticsBlock
+  title="Datasets per Network Type"
+  class={classValue}
+>
+  <ChartCanvas
+    spec={{ kind: "network-type", data }}
+    ariaLabel="Datasets per network type"
+  />
+</StatisticsBlock>

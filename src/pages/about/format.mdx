@@ -1,0 +1,162 @@
+---
+layout: ../../layouts/AboutLayout.astro
+title: "Dataset Format | AHORN - Aachen Higher-Order Repository of Networks"
+---
+
+import Badge from "@/components/badge.astro";
+
+<div class="not-prose float-right">
+  <Badge color="info">Version 0.3</Badge>
+</div>
+
+# Dataset Format
+
+All datasets distributed in this project follow a standardized format to ensure consistency and ease of use.
+If you use [TopoNetX](https://github.com/pyt-team/TopoNetX), you can load all datasets in this repository directly using the provided functions.
+
+Design goals of the dataset format:
+
+- **Human-readable**: Plain text format with optional compression.
+- **Interoperable**: Easy to parse and use in different programming languages.
+- **Flexible**: Next to some standardized metadata, the format allows for custom dataset-specific attributes.
+
+The keywords “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
+
+> [!IMPORTANT]
+> TODOs:
+> - Handle directed edges.
+> - Trajectory data
+
+## Example
+
+Before giving the formal specification, here is a minimal example of a dataset in the described format:
+
+```plain
+{"name": "example-dataset", "more-dataset-metadata": "value", "format-version": "0.3", "revision": 1}
+1 {"name": "John Doe", "age": 28}
+1,2,5 {"time": "2023-01-01T07:42:45+00:00", "weight": 1.0, "other-data": "value"}
+4,2,1 {"time": "2023-01-02T19:13:09+00:00", "weight": 2.5}
+```
+
+**Explanation:**
+
+- The first line contains dataset-level metadata as a JSON object, including a name and format version.
+- The network has four nodes: `1`, `2`, `4`, and `5`:
+  - Node `1` has an attribute `name` with value `John Doe`, and an attribute `age` with value `28`.
+  - Nodes `2`, `4`, and `5` are defined implicitly by their appearance in the edges.
+- The third and fourth lines define two hyperedges:
+  - The first edge connects nodes `1`, `2`, and `5`, and has attributes `time`, `weight`, and a custom `other-data`.
+  - The second edge connects nodes `4`, `2`, and `1`, and has attributes `time` and `weight`.
+
+## Structure
+
+The dataset is a plain or gzipped text file with the following structure:
+
+- The first line MAY contain dataset-level metadata in JSON format.
+- Afterwards, there is a section for nodes, where each node is defined on a separate line.
+- Following the nodes, there are lines for edges (hyperedges or simplices), where each line contains a comma-separated list of node identifiers.
+
+Some datasets in AHORN contain multiple networks (e.g., different molecules) in a single file.
+In that case, each network begins with a marker line that contains the network-level metadata as a JSON object.
+The marker line is followed by the node and edge definitions for that network.
+The dataset-level metadata MUST list the number of networks in the `num-networks` attribute.
+
+```plain
+{"num-networks": 2, "format-version": "0.2", "revision": 2}
+{"id":"network-001", "label": "toxic"}
+1 {"feat": [0.1, 0.2]}
+2 {"feat": [0.0, 0.3]}
+1,2 {"weight": 1.0}
+{"id":"network-002", "label": "non-toxic"}
+a {"feat": [0.5, 0.4]}
+b {"feat": [0.6, 0.1]}
+a,b {"weight": 2.0}
+```
+
+## Nodes
+
+Nodes (vertices) MUST be integers (non-consecutive) or strings (e.g., names), but MUST NOT contain commas or other special characters.
+In general, nodes are defined implicitly by their appearance in edges, but can be explicitly defined if they have attributes or are unconnected.
+
+> [!NOTE]
+> For some datasets, nodes are numbered but get assigned a unique name as attribute, e.g., `{"name": "John Doe"}`. This makes the edge definitions simpler and more compact.
+
+## Edges
+
+> [!NOTE]
+> AHORN is a repository for higher-order networks. For brevity, we use the term
+> “edge” in this specification to refer to simplices, cells, or hyperedges depending on whether the
+> network is a simplicial complex, cell complex, or hypergraph. Different to a
+> graph, edges in our case can connect more than two nodes.
+
+- Each line represents a (hyper-)edge or simplex; the nodes in the edge are separated by a comma
+- The edge line MAY contain attributes in JSON format at the end of the line.
+
+## Attributes
+
+Any element (including the dataset itself) in the dataset MAY be equipped with attributes that provide additional information.
+Attributes are stored as key-value pairs, where the key is a string (alphanumeric and dashes) and the value can be of arbitrary type.
+They are encoded as JSON objects in the dataset file and are placed at the end of the line for each node or edge.
+Some attributes have standardized meanings, while others can be custom-defined for specific datasets.
+
+Attribute names SHOULD be lowercase and use dashes to separate words, e.g., `time`, `party`, `class-subject`.
+Names SHOULD be descriptive and meaningful, avoiding abbreviations or acronyms unless they are widely recognized.
+Generic names like `label` or `data` do not convey specific information about the attribute.
+
+The following sections describe standardized attributes that are commonly used in higher-order networks.
+If an attribute has a standardized meaning, it MUST be used as described below.
+
+### Weights
+
+- The `weight` attribute, if present, MUST be an integer or floating-point number that represents the weight of the edge.
+- If only some edges are weighted, the `weight` attribute for all other edges SHOULD be present and set to `1.0`.
+
+### Timestamps
+
+> [!NOTE]
+> In Python, it is recommended to read timestamps using
+> [`date.fromisoformat()`](https://docs.python.org/3/library/datetime.html#datetime.date.fromisoformat)
+> and
+> [`datetime.fromisoformat()`](https://docs.python.org/3/library/datetime.html#datetime.datetime.fromisoformat).
+
+- For temporal datasets, each edge has a `time` attribute.
+- Time MUST be formatted as [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) string and MAY include a time, e.g., `2025-02-04` or `2023-01-01T04:45:00+00:00`.
+- The time zone MUST be specified and taken from the original dataset.
+
+## Note on Network Type
+
+AHORN collects various types of higher-order networks, including simplicial complexes, cell complexes, and hypergraphs.
+The format does not enforce a specific network type, and it is up to you in which way you want to interpret the data.
+We provide the datasets in a “minimal” form, that is, any nodes, simplices, or cells that can be inferred from existing data are not included, unless they have attributes.
+
+## Versioning
+
+The published datasets are versioned to ensure reproducibility and track changes over time.
+The dataset-level metadata MUST include the `revision` attribute, which is an integer that indicates the version of the dataset.
+When a dataset is updated or modified, the `revision` number MUST be incremented by one.
+
+## Sub-datasets
+
+Some datasets are published as sub-datasets of a larger parent dataset.
+In that case, the dataset `name` MUST be the parent dataset name followed by a dash and the sub-dataset name, for example `cooking-brazilian`.
+
+Sub-datasets MUST always use the same `revision` number as their parent dataset if they are derived from it directly.
+As a consequence, a newly introduced sub-dataset MAY start at a revision number greater than `1` if the parent dataset is already at a later revision.
+
+## Changelog
+
+<details class="mt-3 rounded border border-black-25 bg-white p-4 dark:border-black-75 dark:bg-black-100">
+  <summary class="cursor-pointer select-none">Version 0.3</summary>
+  <div>
+    - Reserved metadata keys do not start with an underscore (`_`) anymore, but are named without the underscore, e.g., `format-version` instead of `_format-version`.
+  </div>
+</details>
+<details class="mt-3 rounded border border-black-25 bg-white p-4 dark:border-black-75 dark:bg-black-100">
+  <summary class="cursor-pointer select-none">Version 0.2</summary>
+  <div>
+    - **Support for dataset revisions**: Added the `_revision` attribute in the dataset-level metadata to track dataset versions. The revision number is increased with each update of the dataset.
+    - **Support for multi-network datasets**: Added the ability to include multiple networks in a single dataset file, each with its own metadata.
+    - The `name` attribute in the dataset-level metadata is now mandatory. Before it sometimes was called `network-name`.
+    - Clarified the usage of reserved attribute names starting with an underscore (`_`).
+  </div>
+</details>

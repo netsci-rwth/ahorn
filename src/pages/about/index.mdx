@@ -1,0 +1,63 @@
+---
+layout: ../../layouts/AboutLayout.astro
+title: "About | AHORN - Aachen Higher-Order Repository of Networks"
+---
+
+import Person from "@/components/Person.astro";
+
+# About the Project
+
+Background on AHORN, its goals, persistence strategy, and the people behind the project.
+
+The Aachen Higher-Order Repository of Networks (AHORN) aims to provide a comprehensive collection of higher-order network datasets, particularly focusing on simplicial complexes, cell complexes and hypergraphs.
+This repository is designed to facilitate research and development in the field of higher-order networks by offering a variety of datasets that can be used for benchmarking, testing algorithms, and exploring new concepts in network science.
+
+The project is similar in spirit to graph repositories like [ICON](https://icon.colorado.edu/), [SNAP](https://snap.stanford.edu/), and [Netzschleuder](https://networks.skewed.de/) but specifically tailored for higher-order datasets.
+
+## Persistence Statement
+
+All datasets made available in AHORN are hosted on [Zenodo](https://zenodo.org/communities/ahorn/), a reputable open-access repository that ensures long-term preservation and accessibility of research data.
+Datasets are versioned and previous versions always remain accessible, allowing researchers to reference specific versions in their work and ensure future reproducibility of their results.
+
+## White Paper
+
+We are in the process of writing a white paper that details the design principles, data formats, and usage guidelines for AHORN.
+You can cite this upcoming white paper if you talk about the AHORN project in particular.
+However, it is not our intention to intercept citations for the primary dataset source, so please cite the papers indicated on the datasheet if you refer to a specific dataset.
+
+## Licensing
+
+The datasets provided through AHORN consist of processed versions of data from original sources, made available under the premise that such redistribution aligns with the original authors' intent to promote open scientific research and knowledge sharing.
+Should any author wish to not have their datasets listed in this repository, we encourage them to contact us so that we can take appropriate action.
+The upstream sources are always cited on the respective datasheet, and we encourage users to refer to the original publications when utilizing the datasets.
+
+## Getting in Contact
+
+If you have any questions, suggestions, or feedback, we encourage you to get in touch with us through GitHub:
+
+- **[GitHub Discussions](https://github.com/netsci-rwth/ahorn/discussions)**: For general questions, ideas, and discussions about the project.
+- **[GitHub Issues](https://github.com/netsci-rwth/ahorn/issues)**: For reporting bugs, suggesting new features, or issues with specific datasets.
+
+## Team
+
+<ul class="not-prose grid gap-8 sm:grid-cols-2 xl:col-span-2">
+  <li>
+    <Person name="Michael T. Schaub" role="Professor" avatar="https://github.com/michaelschaub.png?size=64" />
+  </li>
+  <li>
+    <Person name="Florian Frantzen" role="PhD Student" avatar="https://github.com/ffl096.png?size=64" />
+  </li>
+  <li>
+    <Person name="Josef Hoppe" role="PhD Student" avatar="https://github.com/josefhoppe.png?size=64" />
+  </li>
+</ul>
+
+## Funding
+
+<div class="not-prose md:w-3xs md:float-right">
+  ![ERC Logo](/images/erc_logo.png)
+</div>
+
+This project has been partially funded by the European Union (ERC, HIGH-HOPeS, 101039827).
+Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Research Council Executive Agency.
+Neither the European Union nor the granting authority can be held responsible for them.

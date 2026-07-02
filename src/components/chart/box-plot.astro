@@ -1,0 +1,25 @@
+---
+import StatisticsBlock from "@/components/statistics-block.astro";
+import { formatNumber } from "@/utils/format";
+import type { BoxPlotStats } from "@/components/chart/box-plot-stats";
+interface Props { title?: string; stats: BoxPlotStats; class?: string }
+const { title, stats, class: classValue } = Astro.props;
+const { min, q1, median, q3, max } = stats;
+const span = max - min || 1;
+const percent = (value: number) => ((value - min) / span) * 100;
+const boxStart = percent(q1);
+const boxWidth = Math.min(Math.max(percent(q3) - boxStart, 0.5), 100 - boxStart);
+const labels = [["Min", min], ["Q1", q1], ["Median", median], ["Q3", q3], ["Max", max]] as const;
+---
+<StatisticsBlock title={title} class={classValue}>
+  <div class="relative h-16">
+    <div class="absolute top-1/2 right-0 left-0 h-px bg-black-25/60 dark:bg-black-75/70"></div>
+    <div class="absolute top-[30%] h-[40%] rounded-sm bg-blue-100/18 dark:bg-blue-75/24" style={`left:${boxStart}%;width:${boxWidth}%`}></div>
+    <div class="absolute top-[24%] h-[52%] w-0.5 rounded-full bg-blue-100 dark:bg-blue-50" style={`left:${percent(median)}%`}></div>
+    {[min, max].map((value) => <div class="absolute top-[34%] h-[32%] w-px bg-black-50/80 dark:bg-black-25/80" style={`left:${percent(value)}%`}></div>)}
+    {[q1, q3].map((value) => <div class="absolute top-[26%] h-[48%] w-px bg-blue-100/70 dark:bg-blue-50/70" style={`left:${percent(value)}%`}></div>)}
+  </div>
+  <div class="mt-3 grid grid-cols-2 gap-2 text-[11px] text-black-75 sm:grid-cols-5 dark:text-black-25">
+    {labels.map(([label, value]) => <div class="rounded-md bg-white/65 px-2 py-1.5 dark:bg-black-100/25"><span class="text-[10px] tracking-wide text-black-50 uppercase dark:text-black-50">{label}</span><span class="mt-0.5 block font-semibold text-black-100 dark:text-white">{formatNumber(value)}</span></div>)}
+  </div>
+</StatisticsBlock>

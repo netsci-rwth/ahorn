@@ -5,11 +5,11 @@
 # testing
 /coverage
 
-# next.js
+# generated site output and framework caches
+/.astro/
+/dist/
 /.next/
 /out/
-
-# production
 /build
 /public/_pagefind
 
@@ -24,7 +24,6 @@ npm-debug.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
 
 # python
 __pycache__

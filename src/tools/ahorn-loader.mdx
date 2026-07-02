@@ -1,0 +1,28 @@
+---
+name: ahorn-loader
+description: Download datasets from the command line or load them in Python.
+href: /about/ahorn-loader
+section: start
+label: Python / CLI
+icon: download
+actionLabel: View guide
+external: false
+---
+
+<div class="grid items-start gap-3 lg:grid-cols-2">
+
+```bash
+uvx ahorn-loader download karate-club
+```
+
+```python
+import ahorn_loader
+
+with ahorn_loader.read_dataset(
+    "karate-club",
+) as dataset:
+    for line in dataset:
+        print(line)
+```
+
+</div>

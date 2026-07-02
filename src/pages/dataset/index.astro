@@ -1,0 +1,29 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import DatasetIndex from "@/components/DatasetIndex.astro";
+import { getCollection } from "astro:content";
+import type { DatasetIndexItem } from "@/utils/datasets";
+
+const datasets: DatasetIndexItem[] = (await getCollection("datasets"))
+  .map((entry) => {
+    const data = entry.data;
+    return {
+      slug: entry.id,
+      title: data.title,
+      disable: data.disable === true,
+      isSubDataset: data.parent !== undefined,
+      networkType: data["network-type"] ?? [],
+      tags: data.tags ?? [],
+      license: data.license,
+      statistics: {
+        numNodes: typeof data.statistics?.["num-nodes"] === "number" ? data.statistics["num-nodes"] : 0,
+      },
+    };
+  })
+  .filter((dataset) => !dataset.disable)
+  .sort((a, b) => a.title.localeCompare(b.title));
+---
+
+<BaseLayout title="Datasets | AHORN - Aachen Higher-Order Repository of Networks" description="A list of all datasets available in the repository.">
+  <DatasetIndex datasets={datasets} />
+</BaseLayout>

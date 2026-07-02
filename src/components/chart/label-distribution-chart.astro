@@ -1,0 +1,29 @@
+---
+import ChartCanvas from "@/components/chart/chart-canvas.astro";
+import StatisticsBlock from "@/components/statistics-block.astro";
+import imbalanceDegree from "@/utils/imbalance-degree";
+
+interface Props {
+  labels: Record<string, number>;
+  title?: string;
+  class?: string;
+}
+
+const {
+  labels,
+  title = "Label Distribution",
+  class: classValue,
+} = Astro.props;
+const uniqueLabelCount = Object.keys(labels).length;
+---
+
+<StatisticsBlock title={title} class={classValue}>
+  <ChartCanvas
+    spec={{ kind: "label-distribution", labels }}
+    ariaLabel={title}
+  />
+  <p class="mt-3 text-sm text-black-50 dark:text-black-50">
+    {uniqueLabelCount} unique {uniqueLabelCount === 1 ? "label" : "labels"} ·
+    imbalance degree: {imbalanceDegree(labels).toFixed(2)}
+  </p>
+</StatisticsBlock>

@@ -1,0 +1,54 @@
+---
+import ChartCanvas from "@/components/chart/chart-canvas.astro";
+import {
+  timeUnits,
+  type TimeUnit,
+} from "@/components/chart/chart-js-config";
+import StatisticsBlock from "@/components/statistics-block.astro";
+
+interface Props {
+  data: Record<string, number>;
+  minUnit?: TimeUnit;
+  maxUnit?: TimeUnit;
+  class?: string;
+}
+
+const {
+  data,
+  minUnit = "hour",
+  maxUnit = "year",
+  class: classValue,
+} = Astro.props;
+const selectableUnits = timeUnits.slice(
+  timeUnits.indexOf(minUnit),
+  timeUnits.indexOf(maxUnit) + 1,
+);
+---
+
+<StatisticsBlock
+  title="Hyperedges Over Time"
+  class={classValue}
+>
+  <ChartCanvas
+    spec={{ kind: "hyperedges-over-time", data, minUnit, maxUnit }}
+    ariaLabel="Hyperedges over time"
+  >
+    {
+      selectableUnits.length > 1 && (
+        <label class="mb-4 flex flex-wrap items-center gap-3 text-sm font-medium text-black-75 dark:text-black-25">
+          Aggregate by:
+          <select
+            data-chart-time-unit
+            class="rounded-lg bg-white/85 px-3 py-1.5 text-sm font-medium text-black-100 outline-none focus:ring-2 focus:ring-blue-100/25 dark:bg-black-100/35 dark:text-white"
+          >
+            {selectableUnits.map((unit) => (
+              <option value={unit}>
+                {unit.charAt(0).toUpperCase() + unit.slice(1)}
+              </option>
+            ))}
+          </select>
+        </label>
+      )
+    }
+  </ChartCanvas>
+</StatisticsBlock>

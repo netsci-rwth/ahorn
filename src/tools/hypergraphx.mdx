@@ -1,0 +1,17 @@
+---
+name: Hypergraphx
+description: A library for modeling and analyzing higher-order systems, including directed, temporal, and multiplex hypergraphs.
+href: https://hypergraphx.readthedocs.io/
+section: hif
+---
+
+```python
+import ahorn_loader
+from hypergraphx.readwrite import read_hif
+
+hif_path = "cooking.hif.json.gz"
+ahorn_loader.download_dataset("cooking", hif_path, format="hif")
+
+H = read_hif(hif_path)
+print(H)
+```

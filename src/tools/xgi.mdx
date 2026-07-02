@@ -1,0 +1,17 @@
+---
+name: XGI
+description: A Python package for higher-order network analysis with support for hypergraphs, simplicial complexes, and related structures.
+href: https://xgi.readthedocs.io/
+section: hif
+---
+
+```python
+import ahorn_loader
+import xgi
+
+hif_path = "cooking.hif.json.gz"
+ahorn_loader.download_dataset("cooking", hif_path, format="hif")
+
+H = xgi.read_hif(hif_path)
+H.cleanup()
+```

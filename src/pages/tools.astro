@@ -1,0 +1,85 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHeader from "@/components/PageHeader.astro";
+import ToolCard from "@/components/ToolCard.astro";
+
+const tools = (await getCollection("tools")).sort(
+  (left, right) => left.data.name.localeCompare(right.data.name)
+);
+
+const sections = [
+  {
+    id: "start",
+    title: "Start from AHORN",
+    description:
+      "Use the loader for everyday downloads and Python scripts.",
+  },
+  {
+    id: "integration",
+    title: "AHORN Integration",
+    description:
+      "Libraries that provide a direct path from AHORN datasets into analysis workflows.",
+  },
+  {
+    id: "hif",
+    title: "HIF Support",
+    description:
+      "Libraries that align with the Hypergraph Interchange Format for exchanging higher-order network data.",
+  },
+  {
+    id: "ecosystem",
+    title: "Broader Ecosystem",
+    description:
+      "Related packages for simplicial complexes, topology, and adjacent higher-order analysis workflows.",
+  },
+] as const;
+---
+
+<BaseLayout
+  title="Tools | AHORN - Aachen Higher-Order Repository of Networks"
+  description="A collection of tools for analyzing and visualizing networks."
+>
+  <div class="min-w-0" data-pagefind-body>
+    <PageHeader
+      eyebrow="Ecosystem"
+      title="Tools"
+      description="Tools for downloading, loading, and analyzing AHORN datasets from code."
+    />
+
+    {sections.map((section) => {
+      const entries = tools.filter((tool) => tool.data.section === section.id);
+      if (entries.length === 0) return null;
+
+      return (
+        <section class="w-full min-w-0 py-8">
+          <div class="mb-4 w-full min-w-0 sm:max-w-3xl">
+            <h2 class="text-xl font-semibold tracking-tight text-black-100 dark:text-white">
+              {section.title}
+            </h2>
+            <p class="prose mt-1.5 text-sm leading-6 text-black-75 dark:text-black-25">
+              {section.description}
+              {section.id === "start" && (
+                <>
+                  {" "}If you are building services around the repository, consume the{" "}
+                  <a href="/api/datasets.json">Datasets JSON API</a> for machine-readable metadata.
+                </>
+              )}
+            </p>
+          </div>
+
+          <ul
+            class:list={[
+              "grid w-full min-w-0 items-start gap-3",
+              section.id !== "start" && "lg:grid-cols-2",
+            ]}
+          >
+            {entries.map((tool) => (
+              <li class="h-full"><ToolCard tool={tool} /></li>
+            ))}
+          </ul>
+        </section>
+      );
+    })}
+  </div>
+</BaseLayout>

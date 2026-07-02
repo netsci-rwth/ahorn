@@ -1,0 +1,37 @@
+---
+import ChartCanvas from "@/components/chart/chart-canvas.astro";
+import StatisticsBlock from "@/components/statistics-block.astro";
+
+interface Props {
+  histogram: Record<string | number, number>;
+  title?: string;
+  logScale?: boolean;
+  class?: string;
+}
+
+const {
+  histogram,
+  title = "Node Degree Distribution",
+  logScale = false,
+  class: classValue,
+} = Astro.props;
+---
+
+<StatisticsBlock title={title} class={classValue}>
+  <ChartCanvas
+    spec={{ kind: "degree-distribution", histogram, logScale }}
+    ariaLabel={title}
+  >
+    <label
+      class="mb-4 inline-flex items-center gap-2 text-sm font-medium text-black-75 dark:text-black-25"
+    >
+      <input
+        type="checkbox"
+        checked={logScale}
+        data-chart-log-scale
+        class="rounded bg-white text-blue-100 focus:ring-blue-100/30 dark:bg-black-100/35"
+      />
+      Use log scale (y-axis)
+    </label>
+  </ChartCanvas>
+</StatisticsBlock>

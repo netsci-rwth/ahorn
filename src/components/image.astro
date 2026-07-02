@@ -1,0 +1,9 @@
+---
+interface Props {
+  src: string | { src: string };
+  alt?: string;
+  [key: string]: unknown;
+}
+const { src, alt = "", ...props } = Astro.props;
+---
+<img src={typeof src === "string" ? src : src.src} alt={alt} {...props} />

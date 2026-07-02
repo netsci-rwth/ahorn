@@ -1,10 +1,5 @@
 export type TagSemanticGroup =
-  | "domain"
-  | "network-type"
-  | "source"
-  | "metadata"
-  | "lifting"
-  | "other";
+  "domain" | "network-type" | "source" | "metadata" | "lifting" | "other";
 
 export const TAG_GROUP_ORDER: TagSemanticGroup[] = [
   "domain",

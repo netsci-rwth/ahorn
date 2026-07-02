@@ -324,11 +324,11 @@ label-count:
   Diabetes_Mellitus_Type_2: 7739
 ---
 
-import { ComputedBoxPlot } from "@/components/chart/box-plot";
-import LabelDistributionChart from "@/components/chart/label-distribution-chart";
-import SimplicialShapeTable from "@/components/simplicial-shape-table";
-import Stat from "@/components/stat";
-import TabBar from "@/components/tab-bar";
+import ComputedBoxPlot from "@/components/chart/computed-box-plot.astro";
+import LabelDistributionChart from "@/components/chart/label-distribution-chart.astro";
+import SimplicialShapeTable from "@/components/simplicial-shape-table.astro";
+import Stat from "@/components/stat.astro";
+import TabBar from "@/components/tab-bar.astro";
 import { formatNumber } from "@/utils/format";
 
 ## Overview
@@ -340,13 +340,13 @@ This dataset is commonly used as a benchmark in hypergraph learning tasks, parti
 ## Statistics
 
 <TabBar label="Interpretation" tabs={["Simplicial Complex", "Hypergraph"]}>
-  <div className="space-y-5">
+  <div class="space-y-5" role="tabpanel" data-tab-panel="0">
     <p>
       In the simplicial-complex interpretation, each co-citation set generates a
       simplex together with all of its subsets. The shape below is the full
       f-vector of that closure, with isolated papers retained as 0-simplices.
     </p>
-    <dl className="not-prose grid gap-5 sm:grid-cols-3">
+    <dl class="not-prose grid gap-5 sm:grid-cols-3">
       <Stat
         title="Nodes"
         value={formatNumber(frontmatter["statistics"]["num-nodes"])}
@@ -369,18 +369,18 @@ This dataset is commonly used as a benchmark in hypergraph learning tasks, parti
       <LabelDistributionChart
         title="Node Label Distribution"
         labels={frontmatter["label-count"]}
-        className="sm:col-span-3"
+        class="sm:col-span-3"
       />
     </dl>
     <SimplicialShapeTable shape={frontmatter["simplicial-complex"]["shape"]} />
   </div>
 
-  <div className="space-y-5">
+  <div class="space-y-5" role="tabpanel" data-tab-panel="1" hidden>
     <div>
-      <h3 className="mb-4 text-lg font-semibold tracking-tight text-black-100 dark:text-white">
+      <h3 class="mb-4 text-lg font-semibold tracking-tight text-black-100 dark:text-white">
         Nodes
       </h3>
-      <dl className="not-prose grid gap-5 sm:grid-cols-3">
+      <dl class="not-prose grid gap-5 sm:grid-cols-3">
         <Stat
           title="Nodes"
           value={formatNumber(frontmatter["statistics"]["num-nodes"])}
@@ -390,21 +390,21 @@ This dataset is commonly used as a benchmark in hypergraph learning tasks, parti
         <ComputedBoxPlot
           title="Node Degree"
           values={frontmatter["statistics"]["node-degrees"]}
-          className="sm:col-span-3"
+          class="sm:col-span-3"
         />
         <LabelDistributionChart
           title="Node Label Distribution"
           labels={frontmatter["label-count"]}
-          className="sm:col-span-3"
+          class="sm:col-span-3"
         />
       </dl>
     </div>
 
     <div>
-      <h3 className="mb-4 text-lg font-semibold tracking-tight text-black-100 dark:text-white">
+      <h3 class="mb-4 text-lg font-semibold tracking-tight text-black-100 dark:text-white">
         Hyperedges
       </h3>
-      <dl className="not-prose grid gap-5 sm:grid-cols-2">
+      <dl class="not-prose grid gap-5 sm:grid-cols-2">
         <Stat
           title="Hyperedges"
           value={formatNumber(frontmatter["statistics"]["num-interactions"])}
@@ -413,7 +413,7 @@ This dataset is commonly used as a benchmark in hypergraph learning tasks, parti
         <ComputedBoxPlot
           title="Hyperedge Degree"
           values={frontmatter["statistics"]["edge-degrees"]}
-          className="sm:col-span-2"
+          class="sm:col-span-2"
         />
       </dl>
     </div>

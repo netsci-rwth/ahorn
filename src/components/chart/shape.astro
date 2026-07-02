@@ -1,0 +1,17 @@
+---
+import ChartCanvas from "@/components/chart/chart-canvas.astro";
+import StatisticsBlock from "@/components/statistics-block.astro";
+
+interface Props {
+  shape: number[];
+}
+
+const { shape } = Astro.props;
+---
+
+<StatisticsBlock title="Dataset Shape">
+  <ChartCanvas
+    spec={{ kind: "shape", shape }}
+    ariaLabel="Dataset shape by dimension"
+  />
+</StatisticsBlock>

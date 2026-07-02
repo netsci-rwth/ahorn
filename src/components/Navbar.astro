@@ -1,0 +1,78 @@
+---
+import logo from "@/assets/icon.svg";
+
+const links = [
+  { name: "Home", href: "/" },
+  { name: "Datasets", href: "/dataset" },
+  { name: "Statistics", href: "/statistics" },
+  { name: "Tools", href: "/tools" },
+  { name: "About", href: "/about" },
+];
+
+const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isActive = (href: string) =>
+  href === "/" ? pathname === "/" : pathname.startsWith(href);
+---
+
+<nav class="sticky top-0 z-50 border-b border-black-25 bg-white dark:border-black-100 dark:bg-black-100">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex min-h-16 items-center gap-4">
+      <a href="/" class="flex shrink-0 items-center text-xl font-extrabold tracking-widest text-blue-100">
+        <img src={logo.src} width="24" height="24" alt="" class="mr-2 size-6" />
+        AHORN
+      </a>
+
+      <div class="hidden h-16 items-stretch gap-2 sm:flex">
+        {links.map((link) => (
+          <a
+            href={link.href}
+            aria-current={isActive(link.href) ? "page" : undefined}
+            class:list={[
+              "relative inline-flex h-full items-center rounded-lg px-4 text-sm font-semibold transition-colors after:absolute after:right-4 after:bottom-0 after:left-4 after:h-0.5 after:rounded-t-sm after:content-['']",
+              isActive(link.href)
+                ? "text-blue-100 after:bg-blue-100 dark:text-blue-50 dark:after:bg-blue-50"
+                : "text-black-75 after:bg-transparent hover:text-blue-100 dark:text-black-25 dark:hover:text-blue-50",
+            ]}
+          >
+            {link.name}
+          </a>
+        ))}
+      </div>
+
+      <div class="ml-auto hidden sm:block">
+        <div class="navbar-search relative w-52 md:w-72">
+          <pagefind-config base-url="/" bundle-path="/_pagefind/" excerpt-length="16" />
+          <pagefind-searchbox max-results="8" />
+        </div>
+      </div>
+
+      <details class="group ml-auto sm:hidden">
+        <summary class="cursor-pointer list-none rounded-lg p-2 text-sm font-semibold text-black-75 dark:text-black-25">
+          Menu
+        </summary>
+        <div class="absolute inset-x-0 top-16 border-b border-black-25 bg-white px-4 py-4 shadow-lg dark:border-black-75 dark:bg-black-100">
+          <div class="navbar-search mb-3">
+            <pagefind-config base-url="/" bundle-path="/_pagefind/" excerpt-length="16" />
+            <pagefind-searchbox max-results="8" />
+          </div>
+          <div class="grid gap-1">
+            {links.map((link) => (
+              <a
+                href={link.href}
+                aria-current={isActive(link.href) ? "page" : undefined}
+                class:list={[
+                  "rounded-lg px-3 py-2.5 text-base font-semibold",
+                  isActive(link.href)
+                    ? "bg-blue-10 text-blue-100 dark:bg-blue-100/15 dark:text-blue-50"
+                    : "text-black-75 dark:text-black-25",
+                ]}
+              >
+                {link.name}
+              </a>
+            ))}
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+</nav>

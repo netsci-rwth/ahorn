@@ -1,0 +1,30 @@
+---
+import {
+  surfaceClassName,
+  type SurfaceVariant,
+} from "@/components/surface-styles";
+
+interface Props {
+  as?: "div" | "section" | "article";
+  variant?: SurfaceVariant;
+  interactive?: boolean;
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  as = "div",
+  variant = "secondary",
+  interactive = false,
+  class: classValue,
+  ...props
+} = Astro.props as Props;
+const Element = as;
+const classes = surfaceClassName({
+  variant,
+  interactive,
+  class: classValue,
+});
+---
+
+<Element class={classes} {...props}><slot /></Element>

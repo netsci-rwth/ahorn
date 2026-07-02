@@ -1,0 +1,18 @@
+---
+name: HyperNetX
+description: A Python library for hypergraph analysis and visualization.
+href: https://hypernetx.readthedocs.io/en/latest/
+section: hif
+logo: /images/tools/hypernetx.png
+---
+
+```python
+import ahorn_loader
+import hypernetx as hnx
+
+hif_path = "cooking.hif.json.gz"
+ahorn_loader.download_dataset("cooking", hif_path, format="hif")
+
+H = hnx.from_hif(filename=hif_path)
+print(H)
+```

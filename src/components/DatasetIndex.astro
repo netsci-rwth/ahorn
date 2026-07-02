@@ -1,0 +1,412 @@
+---
+import PageHeader from "@/components/PageHeader.astro";
+import Surface from "@/components/surface.astro";
+import Tag from "@/components/tag.astro";
+import { formatNetworkType, formatNumber } from "@/utils/format";
+import {
+  compareTagsBySemanticGroup,
+  getTagDisplayLabel,
+  groupByTagSemanticGroup,
+} from "@/utils/tags";
+import type { DatasetIndexItem } from "@/utils/datasets";
+import Icon from "@/components/Icon.astro";
+import {
+  faMagnifyingGlass,
+  faRotateLeft,
+  faSliders,
+} from "@fortawesome/free-solid-svg-icons";
+
+interface Props {
+  datasets: DatasetIndexItem[];
+}
+
+const { datasets } = Astro.props;
+const getLicense = (license: unknown) => {
+  if (typeof license === "object" && license) {
+    const spdx = (license as { spdx?: unknown }).spdx;
+    return typeof spdx === "string" ? spdx : "Custom";
+  }
+  return "Unknown";
+};
+const networkTypes = ["simplicial-complex", "hypergraph"] as const;
+const tags = [...new Set(datasets.flatMap((item) => item.tags))].sort(compareTagsBySemanticGroup);
+const groupedTags = groupByTagSemanticGroup(tags, (tag) => tag);
+const licenses = [...new Set(datasets.map((item) => getLicense(item.license)))].sort();
+const primaryCount = datasets.filter((item) => !item.isSubDataset).length;
+const primaryNodeCounts = datasets
+  .filter((item) => !item.isSubDataset)
+  .map((item) => item.statistics.numNodes);
+const nodeMin = primaryNodeCounts.length ? Math.min(...primaryNodeCounts) : 0;
+const nodeMax = primaryNodeCounts.length ? Math.max(...primaryNodeCounts) : 0;
+---
+
+<PageHeader
+  eyebrow="Repository"
+  title="Datasets"
+  description="Browse the current AHORN collection, filter by topology and topic, and jump directly to dataset pages with citations, attachments, and source information."
+  class="mb-8"
+/>
+
+<div id="dataset-index" class="grid min-w-0 gap-5 lg:grid-cols-[18rem_minmax(0,1fr)] lg:items-start lg:gap-8">
+  <aside>
+    <Surface variant="primary" class="p-4">
+      <div class="mb-5 flex items-start justify-between gap-3">
+        <h2 class="flex items-center gap-2 text-sm font-semibold text-black-100 dark:text-white">
+          <Icon icon={faSliders} class="size-3.5 text-blue-100" />
+          Filters
+        </h2>
+        <button
+          type="button"
+          data-clear
+          aria-hidden="true"
+          tabindex="-1"
+          class="pointer-events-none invisible inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs font-semibold text-blue-100 hover:bg-blue-10 dark:text-blue-50 dark:hover:bg-blue-100/15"
+        >
+          <Icon icon={faRotateLeft} class="size-3" />
+          Clear
+        </button>
+      </div>
+      <ul class="space-y-5">
+        <li class="border-t border-black-10 pt-5 first:border-t-0 first:pt-0 dark:border-black-75/35">
+          <div class="flex items-center justify-between gap-3">
+            <span class="text-xs font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">Name</span>
+            <span class="flex w-16 shrink-0 justify-end">
+              <button type="button" data-reset="search" class="pointer-events-none invisible inline-flex items-center gap-1.5 text-xs font-medium text-blue-100 hover:text-blue-75 dark:text-blue-50">
+                <Icon icon={faRotateLeft} class="size-3" /> Reset
+              </button>
+            </span>
+          </div>
+          <div class="mt-3 relative">
+            <Icon icon={faMagnifyingGlass} class="pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-black-50" />
+            <input data-search type="search" placeholder="Search datasets..." class="block w-full rounded-lg border border-black-25 bg-white py-2.5 pr-3 pl-9 text-sm text-black-100 placeholder-black-50 transition focus:border-blue-100 focus:ring-2 focus:ring-blue-100/20 focus:outline-none dark:border-black-75 dark:bg-black-100 dark:text-white dark:placeholder-black-50" />
+          </div>
+        </li>
+
+        <li class="border-t border-black-10 pt-5 dark:border-black-75/35">
+          <div class="flex items-center justify-between gap-3">
+            <span class="text-xs font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">Dataset scope</span>
+            <span class="flex w-16 shrink-0 justify-end">
+              <button type="button" data-reset="scope" class="pointer-events-none invisible inline-flex items-center gap-1.5 text-xs font-medium text-blue-100 hover:text-blue-75 dark:text-blue-50">
+                <Icon icon={faRotateLeft} class="size-3" /> Reset
+              </button>
+            </span>
+          </div>
+          <div class="mt-3">
+            <label class="flex cursor-pointer items-start gap-2">
+              <input data-subdatasets type="checkbox" class="mt-0.5 rounded border-black-25 bg-white text-blue-100 focus:ring-blue-100 dark:border-black-75 dark:bg-black-100 dark:focus:ring-blue-100" />
+              <span class="min-w-0">
+                <span class="block text-sm font-medium text-black-75 dark:text-black-25">Include sub-datasets</span>
+                <span class="mt-0.5 block text-xs leading-5 text-black-50 dark:text-black-50">Show dataset variants that belong to a primary dataset.</span>
+              </span>
+            </label>
+          </div>
+        </li>
+
+        <li class="border-t border-black-10 pt-5 dark:border-black-75/35">
+          <div class="flex items-center justify-between gap-3">
+            <span class="text-xs font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">Node size (|V|)</span>
+            <span class="flex w-16 shrink-0 justify-end">
+              <button type="button" data-reset="nodes" class="pointer-events-none invisible inline-flex items-center gap-1.5 text-xs font-medium text-blue-100 hover:text-blue-75 dark:text-blue-50">
+                <Icon icon={faRotateLeft} class="size-3" /> Reset
+              </button>
+            </span>
+          </div>
+          <div class="mt-3" data-node-range data-default-min={nodeMin} data-default-max={nodeMax}>
+            <div class="relative mt-4 h-6">
+              <input data-range-min type="range" min={nodeMin} max={nodeMax} value={nodeMin} class="pointer-events-none absolute z-2 h-full w-full appearance-none bg-transparent [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white dark:[&::-moz-range-thumb]:bg-black-25 [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white dark:[&::-webkit-slider-thumb]:bg-black-25" />
+              <input data-range-max type="range" min={nodeMin} max={nodeMax} value={nodeMax} class="pointer-events-none absolute z-2 h-full w-full appearance-none bg-transparent [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white dark:[&::-moz-range-thumb]:bg-black-25 [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white dark:[&::-webkit-slider-thumb]:bg-black-25" />
+              <div class="relative top-2 h-2 w-full rounded-md bg-black-25 dark:bg-black-75">
+                <div data-range-track class="absolute h-2 rounded-md bg-blue-100"></div>
+              </div>
+            </div>
+            <div class="mt-3 grid grid-cols-2 gap-3 text-black-75 sm:flex sm:justify-between sm:gap-4 dark:text-black-50">
+              <div class="flex min-w-0 flex-col gap-1">
+                <label for="range-min" class="text-xs">Min:</label>
+                <input id="range-min" data-number-min type="number" min={nodeMin} max={nodeMax} value={nodeMin} class="w-full min-w-0 rounded border border-black-25 bg-white px-2 py-1 text-sm text-black-100 focus:border-blue-100 focus:ring-1 focus:ring-blue-100 focus:outline-none sm:w-28 dark:border-black-75 dark:bg-black-100 dark:text-white" />
+              </div>
+              <div class="flex min-w-0 flex-col gap-1">
+                <label for="range-max" class="text-xs">Max:</label>
+                <input id="range-max" data-number-max type="number" min={nodeMin} max={nodeMax} value={nodeMax} class="w-full min-w-0 rounded border border-black-25 bg-white px-2 py-1 text-sm text-black-100 focus:border-blue-100 focus:ring-1 focus:ring-blue-100 focus:outline-none sm:w-28 dark:border-black-75 dark:bg-black-100 dark:text-white" />
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="border-t border-black-10 pt-5 dark:border-black-75/35">
+          <div class="flex items-center justify-between gap-3">
+            <span class="text-xs font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">Network type</span>
+            <span class="flex w-16 shrink-0 justify-end"><button type="button" data-reset="type" class="pointer-events-none invisible inline-flex items-center gap-1.5 text-xs font-medium text-blue-100 hover:text-blue-75 dark:text-blue-50"><Icon icon={faRotateLeft} class="size-3" /> Reset</button></span>
+          </div>
+          <ul class="mt-3 grid gap-2">
+            {networkTypes.map((type) => (
+              <li class="flex items-center gap-2">
+                <input id={`network-type-${type}`} data-filter="type" type="checkbox" value={type} class="rounded border-black-25 bg-white text-blue-100 focus:ring-blue-100 dark:border-black-75 dark:bg-black-100 dark:focus:ring-blue-100" />
+                <label for={`network-type-${type}`} class="cursor-pointer text-sm font-medium text-black-75 capitalize dark:text-black-25">{formatNetworkType(type)}</label>
+              </li>
+            ))}
+          </ul>
+        </li>
+
+        <li class="border-t border-black-10 pt-5 dark:border-black-75/35">
+          <div class="flex items-center justify-between gap-3">
+            <span class="text-xs font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">Tags</span>
+            <span class="flex w-16 shrink-0 justify-end"><button type="button" data-reset="tag" class="pointer-events-none invisible inline-flex items-center gap-1.5 text-xs font-medium text-blue-100 hover:text-blue-75 dark:text-blue-50"><Icon icon={faRotateLeft} class="size-3" /> Reset</button></span>
+          </div>
+          <ul class="mt-3 space-y-4">
+            {groupedTags.map((group) => (
+              <li class="min-w-0">
+                <p class="mb-2 text-[11px] font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">{group.title}</p>
+                <ul class="flex flex-wrap gap-2">
+                  {group.items.map((tag) => (
+                    <li class="flex min-w-0 items-center gap-2">
+                      <input id={`tag-${encodeURIComponent(tag)}`} data-filter="tag" type="checkbox" value={tag} class="peer rounded border-black-25 bg-white text-blue-100 focus:ring-blue-100 dark:border-black-75 dark:bg-black-100 dark:focus:ring-blue-100" />
+                      <label for={`tag-${encodeURIComponent(tag)}`} class="min-w-0 cursor-pointer text-xs peer-checked:[&_.filter-tag]:ring-2 peer-checked:[&_.filter-tag]:ring-blue-100/55 peer-checked:[&_.filter-tag]:brightness-[.97] dark:peer-checked:[&_.filter-tag]:ring-blue-50/55">
+                        <Tag name={tag} displayName={getTagDisplayLabel(tag)} class="filter-tag cursor-pointer hover:ring-2" />
+                      </label>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        </li>
+
+        <li class="border-t border-black-10 pt-5 dark:border-black-75/35">
+          <div class="flex items-center justify-between gap-3">
+            <span class="text-xs font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">License</span>
+            <span class="flex w-16 shrink-0 justify-end"><button type="button" data-reset="license" class="pointer-events-none invisible inline-flex items-center gap-1.5 text-xs font-medium text-blue-100 hover:text-blue-75 dark:text-blue-50"><Icon icon={faRotateLeft} class="size-3" /> Reset</button></span>
+          </div>
+          <ul class="mt-3 grid gap-2">
+            {licenses.map((license) => (
+              <li class="flex items-center gap-2">
+                <input id={`license-${license}`} data-filter="license" type="checkbox" value={license} class="rounded border-black-25 bg-white text-blue-100 focus:ring-blue-100 dark:border-black-75 dark:bg-black-100 dark:focus:ring-blue-100" />
+                <label for={`license-${license}`} class="cursor-pointer text-sm font-medium text-black-75 dark:text-black-25">{license}</label>
+              </li>
+            ))}
+          </ul>
+        </li>
+      </ul>
+    </Surface>
+  </aside>
+
+  <Surface variant="primary" class="min-w-0 overflow-hidden">
+    <div class="flex flex-wrap items-end justify-between gap-3 border-b border-black-25 bg-black-10/35 px-4 py-4 dark:border-black-75 dark:bg-black-75/18">
+      <div>
+        <h2 class="text-sm font-semibold text-black-100 dark:text-white">Dataset Index</h2>
+        <p class="mt-1 text-sm text-black-50">Showing <span data-count>{primaryCount}</span> of {datasets.length} datasets</p>
+      </div>
+      <label class="text-xs font-semibold text-black-50">
+        Sort
+        <select data-sort class="ml-2 rounded-md border border-black-25 bg-white px-2 py-1.5 text-sm text-black-100 dark:border-black-75 dark:bg-black-100 dark:text-white">
+          <option value="title-asc">Name A–Z</option>
+          <option value="title-desc">Name Z–A</option>
+          <option value="nodes-desc">Most nodes</option>
+          <option value="nodes-asc">Fewest nodes</option>
+        </select>
+      </label>
+    </div>
+
+    <p data-empty hidden class="px-4 py-16 text-center text-sm text-black-50">No datasets match the current filters.</p>
+    <div class="max-w-full overflow-x-auto">
+      <table class="w-full min-w-2xl border-collapse">
+        <thead class="border-b border-black-25 bg-black-10/90 dark:border-black-75 dark:bg-black-100/95">
+          <tr>
+            <th class="px-5 py-3 text-left text-sm">Name</th>
+            <th class="px-4 py-3 text-left text-sm">Type</th>
+            <th class="px-4 py-3 text-right text-sm">|V|</th>
+            <th class="px-4 py-3 text-left text-sm">Tags</th>
+          </tr>
+        </thead>
+        <tbody data-rows class="divide-y divide-black-10 dark:divide-black-75/45">
+          {datasets.map((dataset) => (
+            <tr
+              data-row
+              data-title={dataset.title.toLowerCase()}
+              data-subdataset={String(dataset.isSubDataset)}
+              data-types={JSON.stringify(dataset.networkType)}
+              data-tags={JSON.stringify(dataset.tags)}
+              data-license={getLicense(dataset.license)}
+              data-nodes={dataset.statistics.numNodes}
+              hidden={dataset.isSubDataset}
+              class="transition-colors hover:bg-blue-10/35 dark:hover:bg-blue-100/10"
+            >
+              <td class="py-4 pr-4 pl-5 align-top">
+                <a href={`/dataset/${dataset.slug}`} class="font-semibold text-black-100 hover:text-blue-100 dark:text-white dark:hover:text-blue-50">{dataset.title}</a>
+                {dataset.isSubDataset && <span class="ml-2 rounded-md border border-black-25 px-2 py-0.5 text-[11px] text-black-50">Sub-dataset</span>}
+                <div class="mt-1 font-mono text-xs text-black-50">{dataset.slug}</div>
+              </td>
+              <td class="px-4 py-4 align-top"><div class="flex flex-wrap gap-1.5">{dataset.networkType.map((type) => <span class="rounded-md bg-blue-10 px-2 py-1 text-xs font-semibold text-blue-100 dark:bg-blue-100/15 dark:text-blue-50">{formatNetworkType(type)}</span>)}</div></td>
+              <td class="px-4 py-4 text-right align-top text-sm tabular-nums text-black-75 dark:text-black-25">{formatNumber(dataset.statistics.numNodes)}</td>
+              <td class="px-4 py-4 align-top"><div class="flex flex-wrap gap-2">{dataset.tags.map((tag) => <Tag name={tag} />)}</div></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </Surface>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>("#dataset-index");
+  if (root) {
+    const rows = [...root.querySelectorAll<HTMLTableRowElement>("[data-row]")];
+    const search = root.querySelector<HTMLInputElement>("[data-search]");
+    const subdatasets = root.querySelector<HTMLInputElement>("[data-subdatasets]");
+    const sort = root.querySelector<HTMLSelectElement>("[data-sort]");
+    const count = root.querySelector<HTMLElement>("[data-count]");
+    const empty = root.querySelector<HTMLElement>("[data-empty]");
+    const nodeRange = root.querySelector<HTMLElement>("[data-node-range]");
+    const rangeMin = root.querySelector<HTMLInputElement>("[data-range-min]");
+    const rangeMax = root.querySelector<HTMLInputElement>("[data-range-max]");
+    const numberMin = root.querySelector<HTMLInputElement>("[data-number-min]");
+    const numberMax = root.querySelector<HTMLInputElement>("[data-number-max]");
+    const rangeTrack = root.querySelector<HTMLElement>("[data-range-track]");
+    const defaultMin = Number(nodeRange?.dataset.defaultMin ?? 0);
+    const defaultMax = Number(nodeRange?.dataset.defaultMax ?? 0);
+    const minGap = Math.min(10, Math.max(0, defaultMax - defaultMin));
+    const checked = (kind: string) => [...root.querySelectorAll<HTMLInputElement>(`[data-filter="${kind}"]:checked`)].map((input) => input.value);
+    const readList = (row: HTMLElement, key: string) => JSON.parse(row.dataset[key] ?? "[]") as string[];
+    const setButtonActive = (button: HTMLButtonElement | null, active: boolean) => {
+      button?.classList.toggle("invisible", !active);
+      button?.classList.toggle("pointer-events-none", !active);
+      if (button) {
+        button.tabIndex = active ? 0 : -1;
+        button.setAttribute("aria-hidden", String(!active));
+      }
+    };
+
+    const updateRangeTrack = () => {
+      if (!rangeTrack || !rangeMin || !rangeMax || defaultMax === defaultMin) return;
+      const span = defaultMax - defaultMin;
+      rangeTrack.style.left = `${((Number(rangeMin.value) - defaultMin) / span) * 100}%`;
+      rangeTrack.style.right = `${100 - ((Number(rangeMax.value) - defaultMin) / span) * 100}%`;
+    };
+
+    const syncRange = (source?: HTMLInputElement) => {
+      if (!rangeMin || !rangeMax || !numberMin || !numberMax) return;
+      let minValue = Number(source === numberMin ? numberMin.value : rangeMin.value);
+      let maxValue = Number(source === numberMax ? numberMax.value : rangeMax.value);
+      if (!Number.isFinite(minValue)) minValue = defaultMin;
+      if (!Number.isFinite(maxValue)) maxValue = defaultMax;
+      minValue = Math.max(defaultMin, Math.min(minValue, maxValue - minGap));
+      maxValue = Math.min(defaultMax, Math.max(maxValue, minValue + minGap));
+      rangeMin.value = numberMin.value = String(minValue);
+      rangeMax.value = numberMax.value = String(maxValue);
+      numberMin.max = String(maxValue - minGap);
+      numberMax.min = String(minValue + minGap);
+      updateRangeTrack();
+    };
+
+    const apply = () => {
+      const query = search?.value.trim().toLowerCase() ?? "";
+      const types = checked("type");
+      const tags = checked("tag");
+      const licenses = checked("license");
+      const nodeMinValue = Number(rangeMin?.value ?? defaultMin);
+      const nodeMaxValue = Number(rangeMax?.value ?? defaultMax);
+      let visible = rows.filter((row) => {
+        const nodes = Number(row.dataset.nodes);
+        const show =
+          (!query || row.dataset.title?.includes(query)) &&
+          (subdatasets?.checked || row.dataset.subdataset !== "true") &&
+          types.every((value) => readList(row, "types").includes(value)) &&
+          tags.every((value) => readList(row, "tags").includes(value)) &&
+          (licenses.length === 0 || licenses.includes(row.dataset.license ?? "")) &&
+          nodes >= nodeMinValue &&
+          nodes <= nodeMaxValue;
+        row.hidden = !show;
+        return show;
+      });
+
+      const mode = sort?.value ?? "title-asc";
+      visible.sort((a, b) => {
+        if (mode.startsWith("nodes")) return Number(a.dataset.nodes) - Number(b.dataset.nodes);
+        return (a.dataset.title ?? "").localeCompare(b.dataset.title ?? "");
+      });
+      if (mode.endsWith("desc")) visible.reverse();
+      const body = root.querySelector("[data-rows]");
+      visible.forEach((row) => body?.append(row));
+      if (count) count.textContent = String(visible.length);
+      if (empty) empty.hidden = visible.length !== 0;
+
+      const rangeActive = nodeMinValue !== defaultMin || nodeMaxValue !== defaultMax;
+      setButtonActive(root.querySelector<HTMLButtonElement>('[data-reset="search"]'), Boolean(query));
+      setButtonActive(root.querySelector<HTMLButtonElement>('[data-reset="scope"]'), Boolean(subdatasets?.checked));
+      setButtonActive(root.querySelector<HTMLButtonElement>('[data-reset="nodes"]'), rangeActive);
+      setButtonActive(root.querySelector<HTMLButtonElement>('[data-reset="type"]'), types.length > 0);
+      setButtonActive(root.querySelector<HTMLButtonElement>('[data-reset="tag"]'), tags.length > 0);
+      setButtonActive(root.querySelector<HTMLButtonElement>('[data-reset="license"]'), licenses.length > 0);
+      setButtonActive(
+        root.querySelector<HTMLButtonElement>("[data-clear]"),
+        Boolean(query || subdatasets?.checked || rangeActive || types.length || tags.length || licenses.length),
+      );
+
+      const params = new URLSearchParams();
+      if (query) params.set("search", query);
+      if (types.length) params.set("types", types.join(","));
+      if (tags.length) params.set("tags", tags.join(","));
+      if (licenses.length) params.set("licenses", licenses.join(","));
+      if (subdatasets?.checked) params.set("includeSubdatasets", "true");
+      if (nodeMinValue !== defaultMin) params.set("minNodes", String(nodeMinValue));
+      if (nodeMaxValue !== defaultMax) params.set("maxNodes", String(nodeMaxValue));
+      history.replaceState(null, "", `${location.pathname}${params.size ? `?${params}` : ""}`);
+    };
+
+    const params = new URLSearchParams(location.search);
+    if (search) search.value = params.get("search") ?? "";
+    if (subdatasets) subdatasets.checked = params.get("includeSubdatasets") === "true";
+    for (const kind of ["type", "tag", "license"]) {
+      const key = kind === "type" ? "types" : kind === "tag" ? "tags" : "licenses";
+      const selected = (params.get(key) ?? "").split(",").filter(Boolean);
+      root.querySelectorAll<HTMLInputElement>(`[data-filter="${kind}"]`).forEach((input) => input.checked = selected.includes(input.value));
+    }
+    if (rangeMin && rangeMax && numberMin && numberMax) {
+      rangeMin.value = numberMin.value = params.get("minNodes") ?? String(defaultMin);
+      rangeMax.value = numberMax.value = params.get("maxNodes") ?? String(defaultMax);
+      syncRange();
+      rangeMin.addEventListener("input", () => { syncRange(rangeMin); apply(); });
+      rangeMax.addEventListener("input", () => { syncRange(rangeMax); apply(); });
+      numberMin.addEventListener("change", () => { syncRange(numberMin); apply(); });
+      numberMax.addEventListener("change", () => { syncRange(numberMax); apply(); });
+      for (const input of [numberMin, numberMax]) {
+        input.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") input.blur();
+        });
+      }
+    }
+    search?.addEventListener("input", apply);
+    subdatasets?.addEventListener("change", apply);
+    sort?.addEventListener("change", apply);
+    root.querySelectorAll<HTMLInputElement>("[data-filter]").forEach((input) => input.addEventListener("change", apply));
+
+    const clearAll = () => {
+      root.querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach((input) => input.checked = false);
+      if (search) search.value = "";
+      if (sort) sort.value = "title-asc";
+      if (rangeMin && rangeMax && numberMin && numberMax) {
+        rangeMin.value = numberMin.value = String(defaultMin);
+        rangeMax.value = numberMax.value = String(defaultMax);
+        syncRange();
+      }
+      apply();
+    };
+    root.querySelector("[data-clear]")?.addEventListener("click", clearAll);
+    root.querySelectorAll<HTMLButtonElement>("[data-reset]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const kind = button.dataset.reset;
+        if (kind === "search" && search) search.value = "";
+        if (kind === "scope" && subdatasets) subdatasets.checked = false;
+        if (kind === "nodes" && rangeMin && rangeMax && numberMin && numberMax) {
+          rangeMin.value = numberMin.value = String(defaultMin);
+          rangeMax.value = numberMax.value = String(defaultMax);
+          syncRange();
+        }
+        if (kind === "type" || kind === "tag" || kind === "license") {
+          root.querySelectorAll<HTMLInputElement>(`[data-filter="${kind}"]`).forEach((input) => input.checked = false);
+        }
+        apply();
+      });
+    });
+    apply();
+  }
+</script>

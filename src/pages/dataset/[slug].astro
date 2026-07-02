@@ -1,0 +1,421 @@
+---
+import type { GetStaticPaths } from "astro";
+import { Code } from "astro:components";
+import {
+  getCollection,
+  getEntries,
+  getEntry,
+  render,
+} from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Tag from "@/components/tag.astro";
+import Badge from "@/components/badge.astro";
+import Button from "@/components/button.astro";
+import CitationCopyButton from "@/components/CitationCopyButton.astro";
+import CopyTextButton from "@/components/CopyTextButton.astro";
+import DatasetCardList from "@/components/DatasetCardList.astro";
+import DownloadButtonGroup from "@/components/download-button-group.astro";
+import PageHeader from "@/components/PageHeader.astro";
+import Surface from "@/components/surface.astro";
+import Icon from "@/components/Icon.astro";
+import {
+  faArrowUpRightFromSquare,
+  faHexagonNodes,
+  faPaperclip,
+  faTag,
+} from "@fortawesome/free-solid-svg-icons";
+import { citeToApa, citeToBibtex, toCite } from "@/utils/citation";
+import {
+  formatAttachmentTag,
+  formatFileSize,
+  formatNetworkType,
+} from "@/utils/format";
+import { tooltipArrowClassName, tooltipClassName } from "@/utils/tooltip";
+import {
+  getResolvedAttachmentFormatEntries,
+  resolveAttachmentSizes,
+  type AttachmentMap,
+} from "@/utils/zenodo";
+
+export const getStaticPaths = (async () =>
+  (await getCollection("datasets")).map((dataset) => ({
+    params: { slug: dataset.id },
+    props: { dataset },
+  }))) satisfies GetStaticPaths;
+
+const { dataset } = Astro.props;
+const { Content } = await render(dataset);
+const slug = dataset.id;
+const data = dataset.data;
+
+const parentDataset = data.parent ? await getEntry(data.parent) : undefined;
+const relatedDatasets = data.related ? await getEntries(data.related) : [];
+const childDatasets = (
+  await getCollection(
+    "datasets",
+    ({ data: candidate }) => candidate.parent?.id === dataset.id,
+  )
+).sort((left, right) => left.data.title.localeCompare(right.data.title));
+
+const attachments = await resolveAttachmentSizes(
+  (data.attachments ?? {}) as AttachmentMap,
+);
+const citations = data.citation ? await toCite(data.citation) : null;
+const apaCitations = citations ? citeToApa(citations) : [];
+const bibtex = citations ? citeToBibtex(citations) : "";
+const title = `${data.title} | AHORN - Aachen Higher-Order Repository of Networks`;
+const networkTypes = data["network-type"] ?? [];
+const tags = data.tags ?? [];
+
+const attachmentEntries = Object.entries(attachments).map(
+  ([key, attachment]) => ({
+    key,
+    label: formatAttachmentTag(key),
+    attachment,
+    changelog: attachment.changelog,
+  }),
+);
+const latestAttachment = attachmentEntries.at(-1)?.attachment.ahorn;
+const buildScriptSlug = data.parent?.id || dataset.id;
+const usageCommands = [
+  ["uvx", `uvx ahorn-loader download ${slug}`],
+  ["pipx", `pipx run ahorn-loader download ${slug}`],
+] as const;
+
+const timelineEntries = [...attachmentEntries].reverse().map((entry) => {
+  const primaryAttachment = entry.attachment.ahorn;
+  const parsedUrl = new URL(
+    primaryAttachment.url,
+    "https://ahorn.rwth-aachen.de/",
+  );
+  const zenodoMatch =
+    parsedUrl.hostname === "zenodo.org"
+      ? parsedUrl.pathname.match(/^\/records\/\d+/)
+      : null;
+
+  return {
+    ...entry,
+    primaryAttachment,
+    zenodoUrl: zenodoMatch
+      ? `https://zenodo.org${zenodoMatch[0]}`
+      : null,
+    additionalFormats: getResolvedAttachmentFormatEntries(entry.attachment)
+      .filter(([format]) => format !== "ahorn")
+      .map(([format, attachment]) => ({
+        format,
+        url: new URL(
+          attachment.url,
+          "https://ahorn.rwth-aachen.de/",
+        ).href,
+        size: attachment.size,
+      })),
+  };
+});
+
+const license = data.license;
+const licenseLabel =
+  license === "unprovided-reuse-encouraged"
+    ? "No license information provided by the source. Author encourages reuse."
+    : typeof license === "object"
+      ? license.spdx
+      : null;
+const licenseUrl = typeof license === "object" ? license.link : null;
+
+const externalLinkLabel = (url: string | undefined) => {
+  if (!url) return "Unknown";
+  try {
+    return new URL(url, "https://ahorn.rwth-aachen.de/").hostname.replace(
+      /^www\./,
+      "",
+    );
+  } catch {
+    return url;
+  }
+};
+
+const escapeHtml = (value: string) =>
+  value.replace(
+    /[&<>"']/g,
+    (character) =>
+      ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      })[character]!,
+  );
+
+const isSafeMarkdownUrl = (url: string) => {
+  if (url.startsWith("/")) return true;
+  try {
+    return ["https:", "http:"].includes(new URL(url).protocol);
+  } catch {
+    return false;
+  }
+};
+
+const renderInlineMarkdown = (text: string) => {
+  const pattern = /(`[^`]+`|\[[^\]]+\]\([^)]+\))/g;
+  let html = "";
+  let lastIndex = 0;
+
+  for (const match of text.matchAll(pattern)) {
+    html += escapeHtml(text.slice(lastIndex, match.index));
+    const token = match[0];
+    const link = token.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    if (link && isSafeMarkdownUrl(link[2])) {
+      html += `<a href="${escapeHtml(link[2])}" target="_blank" rel="noreferrer">${escapeHtml(link[1])}</a>`;
+    } else if (token.startsWith("`") && token.endsWith("`")) {
+      html += `<code>${escapeHtml(token.slice(1, -1))}</code>`;
+    } else {
+      html += escapeHtml(token);
+    }
+    lastIndex = match.index + token.length;
+  }
+
+  return html + escapeHtml(text.slice(lastIndex));
+};
+---
+
+<BaseLayout title={title}>
+  <div data-pagefind-body>
+    <PageHeader title={data.title}>
+      <Fragment slot="eyebrow">
+        <nav aria-label="Breadcrumb">
+          <ol class="flex flex-wrap items-center gap-2">
+            <li><a href="/" class="hover:text-blue-75">Repository</a></li>
+            <li aria-hidden="true">/</li>
+            <li><a href="/dataset" class="hover:text-blue-75">Datasets</a></li>
+            {parentDataset && (
+              <>
+                <li aria-hidden="true">/</li>
+                <li>
+                  <a href={`/dataset/${parentDataset.id}`} class="hover:text-blue-75">
+                    {parentDataset.data.title}
+                  </a>
+                </li>
+              </>
+            )}
+          </ol>
+        </nav>
+      </Fragment>
+
+      <Surface
+        slot="actions"
+        variant="secondary"
+        class="flex w-full max-w-full flex-col overflow-hidden backdrop-blur sm:flex-row lg:max-w-120"
+      >
+        <CopyTextButton
+          text={slug}
+          successMessage="Slug copied to clipboard."
+          errorMessage="Could not copy slug."
+          class="min-w-0 flex-1 cursor-pointer justify-start px-3 py-2 text-xs hover:text-blue-100 dark:hover:text-blue-50"
+        >
+          <span slot="label" class="relative flex min-w-0 flex-col justify-center text-left">
+            <span class="flex items-center gap-2">
+              <span class="font-semibold tracking-widest text-black-50 uppercase dark:text-black-50">Slug</span>
+            </span>
+            <span class="mt-0.5 flex min-w-0 items-center">
+              <code class="min-w-0 truncate font-medium text-black-75 dark:text-white">{slug}</code>
+            </span>
+          </span>
+        </CopyTextButton>
+        {latestAttachment && (
+          <Button
+            href={latestAttachment.url}
+            download
+            target="_blank"
+            class="justify-center rounded-none border-t border-black-25 px-3 py-2 text-xs shadow-none sm:border-t-0 sm:border-l"
+          >
+            <span class="text-center sm:max-w-16">Download Dataset</span>
+          </Button>
+        )}
+      </Surface>
+
+      <div class="mt-6 flex min-w-0 flex-col gap-6 sm:flex-row sm:flex-wrap sm:gap-8">
+        {networkTypes.length > 0 && (
+          <div class="group relative min-w-0">
+            <h3 class="mb-3 flex items-center gap-2 text-xs font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">
+              <Icon icon={faHexagonNodes} class="size-4" />
+              Network Type
+              <span class={tooltipClassName}>
+                These network types are suggested interpretations and do not claim to be complete.
+                <span class={tooltipArrowClassName}></span>
+              </span>
+            </h3>
+            <div class="flex min-w-0 flex-wrap gap-2">
+              {networkTypes.map((type) => (
+                <Badge href={`/dataset?types=${encodeURIComponent(type)}`} color="info">
+                  {formatNetworkType(type)}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
+        {tags.length > 0 && (
+          <div class="min-w-0">
+            <h3 class="mb-3 flex items-center gap-2 text-xs font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">
+              <Icon icon={faTag} class="size-4" /> Tags
+            </h3>
+            <div class="flex flex-wrap gap-2">
+              {tags.map((tag) => (
+                <Tag name={tag} href={`/dataset?tags=${encodeURIComponent(tag)}`} />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </PageHeader>
+
+    <div class="mt-10 max-w-full lg:flex lg:items-start lg:justify-between lg:gap-10 xl:gap-12">
+      <div class="flex-1">
+        <div class="prose max-w-none wrap-break-word dark:prose-invert">
+          <Content />s
+        </div>
+        {childDatasets.length > 0 && (
+          <section class="not-prose mt-10" data-pagefind-ignore>
+            <div class="mb-5 flex flex-wrap items-center gap-3">
+              <h2 class="text-2xl font-semibold tracking-tight text-black-100 dark:text-white">Sub-datasets</h2>
+              <Badge color="info" class="px-2 py-0.5 text-[11px]">{childDatasets.length}</Badge>
+            </div>
+            <DatasetCardList datasets={childDatasets} backgroundEffect={false} />
+          </section>
+        )}
+      </div>
+
+      <aside class="mt-10 w-full max-w-full min-w-0 shrink-0 lg:mt-0 lg:w-88">
+        <div class="flex flex-col gap-y-8 lg:sticky lg:top-24">
+          <section data-pagefind-ignore>
+            <div data-tabs>
+              <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
+                <h2 class="text-xs font-semibold tracking-wide text-black-50 uppercase">Usage</h2>
+                <div role="tablist" class="inline-flex rounded-lg bg-blue-10/70 p-1 dark:bg-blue-100/15">
+                  {usageCommands.map(([id], index) => (
+                    <button type="button" role="tab" data-tab-button={id} data-selected={String(index === 0)} aria-selected={index === 0} class="rounded-md px-2.5 py-1.5 text-xs font-semibold data-[selected=true]:bg-white data-[selected=true]:text-blue-100 dark:data-[selected=true]:bg-black-100">{id}</button>
+                  ))}
+                </div>
+              </div>
+              {usageCommands.map(([id, command], index) => (
+                <div role="tabpanel" data-tab-panel={id} hidden={index !== 0}>
+                  <Code code={command} lang="bash" inline class="block overflow-x-auto rounded-lg p-4 text-sm whitespace-pre" />
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {(timelineEntries.length > 0 || data.source) && (
+            <section>
+              <h2 class="mb-3 text-xs font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">Timeline</h2>
+              <ol class="relative space-y-4 before:absolute before:top-3.5 before:bottom-3.5 before:left-3.5 before:w-px before:bg-black-25 dark:before:bg-black-75" role="list">
+                {timelineEntries.map(({ label, primaryAttachment, additionalFormats, zenodoUrl, changelog }) => (
+                  <li class="relative flex min-w-0 gap-3">
+                    <div class="relative z-10 flex size-7 shrink-0 items-center justify-center">
+                      <span class="flex size-7 items-center justify-center rounded-full border border-black-25 bg-white text-black-50 dark:border-black-75 dark:bg-black-100 dark:text-black-50">
+                        <Icon icon={faPaperclip} class="size-2" />
+                      </span>
+                    </div>
+                    <div class="min-w-0 flex-1 rounded-lg border border-black-10 p-3 dark:border-black-75/40">
+                      <div class="flex min-w-0 items-start justify-between gap-2">
+                        <div class="min-w-0">
+                          <span class="truncate text-sm font-semibold text-black-100 dark:text-white">{label}</span>
+                          {typeof primaryAttachment.size === "number" && (
+                            <p class="mt-0.5 text-xs text-black-50 dark:text-black-50">{formatFileSize(primaryAttachment.size)}</p>
+                          )}
+                        </div>
+                        <DownloadButtonGroup
+                          primary={{
+                            format: "ahorn",
+                            url: new URL(primaryAttachment.url, "https://ahorn.rwth-aachen.de/").href,
+                            size: primaryAttachment.size,
+                          }}
+                          secondary={additionalFormats}
+                          zenodoUrl={zenodoUrl}
+                        />
+                      </div>
+                      {changelog.length > 0 && (
+                        <>
+                          <div class="mt-3 text-xs font-medium text-black-50 dark:text-black-50">Changelog</div>
+                          <div class="prose mt-2 text-xs leading-5 text-black-75 dark:text-black-25">
+                            <ul class="my-0 pl-4" role="list">
+                              {changelog.map((entry) => <li set:html={renderInlineMarkdown(entry)} />)}
+                            </ul>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </li>
+                ))}
+
+                {data.source && (
+                  <li class="relative flex min-w-0 gap-3">
+                    <div class="relative z-10 flex size-7 shrink-0 items-center justify-center">
+                      <span class="flex size-7 items-center justify-center rounded-full border border-black-25 bg-white text-black-50 dark:border-black-75 dark:bg-black-100 dark:text-black-50">
+                        <Icon icon={faArrowUpRightFromSquare} class="size-2" />
+                      </span>
+                    </div>
+                    <div class="min-w-0 flex-1 rounded-lg border border-black-10 p-3 dark:border-black-75/40">
+                      <h3 class="text-sm font-semibold text-black-100 dark:text-white">Source provenance</h3>
+                      <dl class="mt-3 space-y-2.5">
+                        <div>
+                          <dt class="text-xs font-medium text-black-50 dark:text-black-50">Source</dt>
+                          <dd class="mt-0.5 text-sm leading-6 text-black-75 dark:text-black-25">
+                            <a href={data.source} target="_blank" rel="noreferrer" title={data.source} class="inline-flex max-w-full items-center gap-1.5 font-medium hover:text-blue-100 dark:hover:text-blue-50">
+                              <span class="truncate">{externalLinkLabel(data.source)}</span>
+                              <Icon icon={faArrowUpRightFromSquare} class="size-3 shrink-0 text-black-50 dark:text-black-50" />
+                            </a>
+                          </dd>
+                        </div>
+                        <div>
+                          <dt class="text-xs font-medium text-black-50 dark:text-black-50">License</dt>
+                          <dd class="mt-0.5 text-sm leading-6 text-black-75 dark:text-black-25">
+                            {licenseUrl ? <a href={licenseUrl} target="_blank" rel="noreferrer">{licenseLabel}</a> : (licenseLabel ?? "Unknown")}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt class="text-xs font-medium text-black-50 dark:text-black-50">Build script</dt>
+                          <dd class="mt-0.5 text-sm leading-6 text-black-75 dark:text-black-25">
+                            <a href={`https://github.com/netsci-rwth/ahorn/blob/main/scripts/${buildScriptSlug}.py`} target="_blank" rel="noreferrer" class="inline-flex max-w-full items-center gap-1.5 font-medium hover:text-blue-100 dark:hover:text-blue-50">
+                              <span class="truncate">Converter script</span>
+                              <Icon icon={faArrowUpRightFromSquare} class="size-3 shrink-0 text-black-50 dark:text-black-50" />
+                            </a>
+                          </dd>
+                        </div>
+                      </dl>
+                    </div>
+                  </li>
+                )}
+              </ol>
+            </section>
+          )}
+
+          {relatedDatasets.length > 0 && (
+            <section data-pagefind-ignore>
+              <h2 class="mb-3 text-xs font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">Related Datasets</h2>
+              <DatasetCardList datasets={relatedDatasets} columns="single" />
+            </section>
+          )}
+
+          {data.citation && (
+            <section id="citation">
+              <div class="mb-3 flex items-center justify-between gap-4">
+                <h2 class="text-xs font-semibold tracking-wide text-black-50 uppercase dark:text-black-50">Citation</h2>
+                <CitationCopyButton bibtex={bibtex} />
+              </div>
+              <div>
+                <ul class="space-y-4">
+                  {apaCitations.map((citation) => (
+                    <li class="prose max-w-none text-sm leading-6 prose-slate dark:prose-invert" set:html={citation[1]} />
+                  ))}
+                </ul>
+                <div class="mt-4 border-t border-black-10 pt-3 text-xs leading-5 text-black-50 dark:border-black-75/40 dark:text-black-50">
+                  If you use this dataset, please ensure you cite it appropriately in your work.
+                </div>
+              </div>
+            </section>
+          )}
+        </div>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>

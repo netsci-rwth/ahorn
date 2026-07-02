@@ -1,0 +1,29 @@
+---
+import Surface from "@/components/surface.astro";
+import type { SurfaceVariant } from "@/components/surface-styles";
+
+interface Props {
+  title?: string;
+  variant?: SurfaceVariant;
+  class?: string;
+  bodyClass?: string;
+}
+
+const {
+  title,
+  variant = "secondary",
+  class: classValue,
+  bodyClass = "",
+} = Astro.props;
+---
+
+<Surface
+  as="section"
+  variant={variant}
+  class:list={["p-4", classValue]}
+>
+  {title && (
+    <h3 class="text-xs font-semibold tracking-wide text-black-75 uppercase dark:text-black-25">{title}</h3>
+  )}
+  <div class:list={[title && "mt-4", bodyClass]}><slot /></div>
+</Surface>

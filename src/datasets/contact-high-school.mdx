@@ -222,8 +222,8 @@ shape:
     - 20
 ---
 
-import TemporalShapeChart from "@/components/chart/temporal-shape";
-import Stat from "@/components/stat";
+import TemporalShapeChart from "@/components/chart/temporal-shape.astro";
+import Stat from "@/components/stat.astro";
 
 ## Overview
 
@@ -232,18 +232,18 @@ Wearable sensors captured contacts in 20-second windows; each timestamped simple
 
 ## Structure
 
-<dl className="not-prose grid gap-5 sm:grid-cols-2">
+<dl class="not-prose grid gap-5 sm:grid-cols-2">
   <Stat title="Node Type" value="Student" />
   <Stat title="Edge Type" value="Group of Interacting Students" />
 </dl>
 
 ## Statistics
 
-<dl className="not-prose grid gap-5 sm:grid-cols-2">
+<dl class="not-prose grid gap-5 sm:grid-cols-2">
   <TemporalShapeChart
     shape={frontmatter.shape}
     minUnit="hour"
     maxUnit="week"
-    className="sm:col-span-2"
+    class="sm:col-span-2"
   />
 </dl>

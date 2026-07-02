@@ -1,0 +1,147 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Tag from "@/components/tag.astro";
+import { surfaceClassName } from "@/components/surface-styles";
+import { formatNetworkType, formatNumber } from "@/utils/format";
+import classNames from "classnames";
+
+interface Props {
+  datasets: CollectionEntry<"datasets">[];
+  columns?: "responsive" | "single";
+  summaries?: Partial<Record<string, string>>;
+  backgroundEffect?: boolean;
+}
+
+const {
+  datasets,
+  columns = "responsive",
+  summaries = {},
+  backgroundEffect = true,
+} = Astro.props;
+
+const statistic = (
+  entry: CollectionEntry<"datasets">,
+  key: string,
+): number | null => {
+  const value = entry.data.statistics?.[key];
+  return typeof value === "number" ? value : null;
+};
+
+const cards = datasets.map((entry) => ({
+  slug: entry.id,
+  title: entry.data.title,
+  summary: summaries[entry.id],
+  networkTypes: entry.data["network-type"] ?? [],
+  tags: entry.data.tags ?? [],
+  numNodes: statistic(entry, "num-nodes"),
+  numInteractions: statistic(entry, "num-interactions"),
+}));
+
+const formatScale = (card: (typeof cards)[number]) => {
+  const nodes =
+    card.numNodes === null
+      ? "Unknown nodes"
+      : `${formatNumber(card.numNodes)} nodes`;
+  const interactions =
+    card.numInteractions === null
+      ? "See details"
+      : `${formatNumber(card.numInteractions)} relations`;
+  return `${nodes} · ${interactions}`;
+};
+---
+
+{cards.length > 0 && (
+  <div
+    class:list={{
+      "grid gap-x-8 gap-y-9 md:grid-cols-2 xl:grid-cols-3":
+        columns !== "single",
+      "grid gap-3": columns === "single",
+    }}
+  >
+    {cards.map((card) => {
+      const isSingleColumn = columns === "single";
+      const hasSummary = typeof card.summary === "string";
+
+      return (
+        <article class="h-full">
+          <a
+            href={`/dataset/${card.slug}`}
+            class={surfaceClassName({
+              variant:
+                isSingleColumn || !backgroundEffect ? "secondary" : "primary",
+              interactive: true,
+              class: classNames(
+                "relative flex h-full min-w-0",
+                "before:absolute before:left-0 before:w-0.5 before:bg-blue-75 before:transition hover:before:bg-blue-100 dark:before:bg-blue-50",
+                {
+                  "flex-col py-4 pr-3 pl-4 before:top-4 before:h-9":
+                    isSingleColumn,
+                  "min-h-60 flex-col py-5 pr-4 pl-5 before:top-5 before:h-12":
+                    !isSingleColumn && hasSummary,
+                  "flex-col py-4 pr-4 pl-5 before:top-4 before:h-9":
+                    !isSingleColumn && !hasSummary,
+                },
+              ),
+            })}
+          >
+            <div class="min-w-0">
+              {card.networkTypes.length > 0 && (
+                <p
+                  class={classNames(
+                    "font-semibold tracking-wide text-blue-100 uppercase dark:text-blue-50",
+                    isSingleColumn ? "text-[0.68rem]" : "text-xs",
+                  )}
+                >
+                  {card.networkTypes.map(formatNetworkType).join(" / ")}
+                </p>
+              )}
+              <h3
+                class={classNames(
+                  "mt-1 font-semibold tracking-tight text-black-100 transition dark:text-white",
+                  isSingleColumn
+                    ? "text-base leading-6"
+                    : "text-xl leading-7",
+                )}
+              >
+                {card.title}
+              </h3>
+            </div>
+
+            {card.summary && (
+              <p
+                class={classNames(
+                  "text-sm text-black-75 dark:text-black-25",
+                  isSingleColumn
+                    ? "mt-2 line-clamp-3 leading-6"
+                    : "mt-4 leading-6",
+                )}
+              >
+                {card.summary}
+              </p>
+            )}
+
+            {card.tags.length > 0 && (
+              <div class={classNames("flex flex-wrap gap-2", isSingleColumn ? "mt-3" : "mt-5")}>
+                {card.tags.map((tag) => <Tag name={tag} />)}
+              </div>
+            )}
+
+            <p
+              class:list={[
+                "text-xs font-semibold tracking-wide text-black-50 dark:text-black-50",
+                {
+                  "mt-auto": hasSummary,
+                  "mt-3": !hasSummary,
+                  "pt-3": isSingleColumn,
+                  "pt-5": !isSingleColumn && hasSummary,
+                },
+              ]}
+            >
+              {formatScale(card)}
+            </p>
+          </a>
+        </article>
+      );
+    })}
+  </div>
+)}
