@@ -51,7 +51,7 @@ type RepositoryStatistics = {
   totalTagAssignments: number;
   downloadableFileCount: number;
   datasetsWithAttachments: number;
-  networkTypeCounts: Record<string, number>;
+  networkTypeCombinationCounts: Record<string, number>;
   tagCounts: Record<string, number>;
   domainTagCounts: Record<string, SplitCount>;
   sourceTagCounts: Record<string, SplitCount>;
@@ -238,7 +238,7 @@ function computeRepositoryStatistics(
   imported: StatisticsDataset[],
 ): RepositoryStatistics {
   const datasets: DatasetSummary[] = [];
-  const networkTypeCounts: Record<string, number> = {};
+  const networkTypeCombinationCounts: Record<string, number> = {};
   const tagCounts: Record<string, number> = {};
   const domainTagCounts: Record<string, SplitCount> = {};
   const sourceTagCounts: Record<string, SplitCount> = {};
@@ -259,7 +259,9 @@ function computeRepositoryStatistics(
       continue;
     }
 
-    const networkTypes = getStringArray(frontmatter["network-type"]);
+    const networkTypes = [
+      ...new Set(getStringArray(frontmatter["network-type"])),
+    ].sort();
     const tags = getStringArray(frontmatter.tags);
     const isSubDataset = frontmatter.parent !== undefined;
     const sourceHost = getSourceHost(frontmatter.source);
@@ -274,8 +276,8 @@ function computeRepositoryStatistics(
     }
 
     totalTagAssignments += tags.length;
-    for (const type of networkTypes) {
-      increment(networkTypeCounts, type);
+    if (networkTypes.length > 0) {
+      increment(networkTypeCombinationCounts, JSON.stringify(networkTypes));
     }
     for (const tag of tags) {
       increment(tagCounts, tag);
@@ -353,7 +355,7 @@ function computeRepositoryStatistics(
     totalTagAssignments,
     downloadableFileCount,
     datasetsWithAttachments,
-    networkTypeCounts,
+    networkTypeCombinationCounts,
     tagCounts,
     domainTagCounts,
     sourceTagCounts,
@@ -439,10 +441,6 @@ function tagFilterHref(tag: string): string {
   return `/dataset?tags=${encodeURIComponent(tag)}`;
 }
 
-function networkTypeFilterHref(type: string): string {
-  return `/dataset?types=${encodeURIComponent(type)}`;
-}
-
 function tagFamilyFilterHref(prefix: string) {
   return (value: string) => tagFilterHref(`${prefix}: ${value}`);
 }
@@ -467,15 +465,6 @@ function datasetMetricItems({
         ];
   });
 }
-
-const chartPalette = [
-  "bg-blue-100 dark:bg-blue-50",
-  "bg-turquoise-100 dark:bg-turquoise-50",
-  "bg-green-100 dark:bg-green-50",
-  "bg-orange-100 dark:bg-orange-75",
-  "bg-magenta-100 dark:bg-magenta-50",
-  "bg-purple-100 dark:bg-purple-50",
-] as const;
 
 const domainChartPalette = [
   {
@@ -504,10 +493,6 @@ const domainChartPalette = [
   },
 ] as const;
 
-function ratio(value: number, total: number): number {
-  return total === 0 ? 0 : value / total;
-}
-
 const datasets: StatisticsDataset[] = (await getCollection("datasets")).map(
   (entry) => ({
     slug: entry.id,
@@ -515,11 +500,34 @@ const datasets: StatisticsDataset[] = (await getCollection("datasets")).map(
   }),
 );
 const statistics = computeRepositoryStatistics(datasets);
-const networkTypeItems = sortedEntries(
-  statistics.networkTypeCounts,
-  undefined,
-  formatNetworkType,
-  networkTypeFilterHref,
+const networkTypeCombinations = Object.entries(
+  statistics.networkTypeCombinationCounts,
+)
+  .map(([serializedTypes, count]) => ({
+    types: JSON.parse(serializedTypes) as string[],
+    count,
+  }))
+  .sort(
+    (left, right) =>
+      right.count - left.count ||
+      right.types.length - left.types.length ||
+      left.types.join().localeCompare(right.types.join()),
+  );
+const networkTypeLabelCounts = networkTypeCombinations.reduce(
+  (counts, combination) => {
+    for (const type of combination.types) {
+      increment(counts, type, combination.count);
+    }
+    return counts;
+  },
+  {} as Record<string, number>,
+);
+const networkTypeLabels = Object.entries(networkTypeLabelCounts)
+  .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
+  .map(([type]) => type);
+const networkTypeCombinationMax = Math.max(
+  ...networkTypeCombinations.map(({ count }) => count),
+  1,
 );
 const formatItems = sortedEntries(statistics.formatCounts, undefined, displayFormat);
 const domainItems = sortedSplitEntries(
@@ -557,7 +565,6 @@ const topByRelationsItems = datasetMetricItems({
   datasets: statistics.topByRelations,
   valueKey: "numRelations",
 });
-const networkTypeTotal = networkTypeItems.reduce((sum, item) => sum + item.value, 0);
 const nodeBucketItems = splitCountItems(statistics.nodeBuckets);
 const relationBucketItems = splitCountItems(statistics.relationBuckets);
 const nodeBucketMax = Math.max(
@@ -719,44 +726,114 @@ const sourceSections: SplitSection[] = [
         interpretations and dataset scale.
       </p>
     </div>
-    <div class="grid min-w-0 gap-4 lg:grid-cols-8">
+    <div class="grid min-w-0 gap-4 lg:grid-cols-2">
       <StatisticsBlock
         title="Network Type Mix"
         variant="primary"
-        class="min-w-0 lg:col-span-4"
+        class="min-w-0 lg:col-span-2"
       >
-        <div class="flex h-4 overflow-hidden rounded-full bg-black-10 dark:bg-black-75/40">
-          {networkTypeItems.map((item, index) => (
-            <a
-              href={item.href ?? "#"}
-              aria-label={`${item.label}: ${formatPercent(item.value, networkTypeTotal)}`}
-              class={`${chartPalette[index % chartPalette.length]} min-w-1 transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-100`}
-              style={{
-                width: `${Math.max(2, ratio(item.value, networkTypeTotal) * 100)}%`,
-              }}
-            />
-          ))}
-        </div>
-        <dl class="mt-5 grid gap-3 sm:grid-cols-2">
-          {networkTypeItems.map((item, index) => (
-            <div class="flex items-center gap-3">
-              <span
-                class={`size-2.5 shrink-0 rounded-full ${chartPalette[index % chartPalette.length]}`}
-              />
-              <dt class="min-w-0 flex-1 truncate text-sm font-medium text-black-100 dark:text-white">
-                {item.label}
-              </dt>
-              <dd class="text-sm font-semibold text-black-75 dark:text-black-25">
-                {formatPercent(item.value, networkTypeTotal)}
-              </dd>
+        <p class="text-sm leading-6 text-black-75 dark:text-black-25">
+          Rows are exact network-type combinations. Each typed dataset appears
+          in exactly one row; connected dots show types assigned together.
+        </p>
+        <div class="mt-5 overflow-x-auto" role="table" aria-label="Dataset counts by exact network-type combination">
+          <div class="min-w-96">
+            <div class="grid grid-cols-[minmax(9rem,1fr)_3rem_auto] items-end gap-x-5" role="row">
+              <span class="text-xs font-semibold tracking-wide text-black-50 uppercase" role="columnheader">Datasets</span>
+              <span class="text-center text-xs font-semibold tracking-wide text-black-50 uppercase" role="columnheader">Count</span>
+              <div
+                class="grid"
+                style={{
+                  width: `${networkTypeLabels.length * 7}rem`,
+                  gridTemplateColumns: `repeat(${networkTypeLabels.length}, minmax(0, 1fr))`,
+                }}
+              >
+                {networkTypeLabels.map((type) => (
+                  <span class="flex h-8 items-end justify-center px-2 text-center text-xs leading-4 font-semibold text-black-50" role="columnheader">
+                    {formatNetworkType(type)}
+                  </span>
+                ))}
+              </div>
             </div>
-          ))}
-        </dl>
+            <div class="mt-3 space-y-3" role="rowgroup">
+              {networkTypeCombinations.map(({ types, count }) => {
+                const activeIndexes = networkTypeLabels.flatMap((type, index) =>
+                  types.includes(type) ? [index] : [],
+                );
+                const firstActiveIndex = activeIndexes.at(0) ?? -1;
+                const lastActiveIndex = activeIndexes.at(-1) ?? -1;
+                const combinationLabel = types.length > 0
+                  ? types.map(formatNetworkType).join(" and ")
+                  : "No network type assigned";
+                const countLabel = `${formatNumber(count)} ${count === 1 ? "dataset" : "datasets"}`;
+
+                return (
+                  <div
+                    class="grid grid-cols-[minmax(9rem,1fr)_3rem_auto] items-center gap-x-5"
+                    role="row"
+                    aria-label={`${combinationLabel}: ${countLabel}`}
+                  >
+                    <div class="h-6 overflow-hidden rounded bg-black-10 dark:bg-black-75/40" role="cell">
+                      <div
+                        class="h-full rounded bg-blue-100 dark:bg-blue-50"
+                        style={{ width: `${(count / networkTypeCombinationMax) * 100}%` }}
+                      />
+                    </div>
+                    <span class="text-center text-sm font-semibold text-black-75 dark:text-black-25" role="cell">
+                      {formatNumber(count)}
+                    </span>
+                    <div
+                      class="grid h-6"
+                      style={{
+                        width: `${networkTypeLabels.length * 7}rem`,
+                        gridTemplateColumns: `repeat(${networkTypeLabels.length}, minmax(0, 1fr))`,
+                      }}
+                      role="cell"
+                    >
+                      {networkTypeLabels.map((type, index) => {
+                        const isActive = types.includes(type);
+                        const isConnected =
+                          firstActiveIndex !== lastActiveIndex &&
+                          index >= firstActiveIndex &&
+                          index < lastActiveIndex + 1;
+
+                        return (
+                          <span class="relative flex items-center justify-center" aria-hidden="true">
+                            {isConnected && (
+                              <span
+                                class:list={[
+                                  "absolute top-1/2 h-0.5 -translate-y-1/2 bg-blue-100 dark:bg-blue-50",
+                                  index === firstActiveIndex
+                                    ? "right-0 left-1/2"
+                                    : index === lastActiveIndex
+                                      ? "right-1/2 left-0"
+                                      : "inset-x-0",
+                                ]}
+                              />
+                            )}
+                            <span
+                              class:list={[
+                                "relative z-10 rounded-full",
+                                isActive
+                                  ? "size-3.5 bg-blue-100 ring-2 ring-white dark:bg-blue-50 dark:ring-black-100"
+                                  : "size-2 bg-black-25 dark:bg-black-75",
+                              ]}
+                            />
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
       </StatisticsBlock>
 
       <StatisticsBlock
         title="Node Count Distribution"
-        class="min-w-0 lg:col-span-2"
+        class="min-w-0"
       >
         <div class="flex h-44 min-w-0 items-end gap-2">
           {nodeBucketItems.map((item, index) => {
@@ -796,7 +873,7 @@ const sourceSections: SplitSection[] = [
 
       <StatisticsBlock
         title="Relation Count Distribution"
-        class="min-w-0 lg:col-span-2"
+        class="min-w-0"
       >
         <div class="flex h-44 min-w-0 items-end gap-2">
           {relationBucketItems.map((item, index) => {
