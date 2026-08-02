@@ -48,8 +48,9 @@ def _open_text(path: Path, mode: str):
 
 @cache
 def _hif_schema() -> dict[str, Any]:
-    url = "https://raw.githubusercontent.com/pszufe/HIF-standard/main/schemas/hif_schema.json"
-    with urllib.request.urlopen(url) as response:  # noqa: S310
+    with urllib.request.urlopen(
+        "https://raw.githubusercontent.com/pszufe/HIF-standard/main/schemas/hif_schema.json"
+    ) as response:
         return json.loads(response.read().decode("utf-8"))
 
 
