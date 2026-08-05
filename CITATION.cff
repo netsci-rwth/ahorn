@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+title: "A repository for discovery and reuse of higher-order network datasets"
+message: "If you use this software, please cite it using the metadata from this file."
+type: software
+authors:
+  - given-names: Florian
+    family-names: Frantzen
+    email: frantzen@netsci.rwth-aachen.de
+    orcid: 'https://orcid.org/0000-0003-0187-3738'
+  - given-names: Michael T.
+    family-names: Schaub
+    email: schaub@netsci.rwth-aachen.de
+    orcid: 'https://orcid.org/0000-0003-2426-6404'
+repository-code: 'https://github.com/netsci-rwth/ahorn'
+url: 'https://ahorn.rwth-aachen.de/'
+abstract: >-
+  Higher-order network datasets are dispersed across publications, institutional archives, and software-specific collections, making them difficult to discover, compare, and reuse.
+  We introduce the Aachen Higher-Order Repository of Networks (AHORN), a curated repository of standardized higher-order network datasets derived from publicly released sources.
+  Each dataset entry links a converted dataset to its source, metadata, citation guidance, conversion code, and version history.
+  The repository supports browsable and machine-readable discovery, revision-specific downloads, format validation, and exports for interoperable reuse.
+  We describe the repository architecture, curation workflow, access tools, and the coverage and limitations of the catalog snapshot analyzed in this article. 
+license: AGPL-3.0
+preferred-citation:
+  type: article
+  title: "A repository for discovery and reuse of higher-order network datasets"
+  authors:
+    - given-names: Florian
+      family-names: Frantzen
+      email: frantzen@netsci.rwth-aachen.de
+      orcid: 'https://orcid.org/0000-0003-0187-3738'
+    - given-names: Michael T.
+      family-names: Schaub
+      email: schaub@netsci.rwth-aachen.de
+      orcid: 'https://orcid.org/0000-0003-2426-6404'
+  identifiers:
+  - type: doi
+    value: 10.48550/arXiv.2608.03491
