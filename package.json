@@ -14,7 +14,7 @@
     "lint": "astro check"
   },
   "dependencies": {
-    "@astrojs/mdx": "7.0.8",
+    "@astrojs/mdx": "8.0.0",
     "@citation-js/core": "0.8.2",
     "@citation-js/plugin-bibtex": "0.8.2",
     "@citation-js/plugin-csl": "0.8.2",
