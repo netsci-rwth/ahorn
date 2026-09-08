@@ -14,7 +14,7 @@
     "lint": "astro check"
   },
   "dependencies": {
-    "@astrojs/markdown-satteri": "^0.3.8",
+    "@astrojs/markdown-satteri": "0.3.8",
     "@astrojs/mdx": "7.0.8",
     "@citation-js/core": "0.8.2",
     "@citation-js/plugin-bibtex": "0.8.2",
