@@ -19,7 +19,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "ruff==0.16.6",
+    "ruff==0.16.7",
     "types-networkx",
 ]
 
