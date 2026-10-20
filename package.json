@@ -25,7 +25,7 @@
     "@pagefind/component-ui": "1.5.2",
     "@tailwindcss/typography": "0.5.20",
     "@tailwindcss/vite": "4.3.3",
-    "astro": "7.4.0",
+    "astro": "7.4.1",
     "chart.js": "4.5.1",
     "chartjs-adapter-date-fns": "3.0.0",
     "chartjs-plugin-datalabels": "2.2.0",
@@ -34,7 +34,7 @@
     "tailwindcss": "4.3.3"
   },
   "devDependencies": {
-    "@astrojs/check": "0.9.10",
+    "@astrojs/check": "0.9.11",
     "@types/mdx": "2.0.14",
     "@types/node": "24.19.2",
     "pagefind": "1.5.2",
