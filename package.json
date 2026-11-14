@@ -24,14 +24,14 @@
     "@fortawesome/free-solid-svg-icons": "7.3.1",
     "@pagefind/component-ui": "1.6.0",
     "@tailwindcss/typography": "0.5.20",
-    "@tailwindcss/vite": "4.3.3",
+    "@tailwindcss/vite": "4.3.5",
     "astro": "7.4.12",
     "chart.js": "4.6.1",
     "chartjs-adapter-date-fns": "3.0.0",
     "chartjs-plugin-datalabels": "2.2.0",
     "classnames": "2.5.1",
     "date-fns": "4.4.0",
-    "tailwindcss": "4.3.3"
+    "tailwindcss": "4.3.5"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.12",
