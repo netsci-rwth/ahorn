@@ -36,7 +36,7 @@
   "devDependencies": {
     "@astrojs/check": "0.9.12",
     "@types/mdx": "2.0.14",
-    "@types/node": "26.6.6",
+    "@types/node": "26.6.7",
     "pagefind": "1.6.0",
     "prettier": "3.10.1",
     "prettier-plugin-tailwindcss": "0.8.1"
